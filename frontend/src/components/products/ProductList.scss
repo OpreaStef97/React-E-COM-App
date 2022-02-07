@@ -1,0 +1,40 @@
+@import '../../sass/variables.scss';
+
+.product-list {
+    height: 60rem;
+    width: 100%;
+    background-color: $color-primary-light-1;
+    list-style: none;
+    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    overflow: hidden;
+
+    &-container {
+        background-color: $color-primary-light-1;
+        width: 85%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-flow: column;
+        overflow: hidden;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 5%) inset;
+
+        &--list {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            align-items: center;
+            list-style: none;
+            transition: ease 0.3s;
+
+            & > * {
+                width: 100%;
+                flex-shrink: 0;
+                flex-grow: 1;
+            }
+        }
+    }
+}

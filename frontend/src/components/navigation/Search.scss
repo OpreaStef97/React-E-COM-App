@@ -1,0 +1,68 @@
+@import '../../sass/variables.scss';
+
+.search-container {
+    width: 70%;
+}
+
+.search {
+    flex: 0 0 40%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-gray-dark-3;
+
+    &__input {
+        font-family: inherit;
+        font-size: 1.4rem;
+        color: inherit;
+        background-color: $color-primary-light-2;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 100px;
+        width: 80%;
+
+        transition: all 0.2s;
+        margin-right: -4.5rem;
+
+        box-shadow: 0px 0.5px 2px rgba($color-primary-dark-3, 0.2);
+        &:focus {
+            outline: none;
+            width: 90%;
+            background-color: $color-primary-light-1;
+            box-shadow: 0px 0px 2px rgba($color-primary-dark-3, 0.2) inset;
+        }
+    }
+
+    &__button {
+        border: none;
+        cursor: pointer;
+        background-color: inherit;
+        &:focus {
+            outline: none;
+        }
+        &:active {
+            transform: translateY(2px);
+        }
+    }
+
+    &__icon {
+        height: 3rem;
+        width: 3rem;
+        color: $color-primary-dark-3;
+    }
+}
+
+.sticky .search {
+    &__input {
+        background-color: $color-primary-light-1;
+        box-shadow: 0px 0.5px 2px rgba($color-primary-dark-3, 0.2);
+
+        &:focus {
+            outline: none;
+            width: 90%;
+            background-color: $color-primary-light-4;
+            box-shadow: 0px 0px 2px rgba($color-primary-dark-3, 0.3) inset;
+        }
+    }
+}

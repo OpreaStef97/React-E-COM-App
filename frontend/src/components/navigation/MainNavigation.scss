@@ -1,0 +1,120 @@
+@import '../../sass/variables.scss';
+
+.main-navigation {
+    &__menu-btn {
+        position: fixed;
+        right: 3rem;
+        top: 1rem;
+        width: 4rem;
+        height: 4rem;
+        background: transparent;
+        border: none;
+
+        display: none;
+        flex-direction: column;
+        justify-content: space-around;
+        cursor: pointer;
+        z-index: 3100;
+
+        &-icon {
+            position: relative;
+
+            &,
+            &::before,
+            &::after {
+                width: 4rem;
+                height: 2.5px;
+                background-color: $color-primary-dark-2;
+                display: inline-block;
+            }
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                transition: all 0.2s;
+            }
+
+            &::before {
+                top: -1.1rem;
+            }
+            &::after {
+                top: 1.1rem;
+            }
+        }
+
+        &:hover &-icon::before {
+            top: -1.3rem;
+        }
+        &:hover &-icon::after {
+            top: 1.3rem;
+        }
+
+        &--active:hover &-icon::before {
+            top: 0;
+        }
+        &--active:hover &-icon::after {
+            top: 0;
+        }
+
+        &--active &-icon {
+            background-color: transparent;
+        }
+
+        &--active &-icon::before {
+            top: 0;
+            transform: rotate(45deg);
+            background-color: $color-tertiary;
+        }
+        &--active &-icon::after {
+            top: 0;
+            transform: rotate(-45deg);
+            background-color: $color-tertiary;
+        }
+    }
+
+    &__header-nav {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 1rem;
+    }
+
+    &__search-bar {
+        margin-right: auto;
+
+        @media (max-width: 52.5em) {
+            margin-right: 0;
+            width: 40%;
+        }
+    }
+
+    &__drawer-nav {
+        display: flex;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        gap: 10rem;
+        flex: 1;
+        flex-direction: column;
+        
+        & > * {
+            transform: scale(1.3);
+        }
+    }
+    
+}
+
+@media (max-width: 52.5em) {
+    .main-navigation {
+        &__menu-btn {
+            display: flex;
+        }
+
+        &__header-nav {
+            display: none;
+        }
+    }
+}

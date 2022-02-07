@@ -1,0 +1,86 @@
+@import '../../sass/variables.scss';
+
+.menu {
+    background-color: $color-primary-light-1;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    &__container {
+        display: flex;
+        width: 100%;
+    }
+
+    &__button {
+        font-family: inherit;
+        color: inherit;
+        cursor: pointer;
+        color: inherit;
+        border: none;
+        background-color: inherit;
+        width: clap(15rem, auto);
+        height: 4rem;
+        font-size: 2rem;
+        position: relative;
+
+        &::after {
+            content: '';
+            left: 0%;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            transform: scale(0);
+            height: 1.5px;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        &-triangle {
+            z-index: 400;
+            position: absolute;
+            color: #fff;
+            border-bottom: none;
+            font-size: 2.5rem;
+            left: 40%;
+            top: 90%;
+            text-shadow: 0px -1rem 2rem rgba($color-primary-dark-3, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s;
+        }
+        &:hover {
+            color: $color-tertiary;
+        }
+
+        &:hover::after {
+            transform: scale(1);
+            background-color: $color-tertiary;
+        }
+
+        &-active {
+            color: $color-tertiary;
+        }
+
+        &-active &-triangle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        &-active::after {
+            transform: scale(1);
+            background-color: $color-tertiary;
+        }
+    }
+}
+
+.menu-dropdown {
+    display: flex;
+    flex: 0 1 100%;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    gap: 3rem;
+}

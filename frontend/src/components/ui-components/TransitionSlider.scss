@@ -1,0 +1,108 @@
+@import '../../sass/variables.scss';
+
+.slideshow {
+    overflow: hidden;
+    display: grid;
+    grid: 'left center right' / 1fr 2fr 1fr;
+    height: 100%;
+    position: relative;
+
+    .next,
+    .prev {
+        cursor: pointer;
+        z-index: 100;
+        grid-area: right;
+        background-size: 50%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        svg {
+            cursor: pointer;
+            height: 6rem;
+            width: 6rem;
+            color: $color-primary-light-2;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        &:hover svg {
+            opacity: 1;
+        }
+    }
+    .prev {
+        grid-area: left;
+        justify-content: flex-start;
+    }
+    .slide {
+        background: white;
+        user-select: none;
+        grid-area: 1 / 1 / 2 / 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &.backwards {
+        .slide-enter {
+            transform: translateX(100%);
+        }
+        .slide-enter-active {
+            transform: translateX(0%);
+        }
+        .slide-exit {
+            transform: translateX(-100%);
+        }
+    }
+    &.forwards {
+        .slide-enter {
+            transform: translateX(-100%);
+        }
+        .slide-enter-active {
+            transform: translateX(0%);
+        }
+        .slide-exit {
+            transform: translateX(100%);
+        }
+    }
+
+    &-dots {
+        position: absolute;
+        z-index: 200;
+        bottom: 0%;
+        width: 100%;
+        height: 7.5%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &-container {
+            display: flex;
+            width: 100%;
+            gap: 1rem;
+            margin: 0 1rem 0 1rem;
+        }
+    }
+
+    &-dot {
+        background-color: $color-primary-dark-1;
+        cursor: pointer;
+        height: 2rem;
+        width: 2rem;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--inner {
+            height: 1.2rem;
+            width: 1.2rem;
+            background-color: $color-primary-light-2;
+            border-radius: 100%;
+        }
+
+        &-active &--inner {
+            background-color: $color-tertiary;
+        }
+    }
+}

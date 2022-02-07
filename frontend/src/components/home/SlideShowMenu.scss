@@ -1,0 +1,60 @@
+@import '../../sass/variables.scss';
+
+.slideshow-menu {    
+    border-radius: 1rem;
+    box-shadow: 0 0.1rem 0.5rem rgba($color-primary-dark-3, 0.25);
+    margin: 0 auto;
+    width: 90vw;
+    overflow: hidden;
+    position: relative;
+
+    margin-top: 10rem;
+    margin-bottom: 15rem;
+
+    &-header {
+        background-color: $color-primary-light-1;
+        height: 8rem;
+        display: flex;
+        align-items: center;
+    }
+
+    &-overlay {
+        position: absolute;
+        top: 20%;
+        left: 5%;
+        font-weight: 300;
+        text-align: start;
+
+        z-index: 50;
+        width: 75rem;
+        height: 25rem;
+        font-size: 7rem;
+
+        background-image: linear-gradient(
+            to right bottom,
+            $color-tertiary-light-3,
+            $color-primary-light-3
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+
+        @media (max-width: 52.5em) {
+            font-size: 4.5rem;
+            width: 40rem;
+        }
+    }
+
+    &-button {
+        position: absolute;
+        bottom: 5%;
+        right: 3%;
+        font-weight: 300;
+        text-align: start;
+        z-index: 2000;
+        button {
+            z-index: inherit;
+        }
+    }
+}

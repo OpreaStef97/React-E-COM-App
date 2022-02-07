@@ -1,0 +1,64 @@
+@import '../../sass/variables.scss';
+
+.list__btn {
+    position: absolute;
+    z-index: 1000;
+    border: none;
+    background-color: $color-primary-light-1;
+    cursor: pointer;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0rem 1rem rgba($color-primary-dark-3, 20%);
+
+    &--icon {
+        width: 3rem;
+        height: 3rem;
+        color: $color-primary-dark-2;
+    }
+
+    &--load {
+        width: 3rem;
+        height: 3rem;
+        color: $color-primary-light-1;
+        animation: lds-dual-ring 0.2s infinite;
+    }
+
+    &-left {
+        left: 0%;
+        margin-left: 2%;
+    }
+
+    &-right {
+        right: 0%;
+        margin-right: 2%;
+    }
+
+    &:hover,
+    &:active {
+        box-shadow: 0 0rem 1.5rem rgba($color-tertiary-dark-1, 30%);
+        background-color: $color-tertiary-light-1;
+    }
+    &:hover &--icon {
+        color: $color-primary-light-1;
+    }
+}
+
+.fade-btn-enter {
+    opacity: 0;
+}
+.fade-btn-enter-active {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+.fade-btn-exit {
+    opacity: 1;
+}
+.fade-btn-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+}

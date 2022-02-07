@@ -1,0 +1,20 @@
+@import '../../sass/variables.scss';
+
+.products__grid {
+    width: 100%;
+    height: 100%;
+    justify-self: end;
+    align-content: start;
+    display: grid;
+    border-radius: 1rem;
+    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
+
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    grid-auto-rows: 50rem;
+    justify-items: center;
+    align-items: center;
+}
+
+.fade {
+    animation: 0.8s fade;
+}

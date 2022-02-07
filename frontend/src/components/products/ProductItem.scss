@@ -1,0 +1,88 @@
+@import '../../sass/variables.scss';
+
+.product__item {
+    height: 90%;
+    padding: 2rem;
+    list-style: none;
+    transition: all 0.3s;
+
+    &--wrapper {
+        height: 100%;
+        background-color: $color-primary-light-1;
+        border-radius: 1rem;
+        box-shadow: 0 0rem 0.5rem rgba($color-primary-dark-3, 25%);
+        overflow: hidden;
+    }
+
+    &--image {
+        height: 40%;
+        background-color: #fff;
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            -ms-backface-visibility: hidden;
+        }
+    }
+
+    &--description {
+        height: 60%;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    &--pr {
+        display: flex;
+        width: 100%;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    &--name {
+        display: inline-block;
+        height: 6rem;
+        text-align: center;
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: $color-fourth-dark;
+    }
+
+    &--price {
+        align-self: flex-start;
+        font-size: 2.6rem;
+        margin-left: 2rem;
+        font-weight: 400;
+        color: $color-primary-dark-3;
+    }
+
+    &--star_container {
+        margin-left: 2rem;
+        align-self: flex-start;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .star-icon {
+            width: 2.4rem;
+            height: 2.4rem;
+            color: $color-tertiary-dark-2;
+        }
+    }
+
+    .rating {
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: $color-fourth;
+    }
+
+    &:hover {
+        padding-top: 1.5rem;
+        padding-bottom: 2.5rem;
+    }
+}

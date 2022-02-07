@@ -1,0 +1,102 @@
+@import '../../sass/variables.scss';
+
+.testimonials {
+    height: 80vh;
+    width: 100%;
+    background-image: linear-gradient(
+        56deg,
+        $color-primary-light-4 0%,
+        $color-primary-light-4 50%,
+        $color-primary-dark-1 50%,
+        $color-primary-dark-3 100%
+    );
+    margin-bottom: 15rem;
+    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
+
+    @media(max-width: 68.75em) {
+        height: 120vh;
+    }
+
+    &-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &-grid {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        height: 85%;
+        width: 80%;
+
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        justify-items: center;
+        row-gap: 1rem;
+
+        @media(max-width: 68.75em) {
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(5, 1fr);
+            width: 100%;
+            height: 90%;
+            & > * {
+                transform: none !important;
+            }
+        }
+    }
+
+    &__card {
+        height: 100%;
+        width: 80%;
+        border-radius: 1rem;
+
+        display: flex;
+        padding: 2rem;
+        align-items: center;
+        justify-content: space-around;
+        gap: 3rem;
+
+        color: $color-primary-light-3;
+
+        &--img {
+            width: 10rem;
+            height: 10rem;
+            border-radius: 100%;
+        }
+
+        &--review {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            text-align: start;
+        }
+
+        &--name {
+            font-size: 1.6rem;
+            margin-right: 1.2rem;
+            text-align: end;
+        }
+
+        &--1 {
+            transform: translate3d(10%, 0%, 0);
+        }
+
+        &--2 {
+            transform: translate3d(-10%, 10%, 0);
+        }
+
+        &--3 {
+            transform: translate3d(0, 0%, 0);
+        }
+
+        &--4 {
+            transform: translate3d(10%, 30%, 0);
+        }
+
+        &--5 {
+            transform: translate3d(25%, 10%, 0);
+        }
+    }
+}

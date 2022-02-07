@@ -1,0 +1,63 @@
+@import '../../sass/variables.scss';
+
+.user__card {
+    height: 100%;
+    width: 80%;
+    border-radius: 1rem;
+
+    display: flex;
+    padding: 2rem;
+    align-items: center;
+    justify-content: space-around;
+    gap: 3rem;
+
+    color: $color-primary-light-3;
+
+    &--img {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 100%;
+    }
+
+    &--review {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        text-align: start;
+    }
+
+    &--name {
+        font-size: 1.6rem;
+        margin-right: 1.2rem;
+        text-align: end;
+    }
+
+    &--0 {
+        background-color: $color-secondary-dark;
+        color: $color-secondary-light;
+        box-shadow: 0 0 1rem rgba($color-secondary-dark-1, 0.25);
+    }
+
+    &--1 {
+        background-color: $color-primary-light-1;
+        color: $color-primary-dark-3;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-2, 0.25);
+    }
+
+    &--2 {
+        background-color: $color-primary-dark-2;
+        color: $color-primary-light-1;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-2, 0.25);
+    }
+
+    &--3 {
+        background-color: $color-secondary-light;
+        color: $color-secondary-dark-1;
+        box-shadow: 0 0 1rem rgba($color-secondary-dark-1, 0.25);
+    }
+
+    &--4 {
+        background-color: $color-tertiary-light-2;
+        color: $color-tertiary-dark-3;
+        box-shadow: 0 0 1rem rgba($color-tertiary-light-1, 0.25);
+    }
+}

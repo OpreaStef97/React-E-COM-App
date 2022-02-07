@@ -1,0 +1,33 @@
+@import '../../sass/variables.scss';
+
+.section-title {
+    margin: 0 auto;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    &__content {
+        display: flex;
+        align-items: center;
+        margin-left: 10%;
+        height: 100%;
+        font-weight: 400;
+        font-size: 4.4rem;
+
+        background-image: linear-gradient(to right, $color-primary-dark-3, $color-tertiary-dark-1);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+    }
+
+    @media (max-width: 52.5em) {
+        justify-content: center;
+
+        &__content {
+            margin-left: 0;
+            font-size: 3rem;
+        }
+    }
+}

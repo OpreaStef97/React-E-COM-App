@@ -1,0 +1,44 @@
+@import '../../sass/variables.scss';
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h1 {
+        font-weight: 700;
+        margin-left: 1.6rem;
+        font-size: 3.2rem;
+        color: $color-primary-light-3;
+        letter-spacing: 0.5px;
+        background-image: linear-gradient(
+            to left,
+            $color-tertiary-dark-1,
+            $color-primary-dark-3
+        );
+
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 0.5px;
+    }
+
+    &__icon {
+        width: 4rem;
+        height: 4rem;
+        color: $color-primary-dark-3;
+    }
+
+    &-light {
+        h1 {
+            background-image: linear-gradient(
+                to left,
+                $color-tertiary,
+                $color-primary
+            );
+        }
+    }
+
+    &-light &__icon {
+        color: $color-primary;
+    }
+}

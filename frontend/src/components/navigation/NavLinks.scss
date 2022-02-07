@@ -1,0 +1,138 @@
+@import '../../sass/variables.scss';
+
+.nav-links {
+    &__list {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+        margin-right: 1rem;
+        font-size: $default-font-size;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        color: $color-primary-dark-3;
+
+        @media (max-width: 52.5em) {
+            flex-direction: column;
+            gap: 3rem;
+            margin-right: 0;
+        }
+
+        &-item {
+            a {
+                &:link,
+                &:visited {
+                    color: inherit;
+                    text-decoration: none;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: all 0.3s;
+
+                    gap: 0.5rem;
+                    border-radius: 100px;
+                    width: 15rem;
+                    height: 4rem;
+
+                    svg {
+                        width: 2rem;
+                        height: 2rem;
+                    }
+                }
+
+                &:hover,
+                &:active {
+                    box-shadow: 0px 0px 0px 1.5px $color-primary-light-1 inset;
+                }
+
+                @media (max-width: 68.75em) {
+                    &:link,
+                    &:visited {
+                        span {
+                            display: none;
+                        }
+                        svg {
+                            width: 3rem;
+                            height: 3rem;
+                        }
+                        width: 5rem;
+                        height: 5rem;
+                    }
+                }
+
+                @media (max-width: 52.5em) {
+                    &:link,
+                    &:visited {
+                        width: 15rem;
+                        height: 4rem;
+                        background-color: $color-primary-light-2;
+                        svg {
+                            width: 2rem;
+                            height: 2rem;
+                        }
+                        span {
+                            display: inline-block;
+                        }
+                    }
+                    &:hover,
+                    &:active {
+                        box-shadow: 0px 0px 0px 1.5px $color-primary inset;
+                    }
+                }
+            }
+
+            &--cart {
+                a {
+                    &:link,
+                    &:visited {
+                        color: $color-tertiary-light-3;
+                        text-decoration: none;
+                        box-shadow: none;
+                        background-image: linear-gradient(
+                            130deg,
+                            $color-tertiary-dark-1 0%,
+                            $color-tertiary-dark-1 50%,
+                            $color-primary-light-1 0%
+                        );
+                        background-size: 250%;
+                        transition: all 0.4s;
+                    }
+
+                    &:hover,
+                    &:active {
+                        background-position: 100%;
+                        color: $color-primary-dark-3;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.sticky .nav-links {
+    &__list-item {
+        color: $color-primary-dark-3;
+
+        a {
+            &:hover,
+            &:active {
+                box-shadow: 0px 0px 0px 1.5px $color-primary-light-3 inset;
+            }
+        }
+
+        &--cart {
+            a {
+                &:link,
+                &:visited {
+                    text-decoration: none;
+                    box-shadow: none;
+                    background-image: linear-gradient(
+                        130deg,
+                        $color-tertiary-dark-1 0%,
+                        $color-tertiary-dark-1 50%,
+                        $color-primary-light-2 0%
+                    );
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+@import '../../sass/variables.scss';
+
+.promoting {
+    height: 80vh;
+    background-color: $color-primary-light-1;
+    margin-bottom: 15rem;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
+
+    &-description {
+        color: $color-primary-light-2;
+
+        &__over {
+            top: 0;
+            left: 0;
+            padding-right: 20rem;
+            padding-left: 6rem;
+            position: absolute;
+
+            display: flex;
+            background-color: rgba($color-primary-dark-2, 0.75);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            z-index: 1000;
+            height: 100%;
+            width: 60%;
+            clip-path: polygon(0 0, 100% 0, 60% 100%, 0% 100%);
+
+            h2 {
+                display: inline-block;
+                font-weight: 400;
+                display: inline-block;
+                font-size: 4rem;
+            }
+
+            @media(max-width: 52.5em) {
+                padding-right: 3rem;
+                padding-left: 3rem;
+                justify-content: start;
+                height: 50%;
+                width: 100%;
+
+                clip-path: polygon(0 0, 200% 0, 0% 70%, 0% 100%);
+                h2 {
+                    margin-top: 5rem;
+                    font-size: 2.5rem;
+                }
+            }
+        }
+    }
+
+    &-image__container {
+        flex-basis: 100%;
+        flex-shrink: 0;
+        display: flex;
+        height: 100%;
+
+        & > * {
+            width: 100%;
+        }
+    }
+}

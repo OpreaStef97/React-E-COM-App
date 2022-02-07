@@ -1,0 +1,108 @@
+@import '../../sass/variables.scss';
+
+.dropdown {
+    &__container {
+        position: absolute;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        left: 0%;
+        text-align: start;
+        background-color: #fff;
+        width: 100%;
+        height: 0;
+        z-index: 3000;
+
+        box-shadow: 0 1rem 2rem rgba($color-primary-dark-3, 0.15);
+
+        transition: all 0.3s ease-in;
+
+        @media (max-width: 52.5em) {
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        &-links {
+            opacity: 0;
+            display: flex;
+            height: 50%;
+            width: 20rem;
+            list-style: none;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+
+            transition: opacity 0.3s ease-in;
+            &--item {
+                height: 2.8rem;
+            }
+
+            @media (max-width: 52.5em) {
+                flex-direction: row;
+                height: 10%;
+                width: 100%;
+            }
+        }
+
+        &-link {
+            &:link,
+            &:visited {
+                display: inline-block;
+                text-decoration: none;
+                cursor: pointer;
+                color: $color-fourth;
+                background-color: inherit;
+                width: 100%;
+                height: 100%;
+                font-size: 2rem;
+                position: relative;
+            }
+
+            &::after {
+                z-index: inherit;
+                content: '';
+                left: 0%;
+                position: absolute;
+                bottom: 0;
+                width: 0%;
+                height: 1.5px;
+                transition: all 0.2s ease;
+            }
+
+            &:hover,
+            &:active {
+                &::after {
+                    font-size: 2.5rem;
+                    width: 100%;
+                    background-color: $color-fourth;
+                }
+            }
+        }
+
+        &-item {
+            display: flex;
+            width: 70%;
+            height: 100%;
+            transform: scale(0);
+            & > * {
+                width: 100%;
+            }
+
+            @media (max-width: 52.5em) {
+                align-self: center;
+                width: 90%;
+            }
+        }
+    }
+
+    &__container-active {
+        height: 70vh;
+        .dropdown__container-item {
+            transform: scale(1);
+            animation: expand .5s;
+        }
+    }
+    &__container-active &__container-links {
+        opacity: 1;
+    }
+}
