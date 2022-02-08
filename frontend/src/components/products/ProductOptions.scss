@@ -37,6 +37,12 @@
                 border: 1px solid $color-tertiary-dark-1;
                 color: $color-tertiary-dark-2;
             }
+
+        }
+        .active {
+            background-color: $color-tertiary-light-3;
+            border: 1px solid $color-tertiary-dark-1;
+            color: $color-tertiary-dark-2;
         }
     }
 }

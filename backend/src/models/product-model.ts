@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema(
             unique: true,
             trim: true,
             maxlength: 70,
-            minlength: 30,
+            minlength: 10,
         },
         slug: String,
         brand: {

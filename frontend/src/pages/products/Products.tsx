@@ -120,7 +120,9 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                                                 onDelete={deleteHandler}
                                                 options={selectState[key]}
                                                 placeholder={`${key}..`}
-                                                label={`Select ${key}: `}
+                                                label={`Select ${
+                                                    key.charAt(0).toUpperCase() + key.slice(1)
+                                                }: `}
                                             />
                                         );
                                     return <Fragment key={key}></Fragment>;

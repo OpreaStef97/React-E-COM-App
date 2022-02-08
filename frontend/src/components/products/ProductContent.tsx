@@ -76,6 +76,7 @@ const ProductContent: FC<{ onSetCategory?: (cat: string) => void }> = props => {
                                 key={key}
                                 label={key.charAt(0).toUpperCase() + key.slice(1)}
                                 items={product.options[key]}
+                                active={product.default[key]}
                             />
                         );
                     })}

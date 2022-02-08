@@ -5,11 +5,14 @@ import cors from 'cors';
 import path from 'path';
 import mongoose from 'mongoose';
 import mongoSanitize from 'express-mongo-sanitize';
-import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import expressLimiter from 'express-rate-limit';
+import cookieParser from 'cookie-parser';
+import hpp from 'hpp';
+const xssClean = require('xss-clean');
 
 import productsRouter from './src/routes/products-route';
+import usersRouter from './src/routes/user-routes';
 import AppError from './src/models/error-model';
 import globalErrorHandler from './src/controllers/error-controller';
 
@@ -20,7 +23,15 @@ const app = express();
 /////////////////////////////////////
 
 (async () => {
-    app.use(bodyParser.json());
+    // Setting CSP
+    app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+
+    // Setting CORS
+    app.use(cors());
+
+    app.use(express.json({ limit: '10kb' }));
+    app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+    app.use(cookieParser());
 
     app.use(
         '/api',
@@ -35,26 +46,14 @@ const app = express();
         app.use(morgan('dev'));
     }
 
-    // Setting CORS
-    app.use(cors());
-
-    // Setting CSP
-    app.use(
-        helmet({
-            contentSecurityPolicy: {
-                directives: {
-                    defaultSrc: ["'self'", 'https:', 'http://localhost:3000'],
-                    fontSrc: ["'self'", 'https:'],
-                    scriptSrc: ["'self'", 'https://*.stripe.com'],
-                    styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
-                },
-            },
-            crossOriginResourcePolicy: { policy: 'cross-origin' },
-        })
-    );
+    // Sanitize XSS
+    app.use(xssClean());
 
     // Data sanitization for NoSQL
     app.use(mongoSanitize());
+
+    // Prevent parameter polution
+    app.use(hpp());
 
     // Serving static files
     app.use('/images', express.static(path.join(__dirname, 'public/images')));
@@ -62,6 +61,7 @@ const app = express();
     // ROUTES
     /////////////////////////////////////
 
+    app.use('/api/users', usersRouter);
     app.use('/api/products', productsRouter);
 
     app.all('*', (req, res, next) => {

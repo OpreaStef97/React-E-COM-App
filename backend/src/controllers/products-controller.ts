@@ -1,4 +1,3 @@
-import { NextFunction, Request, Response } from 'express';
 import AppError from '../models/error-model';
 import Product from '../models/product-model';
 import APIFeatures from '../utils/api-features';
@@ -8,7 +7,7 @@ import catchAsync from '../utils/catch-async';
  * @applies features like filtering sorting pagination
  * @returns all products by default
  */
-export const getAllProducts = catchAsync(async (req: Request, res: Response) => {
+export const getAllProducts = catchAsync(async (req, res) => {
     const features = new APIFeatures(Product.find() /*returns query obj*/, req.query)
         .filter()
         .sort()
@@ -18,12 +17,13 @@ export const getAllProducts = catchAsync(async (req: Request, res: Response) => 
     const products = await features.query;
 
     res.status(200).json({
+        status: 'success',
         length: products.length,
         products,
     });
 });
 
-export const getProduct = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const getProduct = catchAsync(async (req, res, next) => {
     const productId = req.params.pid;
 
     const product = await Product.findById(productId);
@@ -33,6 +33,7 @@ export const getProduct = catchAsync(async (req: Request, res: Response, next: N
     }
 
     res.status(200).json({
+        status: 'success',
         product,
     });
 });
@@ -42,7 +43,7 @@ export const getProduct = catchAsync(async (req: Request, res: Response, next: N
  * @example1 for route './products/values?field=brand&category=Phone' will return all the brands for Phone category
  * @example2 for route './products/values?fields=brand,type&category=Phone' will return all the brands and types for Phone category
  */
-export const getFieldValues = catchAsync(async (req: Request, res: Response) => {
+export const getFieldValues = catchAsync(async (req, res) => {
     let { field } = req.query;
     const { fields, category } = req.query;
 
@@ -67,6 +68,7 @@ export const getFieldValues = catchAsync(async (req: Request, res: Response) => 
         );
 
         return res.status(200).json({
+            status: 'success',
             [`${category ? category : 'All'}`]: values,
         });
     }
@@ -83,6 +85,40 @@ export const getFieldValues = catchAsync(async (req: Request, res: Response) => 
     const values = await fieldValues.query;
 
     res.status(200).json({
+        status: 'success',
         [`${field}`]: values,
+    });
+});
+
+export const createProduct = catchAsync(async (req, res) => {
+    const { name, brand, category, price, images, default: Default, options, type } = req.body;
+
+    const newProduct = await Product.create({
+        name,
+        brand,
+        category,
+        price,
+        images,
+        default: Default,
+        options,
+        type,
+    });
+
+    res.status(201).json({
+        status: 'success',
+        product: newProduct,
+    });
+});
+
+export const deleteProduct = catchAsync(async (req, res, next) => {
+    const productId = req.params.pid;
+
+    const product = await Product.findByIdAndDelete(productId);
+
+    if (!product) return next(new AppError(404, 'No document found with that ID'));
+
+    res.status(204).json({
+        status: 'success',
+        data: null,
     });
 });

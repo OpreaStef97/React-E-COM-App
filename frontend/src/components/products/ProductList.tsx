@@ -64,9 +64,8 @@ const ProductList: FC<{ category?: string }> = props => {
                 .catch(console.error);
         if (index < products.length / numberOfShownCards - 1) {
             setIndex(prevIdx => ++prevIdx);
-        } else {
-            setShowBtn(true);
         }
+        if (index >= products.length / numberOfShownCards - 2) setShowBtn(true);
     };
 
     const moveLeftHandler = () => {
