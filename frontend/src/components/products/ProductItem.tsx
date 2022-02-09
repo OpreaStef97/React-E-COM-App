@@ -10,7 +10,7 @@ const ProductItem: FC<{
     price?: number;
     id?: string;
     slug?: string;
-    numberOfShownCards: number;
+    numberOfShownCards?: number;
     idx: number;
     imgUrl: string;
     style?: {
@@ -24,7 +24,7 @@ const ProductItem: FC<{
         <li
             className={`product__item ${props.className}`}
             style={{
-                width: `calc(100% / ${props.numberOfShownCards})`,
+                width: `calc(100% / ${props.numberOfShownCards || 1})`,
                 ...props.style,
             }}
         >

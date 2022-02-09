@@ -124,7 +124,7 @@
             align-items: center;
             flex-direction: column;
 
-            overflow-y: scroll;
+            overflow-y: overlay;
             gap: 5rem;
 
             &::-webkit-scrollbar {

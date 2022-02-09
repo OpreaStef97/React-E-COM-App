@@ -1,18 +1,18 @@
 @keyframes moveDown {
     from {
-        transform: translateY(-6rem);
+        transform: translateY(-100%);
     }
     to {
-        transform: translateY(0rem);
+        transform: translateY(0%);
     }
 }
 
 @keyframes moveUp {
     from {
-        transform: translateY(0rem);
+        transform: translateY(0%);
     }
     to {
-        transform: translateY(-6rem);
+        transform: translateY(-100%);
     }
 }
 

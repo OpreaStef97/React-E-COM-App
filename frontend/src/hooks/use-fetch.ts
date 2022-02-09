@@ -1,33 +1,80 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const useFetch = () => {
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>();
 
-    const sendRequest = useCallback(async (url: string, method?: string) => {
-        setIsLoading(true);
-        try {
-            const response = await fetch(url, { method: method || 'GET' });
-            if (!response.ok) {
-                throw new Error('Something went wrong');
+    const activeHttpRequests = useRef<AbortController[]>([]);
+
+    const sendRequest = useCallback(
+        async (
+            url: string,
+            method: string = 'GET',
+            headers: { [key: string]: string } = {},
+            body = null,
+            credentials = 'omit'
+        ) => {
+            setIsLoading(true);
+
+            // in case the user switches pages while sending the request
+            const httpAbortCtrl = new AbortController();
+            activeHttpRequests.current.push(httpAbortCtrl);
+
+            try {
+                const response = await fetch(url, {
+                    method,
+                    body,
+                    headers,
+                    signal: httpAbortCtrl.signal,
+                    credentials,
+                });
+
+                // clear abort controllers after request
+                activeHttpRequests.current = activeHttpRequests.current.filter(
+                    reqCtrl => reqCtrl !== httpAbortCtrl
+                );
+
+                if (!response) {
+                    throw new Error('Something went wrong');
+                }
+
+                if (response.statusText === 'No Content') return;
+
+                const responseData = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(responseData.message);
+                }
+
+                setIsLoading(false);
+
+                return responseData;
+            } catch (err) {
+                let errMsg = 'Something went wrong, please try again.';
+
+                if (err instanceof Error) {
+                    errMsg = err.message ?? errMsg;
+                }
+
+                setError(errMsg);
+                setIsLoading(false);
+                throw err;
             }
-            const data = await response.json();
-            setIsLoading(false);
-            return data;
-        } catch (err) {
-            setIsLoading(false);
-            if (err instanceof Error) {
-                setError(err.message);
-            }
-            throw err;
-        }
+        },
+        []
+    );
+
+    const clearError = useCallback(() => {
+        setError(null);
     }, []);
 
-    const clearError = () => {
-        setError(null);
-    };
+    useEffect(() => {
+        return () => {
+            activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
+        };
+    }, []);
 
-    return { error, isLoading, sendRequest, clearError };
+    return { isLoading, error, sendRequest, clearError };
 };
 
 export default useFetch;

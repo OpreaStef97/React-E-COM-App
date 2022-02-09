@@ -1,64 +1,55 @@
 import { NextFunction, Request, Response } from 'express';
-import UserDoc from '../interfaces/user-interface';
 import AppError from '../models/error-model';
 import User from '../models/user-model';
 import { signAsyncJWT, verifyAsyncJWT } from '../utils/async-jwt';
 import catchAsync from '../utils/catch-async';
 
-const createToken = async (user: UserDoc, req: Request) => {
+const createToken = async (id: string) => {
     if (
-        !user.id ||
         !process.env.JWT_SECRET ||
         !process.env.JWT_EXPIRES_IN ||
         !process.env.JWT_COOKIE_EXPIRES_IN
     )
         throw new AppError(500, 'Something went very wrong');
-
-    const { id } = user;
     const token = await signAsyncJWT({ id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,
     });
-
     const cookieOptions: { [key: string]: string | boolean | number | Date } = {
         expires: new Date(Date.now() + +process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
         httpOnly: true,
-        // identifying the protocol
-        secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+        secure: true,
+        sameSite: 'none',
     };
-
-    if (process.env.NODE_ENV === 'production') {
-        cookieOptions.secure = true;
-    }
 
     return { token, cookieOptions };
 };
 
 export const signUp = catchAsync(async (req, res) => {
+    const { name, email, password, passwordConfirm } = req.body;
+
+    console.log(req.body);
     const newUser = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        passwordConfirm: req.body.passwordConfirm,
-        passwordChangedAt: req.body.passwordChangedAt,
+        name,
+        email,
+        password,
+        passwordConfirm,
     });
 
     const sess = await User.startSession();
     sess.startTransaction();
     await newUser.save({ session: sess });
-    const { token, cookieOptions } = await createToken(newUser, req);
+    const { token, cookieOptions } = await createToken(newUser._id);
     await sess.commitTransaction();
     await sess.endSession();
 
-    const resultUser = { ...newUser._doc, password: undefined };
-    res.cookie('jwt', token, cookieOptions)
-        .status(201)
-        .json({
-            status: 'success',
-            token,
-            data: {
-                user: resultUser,
-            },
-        });
+    const resultUser = {
+        ...newUser.toObject({ getters: true }),
+        password: undefined,
+    };
+    res.cookie('jwt', token, cookieOptions).status(201).json({
+        status: 'success',
+        user: resultUser,
+    });
 });
 
 export const login = catchAsync(async (req, res, next) => {
@@ -77,19 +68,18 @@ export const login = catchAsync(async (req, res, next) => {
     }
 
     // 3) If everything ok, send token to client
-    const { token, cookieOptions } = await createToken(user, req);
+    const { token, cookieOptions } = await createToken(user._id);
 
-    const resultUser = { ...user._doc, password: undefined };
+    const resultUser = {
+        ...user.toObject({ getters: true }),
+        password: undefined,
+        passwordChangedAt: undefined,
+    };
 
-    res.cookie('jwt', token, cookieOptions)
-        .status(200)
-        .json({
-            status: 'success',
-            token,
-            data: {
-                user: resultUser,
-            },
-        });
+    res.cookie('jwt', token, cookieOptions).status(200).json({
+        status: 'success',
+        user: resultUser,
+    });
 });
 
 export const logout = (req: Request, res: Response) => {
@@ -135,6 +125,41 @@ export const protect = catchAsync(async (req, res, next) => {
     next();
 });
 
+export const isLoggedIn = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.cookies.jwt) {
+        return next(new AppError(401, 'User is not authenticated'));
+    }
+    // 1) verify token
+    if (!process.env.JWT_SECRET) {
+        return next(new AppError(500, 'Something went wrong'));
+    }
+
+    const decoded = await verifyAsyncJWT(req.cookies.jwt, process.env.JWT_SECRET);
+
+    // 2) Check if user still exists
+    const currentUser = await User.findById(decoded.id);
+    if (!currentUser) {
+        return next();
+    }
+
+    // 3) Check if user changed password after the JWT
+    if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+    }
+
+    const resultUser = {
+        ...currentUser.toObject({ getters: true }),
+        password: undefined,
+        passwordChangedAt: undefined,
+    };
+
+    // THERE IS A LOGGED IN USER
+    res.status(200).json({
+        status: 'success',
+        user: resultUser,
+    });
+});
+
 export const restrictTo = (roles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
         // roles ['admin', 'user']. role = 'user'
@@ -166,20 +191,13 @@ export const updatePassword = catchAsync(async (req, res, next) => {
     user.passwordConfirm = req.body.passwordConfirm;
     await user.save();
 
-    const { token, cookieOptions } = await createToken(user, req);
+    const { token, cookieOptions } = await createToken(user._id);
 
     await session.commitTransaction();
     session.endSession();
-    
-    const resultUser = { ...user._doc, password: undefined };
 
-    res.cookie('jwt', token, cookieOptions)
-        .status(200)
-        .json({
-            status: 'success',
-            token,
-            data: {
-                user: resultUser,
-            },
-        });
+    res.cookie('jwt', token, cookieOptions).status(200).json({
+        status: 'success',
+        message: 'Password updated successfully!',
+    });
 });

@@ -2,6 +2,7 @@
 
 .form-control {
     margin: 1rem 0;
+    position: relative;
 
     & label,
     & input,
@@ -10,16 +11,21 @@
     }
 
     & label {
+        margin-left: 2rem;
         font-weight: bold;
+        font-size: 1.6rem;
         margin-bottom: 0.5rem;
     }
     & input,
     & textarea {
         font: inherit;
-        border: 2px solid $color-primary-light-2;
+        font-size: 1.8rem;
+        border: 2px solid $color-primary-dark-2;
         background: $color-primary-light-1;
-        padding: 0.5rem 1rem;
-        border-radius: 100px;
+        width: 30rem;
+        height: 3.2rem;
+        padding: 1rem 1rem;
+        border-radius: 1rem;
     }
     & input:focus,
     & textarea:focus {
@@ -35,5 +41,17 @@
     &--invalid textarea {
         border-color: $color-tertiary-dark-3;
         background: #ffd1d1;
+    }
+
+    &-error {
+        position: absolute;
+        opacity: 0;
+        text-align: center;
+        font-size: 1.2rem;
+        margin-left: 1rem;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        transition: opacity 0.3s;
     }
 }

@@ -9,6 +9,8 @@ import helmet from 'helmet';
 import expressLimiter from 'express-rate-limit';
 import cookieParser from 'cookie-parser';
 import hpp from 'hpp';
+import csrf from 'csurf';
+
 const xssClean = require('xss-clean');
 
 import productsRouter from './src/routes/products-route';
@@ -27,7 +29,17 @@ const app = express();
     app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 
     // Setting CORS
-    app.use(cors());
+    app.use(
+        cors({
+            credentials: true,
+            origin: 'http://localhost:3000',
+            allowedHeaders: [
+                'Content-Type',
+                'Authorization',
+                'x-csrf-token',
+            ],
+        })
+    );
 
     app.use(express.json({ limit: '10kb' }));
     app.use(express.urlencoded({ extended: true, limit: '10kb' }));
@@ -54,6 +66,20 @@ const app = express();
 
     // Prevent parameter polution
     app.use(hpp());
+    
+    const csrfProtection = csrf({
+        cookie: true,
+    });
+
+    app.use(csrfProtection);
+
+    app.get('/api/csrf', (req, res) => {
+        // Pass the Csrf Token
+
+        res.json({
+            csrfToken: req.csrfToken(),
+        });
+    });
 
     // Serving static files
     app.use('/images', express.static(path.join(__dirname, 'public/images')));
@@ -61,8 +87,8 @@ const app = express();
     // ROUTES
     /////////////////////////////////////
 
-    app.use('/api/users', usersRouter);
     app.use('/api/products', productsRouter);
+    app.use('/api/users', usersRouter);
 
     app.all('*', (req, res, next) => {
         next(new AppError(404, `Can't find ${req.originalUrl} on this server`));

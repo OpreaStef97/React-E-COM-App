@@ -1,0 +1,93 @@
+@import '../../sass/variables.scss';
+
+.modal__container {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    width: clamp(40rem, 40vw, 90vw);
+    height: clamp(30vh, 30%, 80vh);
+    background: $color-primary-light-1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        width: 100%;
+        padding: 1rem 1rem;
+        background: $color-primary-dark-3;
+        color: $color-primary-light-1;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__close {
+        height: 2.5rem;
+        width: 2.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            transform: scale(1.2);
+        }
+    }
+
+    &-form {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding-bottom: 1rem;
+    }
+
+    &__header h2 {
+        margin: 0.5rem;
+    }
+
+    &__content {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 0.5rem;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0.5rem;
+    }
+}
+.modal-enter {
+    transform: scale(0);
+    opacity: 0;
+}
+
+.modal-enter-active {
+    transform: scale(1);
+    opacity: 1;
+    transition: all 0.2s;
+}
+
+.modal-exit {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.modal-exit-active {
+    transform: scale(0);
+    opacity: 0;
+    transition: all 0.2s;
+}

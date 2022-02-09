@@ -62,9 +62,7 @@ const Input: FC<Props> = props => {
     }, [id, value, isValid, onInput]);
 
     const changeHandler = (
-        event:
-            | React.ChangeEvent<HTMLInputElement>
-            | React.ChangeEvent<HTMLTextAreaElement>
+        event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
     ) => {
         dispatch({
             type: 'CHANGE',
@@ -104,16 +102,19 @@ const Input: FC<Props> = props => {
     return (
         <div
             className={`form-control ${
-                !inputState.isValid &&
-                inputState.isTouched &&
-                'form-control--invalid'
+                !inputState.isValid && inputState.isTouched && 'form-control--invalid'
             }`}
         >
             <label htmlFor={props.id}>{props.label}</label>
             {element}
-            {!inputState.isValid && inputState.isTouched && (
-                <p>{props.errorText}</p>
-            )}
+            <p
+                className="form-control-error"
+                style={
+                    !inputState.isValid && inputState.isTouched ? { opacity: 1 } : { opacity: 0 }
+                }
+            >
+                {props.errorText}
+            </p>
         </div>
     );
 };

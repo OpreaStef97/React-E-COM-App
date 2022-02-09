@@ -4,6 +4,7 @@ import './Button.scss';
 
 const Button: FC<{
     link?: boolean;
+    disabled?: boolean;
     to?: string;
     className?: string;
     inverse?: boolean;
@@ -13,6 +14,10 @@ const Button: FC<{
     style?: { [key: string]: string };
     onClick?: (...args: any[]) => void;
 }> = props => {
+    if (props.to && props.link && props.disabled) {
+        console.warn('Only buttons can be disabled');
+    }
+
     return (
         <>
             {!props.link && (
@@ -20,15 +25,12 @@ const Button: FC<{
                     role={props.role}
                     className={`${
                         props.light
-                            ? `btn-light ${
-                                  props.light && props.active
-                                      ? 'btn-light-active'
-                                      : ''
-                              }`
+                            ? `btn-light ${props.light && props.active ? 'btn-light-active' : ''}`
                             : `btn ${props.inverse ? 'btn-inverse' : ''}`
-                    } ${props.className}`}
+                    } ${props.className} ${props.disabled ? 'btn-disabled' : ''}`}
                     onClick={props.onClick}
                     style={props.style}
+                    disabled={props.disabled}
                 >
                     <span>{props.children}</span>
                 </button>
@@ -38,9 +40,7 @@ const Button: FC<{
                     to={props.to}
                     className={`${
                         props.light
-                            ? `link-light ${
-                                  props.active ? 'link-light-active' : ''
-                              }`
+                            ? `link-light ${props.active ? 'link-light-active' : ''}`
                             : `link ${props.inverse ? 'link-inverse' : ''}`
                     } ${props.className}`}
                     onClick={props.onClick}

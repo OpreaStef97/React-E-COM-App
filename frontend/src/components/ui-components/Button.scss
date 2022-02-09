@@ -48,6 +48,19 @@
             color: $color-tertiary-light-3;
         }
     }
+
+    &-disabled {
+        cursor: not-allowed;
+        transition: none;
+        background-image: none;
+        background: #ccc;
+        color: #979797;
+        
+        &:hover,
+        &:active {
+            color: #979797;
+        }
+    }
 }
 
 .link {

@@ -1,0 +1,10 @@
+@import '../../sass/variables.scss';
+
+.error-text {
+    font-size: 2rem;
+    color: $color-primary-dark-3;
+}
+
+.error-modal {
+    background-color: $color-tertiary-dark-1;
+}

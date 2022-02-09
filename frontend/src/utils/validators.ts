@@ -74,7 +74,7 @@ export const validate = (value: string, validators: Validator[]) => {
                 break;
             }
             case VALIDATOR_TYPE_EMAIL: {
-                isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
+                isValid = isValid && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
                 break;
             }
         }

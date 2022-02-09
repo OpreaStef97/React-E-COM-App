@@ -8,7 +8,7 @@ const productsSlice = createSlice({
     },
     reducers: {
         setProducts(state: { products: any[] }, action) {
-            state.products = [...action.payload] || [];
+            state.products = [...action.payload];
         },
         setValues(state: { values: any }, action) {
             state.values = [...action.payload];
