@@ -19,7 +19,7 @@
 }
 
 .loading-spinner__overlay {
-    z-index: 5000;
+    z-index: 10000;
     height: 100%;
     width: 100%;
     position: fixed;
@@ -29,4 +29,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .lds-dual-ring {
+        width: 100px;
+        height: 100px;
+    }
+    .lds-dual-ring:after {
+        width: 64px;
+        height: 64px;
+    }
 }

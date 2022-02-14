@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
 
-function preloadImage(src: string) {
-    new Promise((resolve, reject) => {
-        const img = new Image();
-        img.onload = () => resolve(src);
-        img.onerror = reject;
-        img.src = src;
-    }).catch(console.error);
+async function preloadImage(src: string) {
+    try {
+        return await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(src);
+            img.onerror = reject;
+            img.src = src;
+        });
+    } catch (message) {
+        return console.error(message);
+    }
 }
 const usePreloadImage = (images: string[]) => {
     useEffect(() => {

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import useFetch from '../../hooks/use-fetch';
 import usePrevious from '../../hooks/use-previos';
 import useWindowWidth from '../../hooks/use-window-width';
@@ -13,7 +13,7 @@ const ProductList: FC<{ category?: string }> = props => {
     const [allDataLoaded, setAllDataLoaded] = useState(false);
     const [products, setProducts] = useState<any[]>([]);
     const [page, setPage] = useState(1);
-    const [showBtn, setShowBtn] = useState(false);
+    const [max, setMax] = useState<number>(-1);
 
     useWindowWidth(setNumberOfShownCards, setIndex);
 
@@ -26,51 +26,73 @@ const ProductList: FC<{ category?: string }> = props => {
         if (prevNumberOfShownCards !== numberOfShownCards) {
             setAllDataLoaded(false);
             setPage(1);
-            setShowBtn(false);
+            setMax(-1);
         }
     }, [prevNumberOfShownCards, numberOfShownCards]);
 
+    // first request
     useEffect(() => {
         sendRequest(
-            `http://localhost:5000/api/products?page=1&limit=${
-                numberOfShownCards < 3 ? 3 : numberOfShownCards
+            `${process.env.REACT_APP_API_URL}/products?page=1&limit=${
+                numberOfShownCards < 3 ? 4 : numberOfShownCards
             }${category ? `&category=${category}` : ''}`
         )
             .then(data => {
-                if (data.length > 0) setProducts([...data.products]);
+                if (data.results > 0) setProducts([...data.docs]);
             })
             .catch(console.error);
+
+        return () => {
+            setProducts([]);
+        };
     }, [sendRequest, category, numberOfShownCards]);
 
+    const sendRequestHandler = useCallback(
+        async (limit: number) => {
+            try {
+                const data = await sendRequest(
+                    `${process.env.REACT_APP_API_URL}/products?page=${page + 1}&limit=${limit}${
+                        category ? `&category=${category}` : ''
+                    }`
+                );
+                if (data.results > 0) {
+                    setProducts(prevProducts => {
+                        prevProducts.push(...data.docs);
+                        return prevProducts;
+                    });
+                    setPage(page => ++page);
+                    setIndex(prevIdx => ++prevIdx);
+                } else {
+                    setAllDataLoaded(true);
+                    setMax(index);
+                }
+            } catch (message) {
+                return console.error(message);
+            }
+        },
+        [category, page, sendRequest, index]
+    );
+
     const moveRightHandler = () => {
-        if (!allDataLoaded && page === index + 1)
-            return sendRequest(
-                `http://localhost:5000/api/products?page=${page + 1}&limit=${
-                    numberOfShownCards < 3 ? 3 : numberOfShownCards
-                }${category ? `&category=${category}` : ''}`
-            )
-                .then(data => {
-                    if (data.length > 0) {
-                        setProducts(prevProducts => {
-                            prevProducts.push(...data.products);
-                            return prevProducts;
-                        });
-                        setPage(page => ++page);
-                        setIndex(prevIdx => ++prevIdx);
-                    } else {
-                        setAllDataLoaded(true);
-                    }
-                })
-                .catch(console.error);
+        if (!allDataLoaded) {
+            if (numberOfShownCards >= 3 && page === index + 1)
+                sendRequestHandler(numberOfShownCards);
+
+            // to not send a request at every 2 cards
+            if (numberOfShownCards === 2 && (index + 1) % 2 === 0 && (index + 1) / 2 === page)
+                sendRequestHandler(4);
+
+            // to not send a request at every one card
+            if (numberOfShownCards === 1 && (index + 1) % 4 === 0 && (index + 1) / 4 === page)
+                sendRequestHandler(4);
+        }
         if (index < products.length / numberOfShownCards - 1) {
             setIndex(prevIdx => ++prevIdx);
         }
-        if (index >= products.length / numberOfShownCards - 2) setShowBtn(true);
     };
 
     const moveLeftHandler = () => {
         if (index > 0) setIndex(prevIdx => --prevIdx);
-        setShowBtn(false);
     };
 
     return (
@@ -92,8 +114,10 @@ const ProductList: FC<{ category?: string }> = props => {
                                     price={product.price}
                                     numberOfShownCards={numberOfShownCards}
                                     idx={idx}
-                                    imgUrl={`http://localhost:5000/images/products//${product.images[0]}`}
+                                    imgUrl={`${process.env.REACT_APP_RESOURCES_URL}/images/products//${product.images[0]}`}
                                     id={product.id}
+                                    ratingsAverage={product.ratingsAverage}
+                                    ratingsQuantity={product.ratingsQuantity}
                                     slug={product.slug}
                                 />
                             );
@@ -102,7 +126,7 @@ const ProductList: FC<{ category?: string }> = props => {
             </div>
             <ListButton
                 isLoading={isLoading}
-                in={showBtn}
+                in={index === max}
                 type="right"
                 onClick={moveRightHandler}
             />

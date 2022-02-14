@@ -1,5 +1,4 @@
 import React from 'react';
-import useClickOutside from '../../hooks/use-clicks-outside';
 import Button from '../ui-components/Button';
 import Menu from './Menu';
 import SlideImage from '../ui-components/SlideImage';
@@ -13,13 +12,12 @@ const promoImages = [
 ];
 
 const SlideShowMenu = React.forwardRef((props, ref) => {
-    const { clicked, clearClick } = useClickOutside(ref);
 
     return (
         <section className="slideshow-menu" ref={ref as React.LegacyRef<HTMLDivElement>}>
-            <Menu clicked={clicked} onClear={clearClick} />
+            <Menu />
             <div className="slideshow-menu-overlay">
-                <p>Get amazing products for the best price</p>
+                <p>Get amazing products faster than ever</p>
             </div>
             <div className="slideshow-menu-button">
                 <Button link to={'/products'} inverse>
@@ -27,7 +25,7 @@ const SlideShowMenu = React.forwardRef((props, ref) => {
                 </Button>
             </div>
             <div style={{ height: '70vh' }}>
-                <TransitionSlider autoFlow dots flowTo="right" delay={5000} transitionMs={500}>
+                <TransitionSlider autoFlow dots flowTo="right" delay={5000} transitionMs={300}>
                     {promoImages.map((src, idx) => (
                         <SlideImage key={idx} src={src} />
                     ))}

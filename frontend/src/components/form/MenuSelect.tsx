@@ -5,16 +5,20 @@ import useClickOutside from '../../hooks/use-clicks-outside';
 import './MenuSelect.scss';
 
 const MenuSelect: FC<{
-    id?: string;
+    id: string;
     options: {
         options: string[];
         selected: boolean[];
     };
     label?: string;
     placeholder?: string;
+    className?: string;
     uniqueSelect?: boolean;
+    errorText?: string;
+    error?: boolean;
     onSelect?: (...args: any[]) => void;
     onDelete?: (id?: string) => void;
+    onTouch?: () => void;
 }> = props => {
     const [show, setShow] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
@@ -44,10 +48,15 @@ const MenuSelect: FC<{
     return (
         <div className="menu-select-wrapper">
             {props.label && <span className="menu-select-label">{props.label}</span>}
-            <div className={`menu-select ${show ? 'active' : ''}`} ref={ref}>
-                <div className="menu-select__select">
+            <div
+                className={`menu-select ${show ? 'active' : ''} ${props.className}`}
+                tabIndex={0}
+                onBlur={props.onTouch}
+                ref={ref}
+            >
+                <div className={`menu-select__select ${props.error ? 'error' : ''}`}>
                     <div onClick={showHandler} className="menu-select__select-placeholder">
-                        <p>{placeholder}</p>
+                        <p>{props.error ? props.errorText : placeholder}</p>
                     </div>
                     <button
                         onClick={onDelete && onDelete.bind(null, id)}

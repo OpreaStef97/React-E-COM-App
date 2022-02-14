@@ -2,9 +2,13 @@ import { useLocation } from 'react-router-dom';
 import Button from '../ui-components/Button';
 import Offer from '../promoting/Offer';
 import './ProductsSideBar.scss';
+import useWindowWidth from '../../hooks/use-window-width';
+import TransitionSlider from '../ui-components/TransitionSlider';
 
 const ProductsSideBar = (props: { className?: string }) => {
     const { pathname } = useLocation();
+
+    const width = useWindowWidth(null, null);
 
     return (
         <div className={`products__side-bar ${props.className}`}>
@@ -47,18 +51,39 @@ const ProductsSideBar = (props: { className?: string }) => {
                 </li>
             </ul>
             <div className="separator"></div>
-            <Offer
-                src={'../../images/S21-Ultra-promo-image.jpeg'}
-                content={'S21 Ultra for just:'}
-                price={899}
-                light
-            />
-            <div className="separator"></div>
-            <Offer
-                src={'../../images/iPhone13Pro-promo-image.jpeg'}
-                content={'iPhone 13 Pro for just:'}
-                price={1099}
-            />
+            {width > 1100 && (
+                <>
+                    <Offer
+                        src={'../../images/S21-Ultra-promo-image.jpeg'}
+                        content={'S21 Ultra for just:'}
+                        price={899}
+                        light
+                    />
+                    <div className="separator"></div>
+                    <Offer
+                        src={'../../images/iPhone13Pro-promo-image.jpeg'}
+                        content={'iPhone 13 Pro for just:'}
+                        price={1099}
+                    />
+                </>
+            )}
+            {width <= 1100 && (
+                <TransitionSlider transitionMs={150}>
+                    <Offer
+                        style={{ width: '60rem' }}
+                        src={'../../images/S21-Ultra-promo-image.jpeg'}
+                        content={'S21 Ultra for just:'}
+                        price={899}
+                        light
+                    />
+                    <Offer
+                        style={{ width: '60rem' }}
+                        src={'../../images/iPhone13Pro-promo-image.jpeg'}
+                        content={'iPhone 13 Pro for just:'}
+                        price={1099}
+                    />
+                </TransitionSlider>
+            )}
         </div>
     );
 };

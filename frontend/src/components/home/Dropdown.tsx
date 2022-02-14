@@ -1,6 +1,5 @@
 import React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import './Dropdown.scss';
 
@@ -8,58 +7,47 @@ const Dropdown: FC<{
     idx?: number;
     show?: boolean;
     allFalse?: boolean;
+    height?: string;
+    className?: string;
     links?: { name?: string; to?: string }[];
-    onHover?: (idx: number) => void;
-    style?: {};
+    transitionMs?: number;
+    animationMs?: number;
+    style?: { [key: string]: string };
     children?: React.ReactNode;
 }> = props => {
     const [transition, setTransition] = useState(false);
     const [change, setChange] = useState(false);
 
-    const { onHover } = props;
-
     useEffect(() => {
         setTransition(!!props.show);
     }, [props.show]);
 
-    // Non Overlapping Dropdown
     return (
-        <div className={`dropdown`}>
-            <CSSTransition
-                in={transition}
-                timeout={props.allFalse ? 0 : 700}
-                unmountOnExit
-                onEntered={() => setChange(true)}
-                onExit={() => setChange(false)}
-            >
-                <>
-                    <div
-                        className={`dropdown__container ${
-                            change ? 'dropdown__container-active' : ''
-                        }`}
-                    >
-                        {props.links && props.links.length > 0 && (
-                            <ul className="dropdown__container-links" style={props.style}>
-                                {props.links.map((link, i) => {
-                                    return (
-                                        <li className="dropdown__container-links--item" key={i}>
-                                            <Link
-                                                className="dropdown__container-link"
-                                                to={link.to || '/'}
-                                                onMouseEnter={onHover?.bind(null, i)}
-                                            >
-                                                {link.name}
-                                            </Link>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        )}
-                        <div className="dropdown__container-item">{props.children}</div>
-                    </div>
-                </>
-            </CSSTransition>
-        </div>
+        <CSSTransition
+            in={transition}
+            timeout={props.allFalse ? 0 : props.transitionMs || 700}
+            mountOnEnter
+            unmountOnExit
+            onEntered={() => setChange(true)}
+            onExit={() => setChange(false)}
+        >
+            <>
+                <div
+                    className={`dropdown__container ${change ? 'dropdown__container-active' : ''} ${
+                        props.className
+                    }`}
+                    style={{
+                        ...props.style,
+                        transition: `all ${props.transitionMs || 300}ms ${
+                            'cubic-bezier(0.75, 0, 0.25, 1)'
+                        }`,
+                        height: `${change ? props.height || '50vh' : '0'}`,
+                    }}
+                >
+                    <div className="dropdown__container-item">{props.children}</div>
+                </div>
+            </>
+        </CSSTransition>
     );
 };
 

@@ -1,5 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import useFetch from './hooks/use-fetch';
+
+import Notification from './components/ui-components/Notification';
 import ErrorBoundary from './error/ErrorBoundary';
 import Footer from './components/footer/Footer';
 import MainNavigation from './components/navigation/MainNavigation';
@@ -8,17 +13,21 @@ import ScrollToTop from './components/ui-components/ScrollToTop';
 import Products from './pages/products/Products';
 import ProductPage from './pages/products/ProductPage';
 import Auth from './pages/auth/Auth';
-import { useDispatch, useSelector } from 'react-redux';
+import MePage from './pages/me-page/MePage';
 import { setCSRFToken } from './store/auth-actions';
-import useFetch from './hooks/use-fetch';
 import { authActions } from './store/auth-slice';
+import sleep from './utils/sleep';
+import LoadingSpinner from './components/ui-components/LoadingSpinner';
 
 const App = () => {
     const { pathname } = useLocation();
+    const [showNotification, setShowNotification] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
-    const { csrfToken } = useSelector((state: any) => state.auth);
-    const { sendRequest } = useFetch();
+    const { csrfToken, user, isLoggedIn } = useSelector((state: any) => state.auth);
+    const { isLoading, sendRequest } = useFetch();
+
+    const location = useLocation();
 
     useEffect(() => {
         dispatch(setCSRFToken());
@@ -29,7 +38,7 @@ const App = () => {
             return;
         }
         sendRequest(
-            'http://localhost:5000/api/users/is-logged-in',
+            `${process.env.REACT_APP_API_URL}/users/is-logged-in`,
             'POST',
             {
                 'x-csrf-token': csrfToken,
@@ -43,36 +52,57 @@ const App = () => {
             .catch(console.error);
     }, [sendRequest, csrfToken, dispatch]);
 
+    const onShowHandler = useCallback(async (state: boolean) => {
+        await sleep(400);
+        setShowNotification(state);
+    }, []);
+
     return (
-        <>
+        <ErrorBoundary>
+            {isLoading && <LoadingSpinner asOverlay />}
             <MainNavigation ref={pathname === '/' ? ref : undefined} />
-            <ErrorBoundary>
-                <main>
-                    <ScrollToTop>
-                        <Routes>
-                            <Route path="/" element={<Home ref={ref} />} />
-                            <Route path="/auth" element={<Auth />} />
-                            <Route path="/products" element={<Products />} />
-                            <Route
-                                path="/products/phones"
-                                element={<Products category="Phone" />}
-                            />
-                            <Route
-                                path="/products/tablets"
-                                element={<Products category="Tablet" />}
-                            />
-                            <Route
-                                path="/products/laptops"
-                                element={<Products category="Laptop" />}
-                            />
-                            <Route path="/product/:slug/:id" element={<ProductPage />} />
-                            <Route path="*" element={<Navigate to={'/'} />} />
-                        </Routes>
-                    </ScrollToTop>
-                </main>
-            </ErrorBoundary>
-            <Footer />
-        </>
+            <Notification
+                show={showNotification}
+                message={`Hello ${user && user?.name?.split(' ')[0]}!`}
+                onCancel={() => setShowNotification(false)}
+            />
+            <ScrollToTop>
+                <TransitionGroup component={null}>
+                    <CSSTransition
+                        key={location.pathname.startsWith('/me') ? '' : location.pathname}
+                        timeout={400}
+                        classNames="fade"
+                    >
+                        <main>
+                            <Routes location={location}>
+                                {isLoggedIn ? (
+                                    <Route path="/me/*" element={<MePage />} />
+                                ) : (
+                                    <Route path="/auth" element={<Auth onShow={onShowHandler} />} />
+                                )}
+                                <Route path="/" element={<Home ref={ref} />} />
+                                <Route path="/products" element={<Products />} />
+                                <Route
+                                    path="/products/phones"
+                                    element={<Products category="Phone" />}
+                                />
+                                <Route
+                                    path="/products/tablets"
+                                    element={<Products category="Tablet" />}
+                                />
+                                <Route
+                                    path="/products/laptops"
+                                    element={<Products category="Laptop" />}
+                                />
+                                <Route path="/product/:slug/:id" element={<ProductPage />} />
+                                <Route path="*" element={<Navigate to={'/'} />} />
+                            </Routes>
+                        </main>
+                    </CSSTransition>
+                </TransitionGroup>
+            </ScrollToTop>
+            <Footer isLoading={isLoading} />
+        </ErrorBoundary>
     );
 };
 

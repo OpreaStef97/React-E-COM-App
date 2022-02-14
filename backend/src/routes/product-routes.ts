@@ -7,19 +7,21 @@ import {
     getFieldValues,
     getProduct,
 } from '../controllers/products-controller';
+import reviewRouter from './review-routes';
 
 const router = express.Router();
 
+router.use('/:pid/reviews', reviewRouter);
+
 router.route('/').get(getAllProducts);
-
 router.route('/values').get(getFieldValues);
+router.route('/:id').get(getProduct);
 
-router.route('/:pid').get(getProduct);
 
 router.use(protect);
+router.use(restrictTo('admin'));
 
-router.route('/:pid').delete(restrictTo(['admin']), deleteProduct);
-
-router.route('/create').post(restrictTo(['admin']), createProduct);
+router.route('/:id').delete(deleteProduct);
+router.route('/create').post(createProduct);
 
 export default router;

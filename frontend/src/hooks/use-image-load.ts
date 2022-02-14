@@ -6,6 +6,11 @@ const useImageLoad = (src: string) => {
         const img = new Image();
         img.src = src;
         img.onload = () => setSourceLoaded(src);
+
+        return () => {
+            setSourceLoaded(null);
+            img.onload = null;
+        };
     }, [src]);
 
     return sourceLoaded;

@@ -1,4 +1,4 @@
-import { X } from 'phosphor-react';
+import { XCircle } from 'phosphor-react';
 import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -15,9 +15,6 @@ const Notification: FC<{
 
     const showHandler = () => {
         onCancel && onCancel();
-        navigate('/', {
-            replace: true,
-        });
     };
 
     useEffect(() => {
@@ -26,11 +23,7 @@ const Notification: FC<{
         }
         const timeout = setTimeout(() => {
             onCancel && onCancel();
-            navigate('/', {
-                replace: true,
-            });
         }, 3000);
-
         return () => clearTimeout(timeout);
     }, [show, onCancel, navigate]);
 
@@ -44,7 +37,7 @@ const Notification: FC<{
         >
             <div className={`notification ${props.error ? 'notification-err' : ''}`}>
                 <p className="notification-msg">{props.message}</p>
-                <X className="notification-close" onClick={showHandler} />
+                <XCircle className="notification-close" onClick={showHandler} />
             </div>
         </CSSTransition>
     );

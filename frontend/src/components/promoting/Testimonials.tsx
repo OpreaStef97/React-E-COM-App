@@ -4,16 +4,17 @@ import './Testimonials.scss';
 import UserCard from './UserCard';
 
 const Testimonials = () => {
-    const [userData, setUserData] = useState<any>([]);
+    const [userData, setUserData] = useState([]);
 
     const { sendRequest } = useFetch();
 
     useEffect(() => {
-        sendRequest('http://localhost:5000/api/users?page=2&limit=5')
+        sendRequest(`${process.env.REACT_APP_API_URL}/users?page=2&limit=5`)
             .then(data => {
                 setUserData(data.users);
             })
             .catch(console.error);
+        return () => setUserData([]);
     }, [sendRequest]);
 
     return (
@@ -27,7 +28,7 @@ const Testimonials = () => {
                                     key={idx}
                                     idx={idx}
                                     className={`testimonials__card--${idx + 1}`}
-                                    imgSrc={`http://localhost:5000/images/users/${user.photo}`}
+                                    imgSrc={`${process.env.REACT_APP_RESOURCES_URL}/images/users/${user.photo}`}
                                     userName={`${user.name}`}
                                 />
                             );

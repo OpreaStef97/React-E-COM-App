@@ -1,10 +1,11 @@
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../ui-components/Logo';
 import './Footer.scss';
 
-const Footer = () => {
+const Footer: FC<{ isLoading: boolean }> = props => {
     return (
-        <footer className="footer">
+        <footer className="footer" style={props.isLoading ? { marginTop: '100vh' } : {}}>
             <Logo big light />
             <ul className="footer-list">
                 <li className="footer-item">
@@ -34,8 +35,7 @@ const Footer = () => {
                 </li>
             </ul>
             <p className="footer__copyright">
-                Built by Oprea Stefan for his personal portfolio. Copyright
-                &copy; by Oprea Stefan.
+                Built by Oprea Stefan for his personal portfolio. Copyright &copy; by Oprea Stefan.
             </p>
         </footer>
     );

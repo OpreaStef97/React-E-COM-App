@@ -3,7 +3,7 @@ import { authActions } from './auth-slice';
 export const setCSRFToken = () => {
     return async (dispatch: any) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/csrf`, { credentials: 'include' });
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/csrf`, { credentials: 'include' });
 
             if (!res.ok) {
                 throw new Error('Something went wrong when accesing the server');
@@ -21,7 +21,7 @@ export const setCSRFToken = () => {
 export const logout = () => {
     return async (dispatch: any) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/users/logout`, {
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/users/logout`, {
                 credentials: 'include',
             });
 

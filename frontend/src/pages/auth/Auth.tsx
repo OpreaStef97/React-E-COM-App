@@ -13,17 +13,15 @@ import {
     VALIDATOR_MINLENGTH,
     VALIDATOR_REQUIRE,
 } from '../../utils/validators';
-import Notification from '../../components/ui-components/Notification';
 import './Auth.scss';
 
-const Auth: FC = props => {
+const Auth: FC<{ onShow: (state: boolean) => void }> = props => {
     const [isLoginMode, setIsLoginMode] = useState(true);
-    const [showNotification, setShowNotification] = useState(false);
     const [disable, setDisabled] = useState(true);
     const { isLoading, error, clearError, sendRequest } = useFetch();
     const { csrfToken } = useSelector((state: any) => state.auth);
-
     const dispatch = useDispatch();
+    const { onShow } = props;
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -43,7 +41,7 @@ const Auth: FC = props => {
         if (!isLoginMode) {
             const formStateObj = { ...formState.inputs };
             delete formStateObj.name;
-            delete formStateObj.image;
+            delete formStateObj.passwordConfirm;
             setFormData(
                 formStateObj,
                 !!formState.inputs.email?.isValid && !!formState.inputs.password?.isValid
@@ -69,49 +67,34 @@ const Auth: FC = props => {
 
     const authSubmitHandler = async (event: React.FormEvent) => {
         event.preventDefault();
-
-        if (isLoginMode) {
-            sendRequest(
-                `http://localhost:5000/api/users/login`,
+        try {
+            const data = await sendRequest(
+                `${process.env.REACT_APP_API_URL}/users/${isLoginMode ? 'login' : 'signup'}`,
                 'POST',
                 {
                     'Content-Type': 'application/json',
                     'x-csrf-token': csrfToken,
                 },
-                JSON.stringify({
-                    email: formState.inputs.email?.value,
-                    password: formState.inputs.password?.value,
-                }),
+                JSON.stringify(
+                    isLoginMode
+                        ? {
+                              email: formState.inputs.email?.value,
+                              password: formState.inputs.password?.value,
+                          }
+                        : {
+                              name: formState.inputs.name?.value,
+                              email: formState.inputs.email?.value,
+                              password: formState.inputs.password?.value,
+                              passwordConfirm: formState.inputs.passwordConfirm?.value,
+                          }
+                ),
                 'include'
-            )
-                .then(data => {
-                    dispatch(authActions.loggingIn(data.user));
-                    setShowNotification(true);
-                    setDisabled(true);
-                })
-                .catch(console.error);
-        } else {
-            sendRequest(
-                `http://localhost:5000/api/users/signup`,
-                'POST',
-                {
-                    'Content-Type': 'application/json',
-                    'x-csrf-token': csrfToken,
-                },
-                JSON.stringify({
-                    name: formState.inputs.name?.value,
-                    email: formState.inputs.email?.value,
-                    password: formState.inputs.password?.value,
-                    passwordConfirm: formState.inputs.passwordConfirm?.value,
-                }),
-                'include'
-            )
-                .then(data => {
-                    dispatch(authActions.loggingIn(data.user));
-                    setShowNotification(true);
-                    setDisabled(true);
-                })
-                .catch(console.error);
+            );
+            onShow(true);
+            setDisabled(true);
+            dispatch(authActions.loggingIn(data.user));
+        } catch (err) {
+            console.error(err);
         }
     };
 
@@ -131,7 +114,7 @@ const Auth: FC = props => {
                             element="input"
                             id="name"
                             type="text"
-                            label="Name"
+                            label="Name:"
                             validators={[VALIDATOR_REQUIRE(), VALIDATOR_MAXLENGTH(15)]}
                             errorText="Please enter a name"
                             onInput={inputHandler}
@@ -141,7 +124,7 @@ const Auth: FC = props => {
                         id="email"
                         element="input"
                         type="email"
-                        label="Email"
+                        label="Email:"
                         validators={[VALIDATOR_EMAIL()]}
                         errorText="Please enter valid email"
                         onInput={inputHandler}
@@ -150,7 +133,7 @@ const Auth: FC = props => {
                         id="password"
                         element="input"
                         type="password"
-                        label="Password"
+                        label="Password:"
                         validators={[VALIDATOR_MINLENGTH(8)]}
                         errorText="Please enter a password with at least 8 characters"
                         onInput={inputHandler}
@@ -160,7 +143,7 @@ const Auth: FC = props => {
                             id="passwordConfirm"
                             element="input"
                             type="password"
-                            label="Password Confirm"
+                            label="Password Confirm:"
                             validators={[VALIDATOR_MINLENGTH(8)]}
                             errorText="Please enter a password with at least 8 characters"
                             onInput={inputHandler}
@@ -190,11 +173,6 @@ const Auth: FC = props => {
                     SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
                 </Button>
             </div>
-            <Notification
-                show={showNotification}
-                message={isLoginMode ? 'Logged In successfully' : 'Account was created successfully'}
-                onCancel={() => setShowNotification(false)}
-            />
         </section>
     );
 };

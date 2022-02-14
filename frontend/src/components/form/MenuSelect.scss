@@ -13,6 +13,9 @@
             font-size: 1.8rem;
         }
     }
+    @media (max-width: 52.5em) {
+        width: clamp(10vw, 30rem, 60vw);
+    }
 }
 
 .menu-select-label {
@@ -27,7 +30,7 @@
         z-index: 100;
         position: relative;
         background-color: $color-primary-light-1;
-        width: 25rem;
+        min-width: 20rem;
         height: 3.5rem;
         display: flex;
         justify-content: space-between;
@@ -36,18 +39,13 @@
         box-shadow: 0 0 1px rgba($color-primary-dark-3, 0.1);
         overflow: hidden;
 
-        @media (max-width: 52.5em) {
-            width: 30rem;
-            height: 4rem;
-        }
-
         &-placeholder {
             cursor: pointer;
             flex-grow: 1;
             padding: 1rem;
             overflow: hidden;
             p {
-                width: 75%;
+                width: 12rem;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
@@ -71,10 +69,6 @@
 
             &:hover {
                 background-color: $color-tertiary-light-1;
-            }
-
-            @media (max-width: 52.5em) {
-                width: 4rem;
             }
         }
 
@@ -206,6 +200,11 @@
         .menu-select__dropdown-list {
             max-height: 20rem;
             overflow: overlay;
+
+            @supports not (overflow: overlay) {
+                overflow: auto;
+            }
+
             animation: hide-scroll 0.3s;
             &--item {
                 opacity: 1;
@@ -215,6 +214,17 @@
     .menu-select__select {
         &-icon {
             transform: rotate(-180deg);
+        }
+    }
+}
+
+.error {
+    .menu-select__select {
+        &-placeholder {
+            background-color: #ffd1d1;
+            p {
+                color: $color-tertiary-dark-1;
+            }
         }
     }
 }

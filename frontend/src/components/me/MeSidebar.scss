@@ -1,0 +1,124 @@
+@import '../../sass/variables.scss';
+
+.me-sidebar {
+    padding: 2rem;
+    background-color: $color-primary-light-4;
+    grid-row: 1 / -1;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        display: inline-block;
+        font-size: 1.6rem;
+        font-weight: 500;
+        position: relative;
+
+        &::after {
+            position: absolute;
+            content: '';
+            left: 0%;
+            top: 110%;
+
+            height: 2px;
+            width: 100%;
+            background-color: $color-primary-dark-3;
+        }
+    }
+
+    @media (max-width: 52.5em) {
+        p {
+            display: none;
+        }
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    &-dropdown {
+        position: relative;
+        display: none;
+
+        &__component {
+            left: 50%;
+            top: 70%;
+            width: 20rem;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            cursor: default;
+            transform: translate(-50%);
+            background-color: $color-primary-light-4;
+        }
+        @media (max-width: 52.5em) {
+            display: block;
+        }
+    }
+
+    &-list {
+        border-radius: 1rem;
+        padding: 2rem 0;
+        width: 100%;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    @media (max-width: 52.5em) {
+        grid-row: 2 / 3;
+        
+        &-list {
+            display: none;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    }
+    
+    &-dropdown &-list {
+        gap: 0rem;
+        display: flex;
+    }
+
+    &-btn {
+        position: relative;
+        border: none;
+        height: 4rem;
+        width: 20rem;
+        color: $color-primary-dark-3;
+        font-style: inherit;
+        font-size: 2rem;
+        border-radius: 1rem;
+        background-color: $color-primary-light-4;
+        cursor: pointer;
+        z-index: 1700;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+
+        transition: all 0.2s;
+
+        &:hover {
+            color: $color-primary-light-4;
+            background-color: $color-primary-dark-3;
+        }
+
+        &--icon {
+            transform: rotate(180deg);
+            transition: transform 0.5s;
+        }
+    }
+
+    .active {
+        .me-sidebar-btn--icon {
+            transform: rotate(360deg);
+        }
+    }
+}

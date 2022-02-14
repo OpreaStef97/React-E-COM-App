@@ -13,21 +13,22 @@ import { fetchProducts } from '../../store/products-actions';
 import { selectReducer, SelectState } from '../../utils/reducers';
 import './Products.scss';
 
-const convertData = (products: any) => {
-    return products.map((product: any) => {
+const convertData = (products: any) =>
+    products.map((product: any) => {
         return {
             name: product.name,
-            image: `http://localhost:5000/images/products//${product.images[0]}`,
+            image: `${process.env.REACT_APP_RESOURCES_URL}/images/products//${product.images[0]}`,
             price: product.price,
             brand: product.brand,
             RAM: product.default.RAM,
             storage: product.default.storage,
             type: [...product.type],
+            ratingsAverage: product.ratingsAverage,
+            ratingsQuantity: product.ratingsQuantity,
             id: product.id,
             slug: product.slug,
         };
     });
-};
 
 const Products: FC<{ category?: string; options?: any }> = props => {
     useTitle(`ReactCOM | ${(props.category && `${props.category}s`) || 'All Products'}`);

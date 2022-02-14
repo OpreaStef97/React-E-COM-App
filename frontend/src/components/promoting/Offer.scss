@@ -8,6 +8,10 @@
     overflow: hidden;
     border-radius: 1rem;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     &--overlay {
         z-index: 50;
         padding: 2rem 0 0 0;
@@ -73,6 +77,7 @@
         }
     }
     &--image {
+        // flex-grow: 1;
         height: 100%;
         width: 100%;
         background-image: linear-gradient(

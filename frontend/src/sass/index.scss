@@ -38,6 +38,43 @@ body {
     height: 1.6px;
     background-color: $color-primary-light-4;
 }
+
+.fade-enter {
+    opacity: 0;
+    z-index: 1;
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transition: all 0.4s ease-in;
+}
+
+.fade-exit.fade-exit-active {
+    display: none;
+}
+
+.page-enter {
+    opacity: 0;
+    transform: scale(1.01);
+}
+
+.page-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.page-exit-active {
+    opacity: 0;
+    transform: scale(0.99);
+    transition: opacity 300ms, transform 300ms;
+}
+
 /*
 ::-webkit-scrollbar {
     width: 2em;

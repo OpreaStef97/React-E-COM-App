@@ -1,10 +1,10 @@
-import { CSSProperties, FC, useEffect, useRef } from 'react';
+import React, { CSSProperties, FC, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import BackDrop from './BackDrop';
 import { CSSTransition } from 'react-transition-group';
 import './Modal.scss';
 import useClickOutside from '../../hooks/use-clicks-outside';
-import { X } from 'phosphor-react';
+import { XCircle } from 'phosphor-react';
 
 type PropsData = {
     contentClass?: string;
@@ -15,7 +15,7 @@ type PropsData = {
     footerClass?: string;
     footer?: JSX.Element;
     show: boolean;
-    onSubmit?: () => void;
+    onSubmit?: (event: React.FormEvent) => void;
     onCancel?: () => void;
 };
 
@@ -37,11 +37,11 @@ const ModalOverlay: FC<PropsData> = props => {
             <div className={`modal ${props.contentClass}`} ref={ref}>
                 <header className={`modal__header ${props.headerClass}`}>
                     <h2>{props.header}</h2>
-                    <X className="modal__close" onClick={props.onCancel} />
+                    <XCircle className="modal__close" onClick={props.onCancel} />
                 </header>
                 <form
                     className="modal-form"
-                    onSubmit={props.onSubmit ? props.onSubmit : event => event.preventDefault()}
+                    onSubmit={props.onSubmit}
                 >
                     <div className={`modal__content ${props.content}`}>{props.children}</div>
                     <footer className={`modal__footer ${props.footerClass}`}>{props.footer}</footer>

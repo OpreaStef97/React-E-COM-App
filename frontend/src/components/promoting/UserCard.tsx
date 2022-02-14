@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import useImageLoad from '../../hooks/use-image-load';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
+import Stars from '../ui-components/Stars';
 import './UserCard.scss';
 
 const UserCard: FC<{
@@ -8,6 +9,8 @@ const UserCard: FC<{
     imgSrc?: string;
     userName?: string;
     className?: string;
+    review?: string;
+    rating?: number;
 }> = props => {
     const sourceLoaded = useImageLoad(props.imgSrc || '');
 
@@ -27,10 +30,14 @@ const UserCard: FC<{
             )}
             <div>
                 <p className="user__card--review">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam sint fuga dolorum
-                    fugiat excepturi quis illo culpa esse.
+                    {props.review ||
+                        `Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam sint fuga dolorum
+                        fugiat excepturi quis illo culpa esse.`}
                 </p>
-                <h2 className="user__card--name">{`-${props.userName}`}</h2>
+                <div className="user__card--name-stars">
+                    <Stars rating={props.rating || 5} className="user__card--stars" />
+                    <h2 className="user__card--name">{`-${props.userName}`}</h2>
+                </div>
             </div>
         </div>
     );

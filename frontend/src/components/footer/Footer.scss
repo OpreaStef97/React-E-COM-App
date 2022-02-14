@@ -20,7 +20,7 @@
         justify-content: space-between;
         align-items: center;
 
-        @media(max-width: 52.5em) {
+        @media (max-width: 52.5em) {
             flex-grow: 1;
             flex-direction: column;
             justify-content: center;
@@ -50,21 +50,22 @@
                 left: 0%;
                 position: absolute;
                 bottom: 0;
-                width: 0%;
+                width: 100%;
                 height: 1.5px;
+                transform: scale(0);
                 transition: all 0.4s ease;
             }
 
             &:hover {
-                color: $color-tertiary-light-1;
+                color: $color-tertiary-light-3;
             }
 
             &:hover,
             &:active {
                 &::after {
                     font-size: 2.5rem;
-                    width: 100%;
-                    background-color: $color-tertiary-light-1;
+                    transform: scale(1);
+                    background-color: $color-tertiary-light-3;
                 }
             }
         }

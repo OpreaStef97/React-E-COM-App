@@ -13,8 +13,10 @@ import csrf from 'csurf';
 
 const xssClean = require('xss-clean');
 
-import productsRouter from './src/routes/products-route';
+import productsRouter from './src/routes/product-routes';
 import usersRouter from './src/routes/user-routes';
+import reviewsRouter from './src/routes/review-routes';
+
 import AppError from './src/models/error-model';
 import globalErrorHandler from './src/controllers/error-controller';
 
@@ -24,6 +26,12 @@ const app = express();
 // APP
 /////////////////////////////////////
 
+process.on('uncaughtException', err => {
+    console.log(err.name, err.message);
+    console.log('UNCAUGHT EXCEPTION! 🚨🚨🚨 Shutting down...');
+    process.exit(1);
+});
+
 (async () => {
     // Setting CSP
     app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
@@ -32,12 +40,8 @@ const app = express();
     app.use(
         cors({
             credentials: true,
-            origin: 'http://localhost:3000',
-            allowedHeaders: [
-                'Content-Type',
-                'Authorization',
-                'x-csrf-token',
-            ],
+            origin: ['http://localhost:3000', 'http://192.168.100.32:3000'],
+            allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
         })
     );
 
@@ -66,7 +70,7 @@ const app = express();
 
     // Prevent parameter polution
     app.use(hpp());
-    
+
     const csrfProtection = csrf({
         cookie: true,
     });
@@ -89,6 +93,7 @@ const app = express();
 
     app.use('/api/products', productsRouter);
     app.use('/api/users', usersRouter);
+    app.use('/api/reviews', reviewsRouter);
 
     app.all('*', (req, res, next) => {
         next(new AppError(404, `Can't find ${req.originalUrl} on this server`));

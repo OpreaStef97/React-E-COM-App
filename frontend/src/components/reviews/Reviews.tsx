@@ -1,103 +1,187 @@
-import { Star } from 'phosphor-react';
-import { FC, Fragment, useEffect, useRef, useState } from 'react';
+import { CircleNotch } from 'phosphor-react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import useFetch from '../../hooks/use-fetch';
+import { useForm } from '../../hooks/use-form';
+import useSelect from '../../hooks/use-select';
+import { VALIDATOR_REQUIRE } from '../../utils/validators';
+import Input from '../form/Input';
 import MenuSelect from '../form/MenuSelect';
 import UserCard from '../promoting/UserCard';
 import Button from '../ui-components/Button';
-import LoadingSpinner from '../ui-components/LoadingSpinner';
-import FillBar from './FillBar';
+import Modal from '../ui-components/Modal';
 import './Reviews.scss';
+import ReviewStats from './ReviewStats';
 
 const Reviews: FC = props => {
-    const ref = useRef<HTMLDivElement>(null);
-    const [key, setKey] = useState(1);
-    const [userReviews, setUserReviews] = useState<any>([]);
-
-    const { isLoading, sendRequest } = useFetch();
-
+    const [reviews, setReviews] = useState([]);
+    const [addReview, setAddReview] = useState(false);
+    const [selectTouched, setSelectTouched] = useState(false);
+    const { selectState, setHandler, selectHandler, deleteHandler } = useSelect();
+    const { sendRequest, isLoading } = useFetch();
+    const params = useParams();
+    const { csrfToken } = useSelector((state: any) => state.auth);
+    const [formState, inputHandler] = useForm(
+        {
+            rating: {
+                value: '',
+                isValid: false,
+            },
+            review: {
+                value: '',
+                isValid: false,
+            },
+        },
+        false
+    );
     useEffect(() => {
-        sendRequest('http://localhost:5000/api/users?page=2&limit=5')
+        sendRequest(`${process.env.REACT_APP_API_URL}/products/${params.id}/reviews`)
             .then(data => {
-                setUserReviews(data.users);
+                setReviews(data.docs);
             })
             .catch(console.error);
-    }, [sendRequest]);
+
+        return () => setReviews([]);
+    }, [sendRequest, params]);
 
     useEffect(() => {
-        const obs = new IntersectionObserver(
-            entries => {
-                const ent = entries[0];
-
-                if (ent.isIntersecting === true) {
-                    setKey(Math.random());
-                }
+        setHandler({
+            rating: {
+                options: ['1⭐', '2⭐', '3⭐', '4⭐', '5⭐'],
+                selected: [false, false, false, false, false],
             },
+        });
+    }, [setHandler]);
+
+    useEffect(() => {
+        if (!selectState || !selectState.rating) {
+            return;
+        }
+        const idx = selectState.rating.selected.findIndex((s: boolean) => s === true);
+        const value = selectState.rating.options[idx];
+        inputHandler('rating', value, !!value);
+    }, [selectState, inputHandler]);
+
+    const addReviewHandler = () => {
+        setAddReview(prev => !prev);
+        setSelectTouched(false);
+    };
+
+    const submitHandler = (event: React.FormEvent) => {
+        event.preventDefault();
+        if (!formState.isValid) {
+            return;
+        }
+        sendRequest(
+            `${process.env.REACT_APP_API_URL}/products/${params.id}/reviews`,
+            'POST',
             {
-                root: null,
-                threshold: 0,
-                rootMargin: '0px',
-            }
-        );
-        obs.observe(ref.current as Element);
-    }, []);
+                'Content-Type': 'application/json',
+                'x-csrf-token': csrfToken,
+            },
+            JSON.stringify({
+                rating: parseInt(formState.inputs.rating?.value?.slice(0, 1) as string),
+                review: formState.inputs.review?.value,
+            }),
+            'include'
+        )
+            .then(data => {
+                setAddReview(prev => !prev);
+            })
+            .catch(err => {
+                setAddReview(prev => !prev);
+            });
+    };
 
     return (
-        <div className="reviews">
-            <div className="reviews-content">
-                <div className="reviews-content-header">
-                    <h3>Reviews</h3>
+        <>
+            <Modal
+                show={addReview}
+                onCancel={addReviewHandler}
+                header={'Write a review'}
+                headerClass="modal-review__header"
+                footer={
+                    <Button
+                        className="modal-review__btn"
+                        disabled={!formState.isValid}
+                        role="submit"
+                    >
+                        {isLoading && <CircleNotch className="load" />}
+                        {!isLoading && 'SUBMIT'}
+                    </Button>
+                }
+                onSubmit={submitHandler}
+            >
+                <div className="modal-review__content">
                     <MenuSelect
-                        placeholder={'Sort by rating..'}
-                        options={{
-                            options: ['Top rated', 'Low Rated'],
-                            selected: [false, false],
-                        }}
+                        id={'rating'}
+                        className="modal-review__menu"
+                        placeholder="Select rating.."
+                        options={selectState['rating']}
+                        uniqueSelect
+                        errorText="Select rating!"
+                        error={!formState.inputs.rating?.isValid && selectTouched}
+                        onSelect={selectHandler}
+                        onDelete={deleteHandler}
+                        onTouch={() => setSelectTouched(true)}
                     />
-                    <MenuSelect
-                        placeholder={'Sort by date..'}
-                        options={{
-                            options: ['Top rated', 'Low Rated'],
-                            selected: [false, false],
-                        }}
+                    <Input
+                        id="review"
+                        type="textarea"
+                        label="Add a review:"
+                        validators={[VALIDATOR_REQUIRE()]}
+                        onInput={inputHandler}
                     />
-                    <Button className="reviews-content-header--button">Add a review</Button>
                 </div>
-
-                <div className="reviews-content-count">
-                    <div className="reviews-content-count--grid" ref={ref}>
-                        {[60, 20, 10, 7, 3].map((fill, idx) => {
-                            return (
-                                <Fragment key={idx}>
-                                    <div className="reviews-content-count--stars">
-                                        <span>{5 - idx}</span> <Star weight="fill" />
-                                    </div>
-                                    <FillBar fill={fill} id={idx + 1} scrollKey={key + idx} />
-                                    <span className="reviews-content-count--percentage">
-                                        {fill}%
-                                    </span>
-                                </Fragment>
-                            );
-                        })}
+            </Modal>
+            <div className="reviews">
+                <div className="reviews-content">
+                    <div className="reviews-content-header">
+                        <h3>Reviews</h3>
+                        <MenuSelect
+                            id={'sort-rating'}
+                            placeholder={'Sort by rating..'}
+                            options={{
+                                options: ['Top rated', 'Low Rated'],
+                                selected: [false, false],
+                            }}
+                        />
+                        <MenuSelect
+                            id={'sort-date'}
+                            placeholder={'Sort by date..'}
+                            options={{
+                                options: ['Top rated', 'Low Rated'],
+                                selected: [false, false],
+                            }}
+                        />
+                        <Button
+                            onClick={addReviewHandler}
+                            className="reviews-content-header--button"
+                        >
+                            Add a review
+                        </Button>
                     </div>
+                    <ReviewStats reviews={reviews} />
+                    <ul className="reviews-content-list">
+                        {reviews &&
+                            reviews.length > 0 &&
+                            reviews.map((review: any, i: number) => (
+                                <li key={i} className="reviews-content-item">
+                                    <UserCard
+                                        key={i}
+                                        idx={1}
+                                        userName={review.user.name}
+                                        rating={review.rating}
+                                        review={review.review}
+                                        imgSrc={`${process.env.REACT_APP_RESOURCES_URL}/images/users/${review.user.photo}`}
+                                    />
+                                </li>
+                            ))}
+                    </ul>
                 </div>
-
-                <ul className="reviews-content-list">
-                    {isLoading && <LoadingSpinner />}
-                    {!isLoading &&
-                        userReviews.length > 0 &&
-                        userReviews.map((userReview: any, i: number) => (
-                            <li key={i} className="reviews-content-item">
-                                <UserCard
-                                    key={i}
-                                    idx={1}
-                                    userName={userReview.name}
-                                    imgSrc={`http://localhost:5000/images/users/${userReview.photo}`}
-                                />
-                            </li>
-                        ))}
-                </ul>
             </div>
-        </div>
+        </>
     );
 };
 

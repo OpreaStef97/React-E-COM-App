@@ -1,7 +1,8 @@
-import { Star, StarHalf } from 'phosphor-react';
-import { FC, Fragment, useState } from 'react';
+import { FC } from 'react';
+import useImageLoad from '../../hooks/use-image-load';
 import Button from '../ui-components/Button';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
+import Stars from '../ui-components/Stars';
 
 import './ProductItem.scss';
 
@@ -11,6 +12,8 @@ const ProductItem: FC<{
     id?: string;
     slug?: string;
     numberOfShownCards?: number;
+    ratingsAverage?: number;
+    ratingsQuantity?: number;
     idx: number;
     imgUrl: string;
     style?: {
@@ -18,7 +21,7 @@ const ProductItem: FC<{
     };
     className?: string;
 }> = props => {
-    const [imgLoaded, setImgLoaded] = useState(false);
+    const srcLoaded = useImageLoad(props.imgUrl);
 
     return (
         <li
@@ -30,13 +33,8 @@ const ProductItem: FC<{
         >
             <div className="product__item--wrapper">
                 <div className="product__item--image">
-                    {!imgLoaded && <LoadingSpinner />}
-                    <img
-                        src={props.imgUrl}
-                        alt={'product-item'}
-                        style={imgLoaded ? {} : { display: 'none' }}
-                        onLoad={() => setImgLoaded(true)}
-                    />
+                    {!srcLoaded && <LoadingSpinner />}
+                    {srcLoaded && <img src={srcLoaded} alt={'product-item'} />}
                 </div>
                 <div className="product__item--description">
                     <p className="product__item--name">
@@ -49,18 +47,9 @@ const ProductItem: FC<{
                     </div>
                     <div className="product__item--star_container">
                         <div className="stars">
-                            {[1, 2, 3, 4, 5].map((_, i) => (
-                                <Fragment key={i}>
-                                    {i < 4 && (
-                                        <Star opacity={1} weight="fill" className="star-icon" />
-                                    )}
-                                    {i === 4 && (
-                                        <StarHalf opacity={1} weight="fill" className="star-icon" />
-                                    )}
-                                </Fragment>
-                            ))}
+                            <Stars rating={props.ratingsAverage || 0} />
                         </div>
-                        <span className="rating">{97 * (props.idx + 1)}</span>
+                        <span className="rating">{props.ratingsQuantity || 0}</span>
                     </div>
                     <Button inverse link to={`/product/${props.slug}/${props.id}`}>
                         See Item

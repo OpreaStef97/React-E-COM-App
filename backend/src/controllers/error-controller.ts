@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ErrorRequestHandler, NextFunction, Response, Request } from 'express';
 import AppError from '../models/error-model';
+import fs from 'fs';
 
 // MONGODB ERRORS
 /////////////////////////////////////////////////////////////////
@@ -68,6 +69,12 @@ const sendErrorProd: ErrorRequestHandler = (err, req, res) => {
 // GLOBAL ERROR HANDLER
 /////////////////////////////////////////////////////////////////
 const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+    if (req.file) {
+        fs.unlink(req.file.path, err => {
+            console.log(err);
+        });
+    }
+
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 

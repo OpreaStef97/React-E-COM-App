@@ -1,5 +1,6 @@
-import useImageLoad from "../../hooks/use-image-load";
-import LoadingSpinner from "./LoadingSpinner";
+import { Fragment } from 'react';
+import useImageLoad from '../../hooks/use-image-load';
+import LoadingSpinner from './LoadingSpinner';
 
 const linearGrd = 'linear-gradient(to right bottom, rgba(6, 62, 70, 0.9), rgba(230, 73, 128, 0.2))';
 
@@ -7,7 +8,7 @@ const SlideImage = (props: { src: string }) => {
     const { src } = props;
     const sourceLoaded = useImageLoad(src);
     return (
-        <>
+        <Fragment>
             {!sourceLoaded && <LoadingSpinner />}
             {sourceLoaded && (
                 <div
@@ -20,7 +21,7 @@ const SlideImage = (props: { src: string }) => {
                     }}
                 ></div>
             )}
-        </>
+        </Fragment>
     );
 };
 

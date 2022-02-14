@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useState } from 'react';
+import React, { RefObject, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import './MainNavigation.scss';
@@ -9,6 +9,7 @@ import MainHeader from './MainHeader';
 import useWindowWidth from '../../hooks/use-window-width';
 import BackDrop from '../ui-components/BackDrop';
 import SideDrawer from './SideDrawer';
+import useIntersect from '../../hooks/use-intersect';
 
 const MainNav = React.forwardRef((props, ref) => {
     const [sticky, setSticky] = useState(false);
@@ -17,33 +18,17 @@ const MainNav = React.forwardRef((props, ref) => {
     const navigate = useNavigate();
 
     const width = useWindowWidth(null, null);
-    useEffect(() => {
-        let slideshowRef: RefObject<HTMLDivElement>;
-        const obs = new IntersectionObserver(
-            entries => {
-                const ent = entries[0];
+    const intersecting = useIntersect(ref as RefObject<unknown>);
 
-                if (ent.isIntersecting === false) {
-                    setSticky(true);
-                } else {
-                    setSticky(false);
-                }
-            },
-            {
-                root: null,
-                threshold: 0,
-                rootMargin: '-80px',
-            }
-        );
+    useEffect(() => {
         if (ref && (ref as RefObject<HTMLDivElement>).current instanceof HTMLElement) {
-            slideshowRef = ref as RefObject<HTMLDivElement>;
             setAnimation(true);
-            obs.observe(slideshowRef.current as Element);
+            setSticky(!intersecting);
         } else {
             setSticky(true);
             setAnimation(false);
         }
-    }, [ref]);
+    }, [intersecting, ref]);
 
     useEffect(() => {
         if (width >= 840 && drawerIsOpen) {
@@ -51,25 +36,18 @@ const MainNav = React.forwardRef((props, ref) => {
         }
     }, [width, drawerIsOpen]);
 
-    const showDrawerHandler = () => {
+    const showDrawerHandler = useCallback(() => {
         setDrawerIsOpen(prevState => !prevState);
-    };
-
-    const closeDrawerHandler = (event: React.MouseEvent) => {
-        if ((event.target as Element).className !== 'side-drawer slide-in-left-enter-done') {
-            return;
-        }
-        setDrawerIsOpen(false);
-    };
+    }, []);
 
     return (
         <>
             {drawerIsOpen && <BackDrop onClick={showDrawerHandler} />}
 
-            <SideDrawer show={drawerIsOpen} onClick={closeDrawerHandler}>
+            <SideDrawer show={drawerIsOpen}>
                 <nav className="main-navigation__drawer-nav">
                     <Search className="main-navigation__search-bar" />
-                    <NavLinks />
+                    <NavLinks onClick={showDrawerHandler} />
                 </nav>
             </SideDrawer>
 

@@ -82,5 +82,65 @@
     justify-content: center;
     position: relative;
 
-    gap: 3rem;
+    &-container {
+        padding: 2rem 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        overflow: hidden;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    &-links {
+        opacity: 1;
+        display: flex;
+        height: 5rem;
+        width: 100%;
+        list-style: none;
+        justify-content: space-around;
+        align-items: center;
+        overflow: hidden;
+
+        transition: opacity 0.3s ease-in;
+        &--item {
+            height: 2.8rem;
+        }
+    }
+
+    &-link {
+        &:link,
+        &:visited {
+            display: inline-block;
+            text-decoration: none;
+            cursor: pointer;
+            color: $color-fourth;
+            background-color: inherit;
+            width: 100%;
+            height: 100%;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        &::after {
+            z-index: inherit;
+            content: '';
+            left: 0%;
+            position: absolute;
+            bottom: 0;
+            width: 0%;
+            height: 1.5px;
+            transition: all 0.2s ease;
+        }
+
+        &:hover,
+        &:active {
+            &::after {
+                font-size: 2.5rem;
+                width: 100%;
+                background-color: $color-fourth;
+            }
+        }
+    }
 }

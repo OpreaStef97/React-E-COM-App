@@ -42,7 +42,7 @@ const productSchema = new mongoose.Schema(
         type: [String],
         ratingsAverage: {
             type: Number,
-            default: 4.5,
+            default: 0,
             min: [1, 'Rating must be above 1.0'],
             max: [5, 'Rating must be below 5.0'],
             set: (val: number) => Math.round(val * 10) / 10,
@@ -53,7 +53,7 @@ const productSchema = new mongoose.Schema(
         },
         rating: {
             type: Number,
-            default: 4.5,
+            default: 0,
         },
         images: [String],
         promoImage: String,
@@ -77,6 +77,12 @@ const productSchema = new mongoose.Schema(
 
 productSchema.index({ price: 1, ratingsAverage: -1 });
 productSchema.index({ slug: 1 });
+
+productSchema.virtual('all-reviews', {
+    ref: 'Review',
+    foreignField: 'product',
+    localField: '_id',
+});
 
 productSchema.pre('save', function (next) {
     this.slug = slugify(this.name, { lower: true });

@@ -3,7 +3,13 @@ import LoadingSpinner from '../ui-components/LoadingSpinner';
 import Logo from '../ui-components/Logo';
 import './Offer.scss';
 
-const Offer = (props: { content?: string; price?: number; src: string; light?: boolean }) => {
+const Offer = (props: {
+    content?: string;
+    price?: number;
+    src: string;
+    light?: boolean;
+    style?: { [key: string]: string };
+}) => {
     const { src } = props;
 
     const imageLoaded = useImageLoad(src);
@@ -21,19 +27,20 @@ const Offer = (props: { content?: string; price?: number; src: string; light?: b
             </div>
             {!imageLoaded && <LoadingSpinner />}
             {imageLoaded && (
-                <figure
+                <div
                     className="offer--image"
                     style={{
                         backgroundImage: `linear-gradient(
-                to right bottom,
-                rgba(6, 62, 70, 0.3),
-                rgba(230, 73, 128, 0.2)
-            ),
-            url(${props.src})`,
+                                            to right bottom,
+                                            rgba(6, 62, 70, 0.3),
+                                            rgba(230, 73, 128, 0.2)
+                                        ),
+                                        url(${props.src})`,
+                        ...props.style,
                     }}
                 >
                     &nbsp;
-                </figure>
+                </div>
             )}
         </div>
     );

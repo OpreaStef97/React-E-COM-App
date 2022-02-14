@@ -18,6 +18,8 @@ const ProductsGrid: FC<{ sorting?: string; items: any[] }> = props => {
                             slug={item.slug}
                             className="products__item"
                             numberOfShownCards={1}
+                            ratingsAverage={item.ratingsAverage}
+                            ratingsQuantity={item.ratingsQuantity}
                             idx={idx}
                             imgUrl={item.image}
                         />
@@ -34,6 +36,8 @@ const ProductsGrid: FC<{ sorting?: string; items: any[] }> = props => {
                             slug={item.slug}
                             className="products__item"
                             numberOfShownCards={1}
+                            ratingsAverage={item.ratingsAverage}
+                            ratingsQuantity={item.ratingsQuantity}
                             idx={idx}
                             imgUrl={item.image}
                         />
@@ -50,12 +54,20 @@ const ProductsGrid: FC<{ sorting?: string; items: any[] }> = props => {
                             slug={item.slug}
                             className="products__item"
                             numberOfShownCards={1}
+                            ratingsAverage={item.ratingsAverage}
+                            ratingsQuantity={item.ratingsQuantity}
                             idx={idx}
                             imgUrl={item.image}
                         />
                     );
                 })}
-            {items.length === 0 && <p>No items</p>}
+            {items.length === 0 && (
+                <p className="products__grid--no-items">
+                    Uh oh...😶 <br />
+                    No item match the selected options <br />
+                    Try different options 🤷‍♂️
+                </p>
+            )}
         </ul>
     );
 };

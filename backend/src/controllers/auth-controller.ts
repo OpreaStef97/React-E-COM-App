@@ -160,7 +160,7 @@ export const isLoggedIn = catchAsync(async (req: Request, res: Response, next: N
     });
 });
 
-export const restrictTo = (roles: string[]) => {
+export const restrictTo = (...roles: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
         // roles ['admin', 'user']. role = 'user'
         if (!roles.includes(req.user.role)) {

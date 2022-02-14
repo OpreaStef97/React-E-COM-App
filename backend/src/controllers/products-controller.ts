@@ -1,42 +1,13 @@
-import AppError from '../models/error-model';
 import Product from '../models/product-model';
 import APIFeatures from '../utils/api-features';
 import catchAsync from '../utils/catch-async';
+import { createOne, deleteOne, getAll, getOne, updateOne } from './handler-factory';
 
-/**
- * @applies features like filtering sorting pagination
- * @returns all products by default
- */
-export const getAllProducts = catchAsync(async (req, res) => {
-    const features = new APIFeatures(Product.find() /*returns query obj*/, req.query)
-        .filter()
-        .sort()
-        .limitFields()
-        .paginate();
-
-    const products = await features.query;
-
-    res.status(200).json({
-        status: 'success',
-        length: products.length,
-        products,
-    });
-});
-
-export const getProduct = catchAsync(async (req, res, next) => {
-    const productId = req.params.pid;
-
-    const product = await Product.findById(productId);
-
-    if (!product) {
-        return next(new AppError(404, 'Product does not exist'));
-    }
-
-    res.status(200).json({
-        status: 'success',
-        product,
-    });
-});
+export const getAllProducts = getAll(Product);
+export const getProduct = getOne(Product);
+export const createProduct = createOne(Product);
+export const updateProduct = updateOne(Product);
+export const deleteProduct = deleteOne(Product);
 
 /**
  * @returns all values for a given field and category
@@ -87,38 +58,5 @@ export const getFieldValues = catchAsync(async (req, res) => {
     res.status(200).json({
         status: 'success',
         [`${field}`]: values,
-    });
-});
-
-export const createProduct = catchAsync(async (req, res) => {
-    const { name, brand, category, price, images, default: Default, options, type } = req.body;
-
-    const newProduct = await Product.create({
-        name,
-        brand,
-        category,
-        price,
-        images,
-        default: Default,
-        options,
-        type,
-    });
-
-    res.status(201).json({
-        status: 'success',
-        product: newProduct,
-    });
-});
-
-export const deleteProduct = catchAsync(async (req, res, next) => {
-    const productId = req.params.pid;
-
-    const product = await Product.findByIdAndDelete(productId);
-
-    if (!product) return next(new AppError(404, 'No document found with that ID'));
-
-    res.status(204).json({
-        status: 'success',
-        data: null,
     });
 });

@@ -1,18 +1,19 @@
 @import '../../sass/variables.scss';
 
 .notification {
-    position: fixed;
-    top: 6rem;
+    position: absolute;
+    z-index: 1500;
+    top: -4rem;
     width: 100%;
     height: 5rem;
-    background-color: $color-secondary-dark;
+    background-color: $color-secondary-dark-2;
     display: flex;
     justify-content: center;
     align-items: center;
 
     &-msg {
         font-size: 2.4rem;
-        color: $color-secondary-light;
+        color: $color-secondary-light-1;
     }
 
     &-err {
@@ -26,7 +27,7 @@
         position: absolute;
         height: 2.5rem;
         width: 2.5rem;
-        color: $color-secondary-light;
+        color: $color-secondary-light-1;
     }
 }
 
