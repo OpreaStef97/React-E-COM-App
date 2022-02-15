@@ -12,8 +12,9 @@
         letter-spacing: 0.5px;
         background-image: linear-gradient(
             to left,
-            $color-tertiary-dark-1,
-            $color-primary-dark-3
+            $color-tertiary-dark-1 0%,
+            $color-tertiary-dark-1 20%,
+            $color-primary-dark-3 100%
         );
 
         -webkit-background-clip: text;
@@ -25,20 +26,16 @@
     &__icon {
         width: 4rem;
         height: 4rem;
-        color: $color-primary-dark-3;
+        color: $color-tertiary-dark-1;
     }
 
     &-light {
         h1 {
-            background-image: linear-gradient(
-                to left,
-                $color-tertiary,
-                $color-primary
-            );
+            background-image: linear-gradient(to left, $color-tertiary, $color-primary);
         }
     }
 
     &-light &__icon {
-        color: $color-primary;
+        color: $color-tertiary;
     }
 }

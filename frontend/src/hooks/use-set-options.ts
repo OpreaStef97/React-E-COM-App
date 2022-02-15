@@ -1,14 +1,25 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchValues } from '../store/products-actions';
+import { useEffect, useState } from 'react';
+import { SelectState } from '../utils/reducers';
+import useFetch from './use-fetch';
 
-const useSetOptions = (setFn: (data: any) => void, category: string) => {
-    const dispatch = useDispatch();
-    const { values } = useSelector((state: any) => state.products);
+const useSetOptions = (category: string) => {
+    const { sendRequest } = useFetch();
+    const [values, setValues] = useState<any>([]);
+    const [options, setOptions] = useState<SelectState>({});
 
     useEffect(() => {
-        dispatch(fetchValues('brand,default.RAM,default.storage,type', category));
-    }, [dispatch, category]);
+        sendRequest(
+            `${
+                process.env.REACT_APP_API_URL
+            }/products/values?fields=${'brand,default.RAM,default.storage,type'}${
+                category === 'All' ? '' : `&category=${category}`
+            }`
+        )
+            .then(data => {
+                setValues(data[category]);
+            })
+            .catch(console.error);
+    }, [sendRequest, category]);
 
     useEffect(() => {
         if (values.length > 0) {
@@ -56,9 +67,15 @@ const useSetOptions = (setFn: (data: any) => void, category: string) => {
                     options: ['Ascending', 'Descending'],
                     selected: [false, false],
                 },
+                show: {
+                    options: ['10/page', '20/page', '30/page'],
+                    selected: [false, true, false],
+                },
             };
-            setFn(options);
+            setOptions(options);
         }
-    }, [category, setFn, values]);
+    }, [category, values]);
+
+    return options;
 };
 export default useSetOptions;

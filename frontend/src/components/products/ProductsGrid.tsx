@@ -6,7 +6,7 @@ const ProductsGrid: FC<{ sorting?: string; items: any[] }> = props => {
     const { sorting, items } = props;
 
     return (
-        <ul className="products__grid fade">
+        <ul className="products__grid fade" key={items.length}>
             {sorting === 'Ascending' &&
                 items.map((item, idx) => {
                     return (

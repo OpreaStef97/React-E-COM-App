@@ -17,7 +17,6 @@ import MePage from './pages/me-page/MePage';
 import { setCSRFToken } from './store/auth-actions';
 import { authActions } from './store/auth-slice';
 import sleep from './utils/sleep';
-import LoadingSpinner from './components/ui-components/LoadingSpinner';
 
 const App = () => {
     const { pathname } = useLocation();
@@ -59,7 +58,6 @@ const App = () => {
 
     return (
         <ErrorBoundary>
-            {isLoading && <LoadingSpinner asOverlay />}
             <MainNavigation ref={pathname === '/' ? ref : undefined} />
             <Notification
                 show={showNotification}
@@ -81,7 +79,7 @@ const App = () => {
                                     <Route path="/auth" element={<Auth onShow={onShowHandler} />} />
                                 )}
                                 <Route path="/" element={<Home ref={ref} />} />
-                                <Route path="/products" element={<Products />} />
+                                <Route path="/products" element={<Products category='All'/>} />
                                 <Route
                                     path="/products/phones"
                                     element={<Products category="Phone" />}

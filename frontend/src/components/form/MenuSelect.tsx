@@ -14,6 +14,7 @@ const MenuSelect: FC<{
     placeholder?: string;
     className?: string;
     uniqueSelect?: boolean;
+    onlySelect?: boolean;
     errorText?: string;
     error?: boolean;
     onSelect?: (...args: any[]) => void;
@@ -58,20 +59,23 @@ const MenuSelect: FC<{
                     <div onClick={showHandler} className="menu-select__select-placeholder">
                         <p>{props.error ? props.errorText : placeholder}</p>
                     </div>
-                    <button
-                        onClick={onDelete && onDelete.bind(null, id)}
-                        style={{
-                            display: `${
-                                placeholder === 'Select Item' || placeholder === props.placeholder
-                                    ? 'none'
-                                    : 'flex'
-                            }`,
-                        }}
-                        className="menu-select__select-close"
-                        aria-label="close-select"
-                    >
-                        <XCircle className="menu-select__select-close-icon" />
-                    </button>
+                    {!props.onlySelect && (
+                        <button
+                            onClick={onDelete && onDelete.bind(null, id)}
+                            style={{
+                                display: `${
+                                    placeholder === 'Select Item' ||
+                                    placeholder === props.placeholder
+                                        ? 'none'
+                                        : 'flex'
+                                }`,
+                            }}
+                            className="menu-select__select-close"
+                            aria-label="close-select"
+                        >
+                            <XCircle className="menu-select__select-close-icon" />
+                        </button>
+                    )}
                     <button
                         onClick={showHandler}
                         aria-label="open-select"
@@ -88,7 +92,13 @@ const MenuSelect: FC<{
                                     <li
                                         onClick={() => {
                                             showHandler();
-                                            if (onSelect) onSelect(id, item, uniqueSelect);
+                                            if (onSelect)
+                                                onSelect(
+                                                    id,
+                                                    item,
+                                                    uniqueSelect,
+                                                    !!props.onlySelect
+                                                );
                                         }}
                                         className={`menu-select__dropdown-list--item ${
                                             options.selected[idx] && 'active'

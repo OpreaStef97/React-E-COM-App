@@ -21,6 +21,18 @@ export const selectReducer = (
         case 'SELECT': {
             // find to which menu belongs the select event
             const idx = state[action.id].options.findIndex((value: any) => action.value === value);
+
+            if (action.onlySelect) {
+                state[action.id].selected[idx] = true;
+
+                for (let i = 0; i < state[action.id].selected.length; ++i) {
+                    if (idx !== i) state[action.id].selected[i] = false;
+                }
+                return {
+                    ...state,
+                };
+            }
+
             // update the state array for the given id
             state[action.id].selected[idx] = !state[action.id].selected[idx];
 

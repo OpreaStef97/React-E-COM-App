@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import './ListButton.scss';
 
 const ListButton: FC<{
+    className?: string;
     in?: boolean;
     isLoading?: boolean;
     onClick?: () => void;
@@ -14,7 +15,7 @@ const ListButton: FC<{
             <>
                 <button
                     onClick={props.onClick}
-                    className={`list__btn list__btn-${props.type}`}
+                    className={`list__btn list__btn-${props.type} ${props.className}`}
                     aria-label={'list-btn'}
                 >
                     {props.type === 'right' && (
@@ -24,6 +25,7 @@ const ListButton: FC<{
                         </>
                     )}
                     {props.type === 'left' && <CaretLeft className="list__btn--icon" />}
+                    {props.children}
                 </button>
             </>
         </CSSTransition>

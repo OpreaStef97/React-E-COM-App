@@ -18,7 +18,7 @@ const Offer = (props: {
         <div className={`offer`}>
             <div className="offer--overlay">
                 <Logo light={props.light} className="offer--overlay__logo" />
-                <h4 className="offer--overlay__title-1">&nbsp;</h4>
+                <h3 className="offer--overlay__title-1">&nbsp;</h3>
                 <h4 className="offer--overlay__title-2">Offer of the week</h4>
                 <div className="offer--overlay__box">
                     <p className="offer--overlay__description">{props.content}</p>

@@ -7,7 +7,7 @@ import ProductItem from './ProductItem';
 
 import './ProductList.scss';
 
-const ProductList: FC<{ category?: string }> = props => {
+const ProductList: FC<{ category?: string; exclude?: string }> = props => {
     const [index, setIndex] = useState(0);
     const [numberOfShownCards, setNumberOfShownCards] = useState(3);
     const [allDataLoaded, setAllDataLoaded] = useState(false);
@@ -17,7 +17,7 @@ const ProductList: FC<{ category?: string }> = props => {
 
     useWindowWidth(setNumberOfShownCards, setIndex);
 
-    const { category } = props;
+    const { category, exclude } = props;
     const { isLoading, sendRequest } = useFetch();
     const prevNumberOfShownCards = usePrevious(numberOfShownCards);
 
@@ -35,7 +35,7 @@ const ProductList: FC<{ category?: string }> = props => {
         sendRequest(
             `${process.env.REACT_APP_API_URL}/products?page=1&limit=${
                 numberOfShownCards < 3 ? 4 : numberOfShownCards
-            }${category ? `&category=${category}` : ''}`
+            }${category ? `&category=${category}` : ''}${exclude ? `&_id[ne]=${exclude}` : ''}`
         )
             .then(data => {
                 if (data.results > 0) setProducts([...data.docs]);
@@ -45,7 +45,7 @@ const ProductList: FC<{ category?: string }> = props => {
         return () => {
             setProducts([]);
         };
-    }, [sendRequest, category, numberOfShownCards]);
+    }, [sendRequest, category, numberOfShownCards, exclude]);
 
     const sendRequestHandler = useCallback(
         async (limit: number) => {

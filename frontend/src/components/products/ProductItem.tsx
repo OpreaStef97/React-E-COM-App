@@ -3,7 +3,6 @@ import useImageLoad from '../../hooks/use-image-load';
 import Button from '../ui-components/Button';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
 import Stars from '../ui-components/Stars';
-
 import './ProductItem.scss';
 
 const ProductItem: FC<{

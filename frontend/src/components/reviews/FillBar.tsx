@@ -1,4 +1,5 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
+import Keyframes from '../ui-components/Keyframes';
 import './FillBar.scss';
 
 const FillBar: FC<{
@@ -8,21 +9,9 @@ const FillBar: FC<{
 }> = props => {
     const { fill, id, scrollKey } = props;
 
-    useEffect(() => {
-        let styleSheet = document.styleSheets[0];
-        let keyframes = `@keyframes fill${id || ''} {
-            0% {
-                width: 0%;
-            }
-            100% {
-                width: ${fill}%;
-            }
-        }`;
-        styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
-    }, [fill, id]);
-
     return (
         <div className="bar">
+            <Keyframes name={`fill${id}`} _0={{ width: `0%` }} _100={{ width: `${fill}%` }} />
             <div
                 key={scrollKey}
                 className="filler"

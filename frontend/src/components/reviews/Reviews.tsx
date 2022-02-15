@@ -18,10 +18,10 @@ const Reviews: FC = props => {
     const [reviews, setReviews] = useState([]);
     const [addReview, setAddReview] = useState(false);
     const [selectTouched, setSelectTouched] = useState(false);
-    const { selectState, setHandler, selectHandler, deleteHandler } = useSelect();
     const { sendRequest, isLoading } = useFetch();
     const params = useParams();
     const { csrfToken } = useSelector((state: any) => state.auth);
+    const { selectState, setHandler, selectHandler, deleteHandler } = useSelect();
     const [formState, inputHandler] = useForm(
         {
             rating: {

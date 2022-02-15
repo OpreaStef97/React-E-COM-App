@@ -15,3 +15,4 @@ export const resizePhoto = catchAsync(async (req, res, next) => {
 
     next();
 });
+

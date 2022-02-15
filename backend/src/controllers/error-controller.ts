@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ErrorRequestHandler, NextFunction, Response, Request } from 'express';
+import { ErrorRequestHandler} from 'express';
 import AppError from '../models/error-model';
 import fs from 'fs';
 
@@ -68,7 +68,7 @@ const sendErrorProd: ErrorRequestHandler = (err, req, res) => {
 
 // GLOBAL ERROR HANDLER
 /////////////////////////////////////////////////////////////////
-const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     if (req.file) {
         fs.unlink(req.file.path, err => {
             console.log(err);

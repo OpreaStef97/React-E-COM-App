@@ -1,5 +1,8 @@
 import { Star } from 'phosphor-react';
+import React from 'react';
 import { FC, Fragment, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import useFetch from '../../hooks/use-fetch';
 import useIntersect from '../../hooks/use-intersect';
 import FillBar from './FillBar';
 import './ReviewStats.scss';
@@ -9,30 +12,32 @@ const ReviewStats: FC<{ reviews?: any[] }> = props => {
     const ref = useRef<HTMLDivElement>(null);
     const intersecting = useIntersect(ref);
     const [scrollKey, setScrollKey] = useState(1);
+    const { sendRequest } = useFetch();
+    const params = useParams();
+    const [stats, setStats] = useState<number[]>([0, 0, 0, 0, 0]);
+
     useEffect(() => {
         if (intersecting) {
             setScrollKey(Math.random());
         }
     }, [intersecting]);
 
-    const [stats, setStats] = useState<number[]>([]);
     useEffect(() => {
         if (!reviews || reviews.length === 0) return;
         const cntArr = [0, 0, 0, 0, 0];
-        Promise.all(
-            reviews.map(
-                review =>
-                    new Promise(resolve => {
-                        resolve(++cntArr[review.rating - 1]);
-                    })
-            )
-        ).then(() => {
-            const percentages = cntArr.map(
-                cnt => Math.round(((cnt * 100) / reviews.length + Number.EPSILON) * 100) / 100
-            );
-            setStats(percentages.reverse());
-        });
-    }, [reviews]);
+        sendRequest(`${process.env.REACT_APP_API_URL}/products/${params.id}/reviews/stats`)
+            .then(data => {
+                data.stats.forEach((s: any) => {
+                    cntArr[s._id - 1] = s.count;
+                });
+                const percentages = cntArr.map(
+                    cnt => Math.round(((cnt * 100) / reviews.length + Number.EPSILON) * 100) / 100
+                );
+                setStats(percentages.reverse());
+            })
+            .catch(console.error);
+        return () => setStats([0, 0, 0, 0, 0]);
+    }, [params.id, reviews, sendRequest]);
 
     return (
         <div className="review-stats">
@@ -43,8 +48,12 @@ const ReviewStats: FC<{ reviews?: any[] }> = props => {
                             <div className="review-stats--stars">
                                 <span>{5 - idx}</span> <Star weight="fill" />
                             </div>
-                            <FillBar fill={fill} id={idx + 1} scrollKey={scrollKey + idx} />
-                            <span className="review-stats--percentage">{fill}%</span>
+                            <FillBar
+                                fill={fill}
+                                id={idx + 1}
+                                scrollKey={scrollKey + idx}
+                            />
+                            <span className="review-stats--percentage">{fill.toFixed(2)}%</span>
                         </Fragment>
                     );
                 })}

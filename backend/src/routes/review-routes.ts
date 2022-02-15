@@ -7,16 +7,19 @@ import {
     updateReview,
     deleteReview,
     setProductUserIds,
+    getReviewRatingsPerProduct,
 } from '../controllers/reviews-controller';
 import { checkUserReview } from '../middlewares/check-user-review';
 
 const router = express.Router({ mergeParams: true });
 
 router.get('/', getAllReviews);
+router.get('/stats', getReviewRatingsPerProduct);
 
 router.use(protect);
 
 router.post('/', restrictTo('user', 'admin'), setProductUserIds, createReview);
+
 
 router
     .route('/:id')

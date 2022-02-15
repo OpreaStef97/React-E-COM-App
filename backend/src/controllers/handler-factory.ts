@@ -18,7 +18,6 @@ export const deleteOne = <T>(Model: Model<T>) =>
 
 export const updateOne = <T>(Model: Model<T>) =>
     catchAsync(async (req, res, next) => {
-        
         const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true,
@@ -74,7 +73,8 @@ export const getAll = <T>(Model: Model<T>) =>
             .filter()
             .sort()
             .limitFields()
-            .paginate();
+            .paginate()
+            .distinct();
 
         const docs = await features.query;
 

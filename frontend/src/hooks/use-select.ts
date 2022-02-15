@@ -13,14 +13,18 @@ export default function useSelect() {
         []
     );
 
-    const selectHandler = useCallback((id: string, value: string, uniqueSelect: boolean) => {
-        dispatch({
-            type: 'SELECT',
-            uniqueSelect,
-            value,
-            id,
-        });
-    }, []);
+    const selectHandler = useCallback(
+        (id: string, value: string, uniqueSelect: boolean, onlySelect: boolean) => {
+            dispatch({
+                type: 'SELECT',
+                uniqueSelect,
+                onlySelect,
+                value,
+                id,
+            });
+        },
+        []
+    );
     const deleteHandler = useCallback((id?: string) => {
         dispatch({
             type: 'DELETE',

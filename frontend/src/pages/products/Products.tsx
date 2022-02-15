@@ -1,98 +1,73 @@
-import { FC, Fragment, useEffect, useReducer, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC, Fragment, useEffect, useState } from 'react';
 import MenuSelect from '../../components/form/MenuSelect';
 import ProductList from '../../components/products/ProductList';
 import ProductsGrid from '../../components/products/ProductsGrid';
 import ProductsSideBar from '../../components/products/ProductsSideBar';
+import LoadingSpinner from '../../components/ui-components/LoadingSpinner';
+import Pagination from '../../components/ui-components/Pagination';
 import SectionTitle from '../../components/ui-components/SectionTitle';
+import useConvertData from '../../hooks/use-convert-data';
+import useFetch from '../../hooks/use-fetch';
 import useFilter from '../../hooks/use-filter';
+import useSelect from '../../hooks/use-select';
 import useSetOptions from '../../hooks/use-set-options';
 import useSort from '../../hooks/use-sort';
 import { useTitle } from '../../hooks/use-title';
-import { fetchProducts } from '../../store/products-actions';
-import { selectReducer, SelectState } from '../../utils/reducers';
 import './Products.scss';
 
-const convertData = (products: any) =>
-    products.map((product: any) => {
-        return {
-            name: product.name,
-            image: `${process.env.REACT_APP_RESOURCES_URL}/images/products//${product.images[0]}`,
-            price: product.price,
-            brand: product.brand,
-            RAM: product.default.RAM,
-            storage: product.default.storage,
-            type: [...product.type],
-            ratingsAverage: product.ratingsAverage,
-            ratingsQuantity: product.ratingsQuantity,
-            id: product.id,
-            slug: product.slug,
-        };
-    });
-
 const Products: FC<{ category?: string; options?: any }> = props => {
-    useTitle(`ReactCOM | ${(props.category && `${props.category}s`) || 'All Products'}`);
-    const [items, setItems] = useState<{ name: string; image: string; price: number }[]>([]);
-    const [initialItems, setInitialItems] = useState<
-        { name: string; image: string; price: number }[]
-    >([]);
-    const [options, setOptions] = useState<SelectState>({});
-    const [selectState, dispatch] = useReducer(selectReducer, {});
+    const { category } = props;
+    const [items, setItems] = useState<any>([]);
+    const [initialItems, setInitialItems] = useState<any>([]);
     const [sorting, setSorting] = useState<string>();
 
-    const { products } = useSelector((state: any) => state.products);
-    const reduxDispatch = useDispatch();
-
-    const { category } = props;
-
-    useEffect(() => {
-        reduxDispatch(fetchProducts(category || ''));
-    }, [category, reduxDispatch]);
-
-    useSetOptions(setOptions, props.category || 'All');
+    const { isLoading, sendRequest } = useFetch();
+    useTitle(`ReactCOM | ${(props.category && `${props.category}s`) || 'All Products'}`);
+    const { selectState, selectHandler, deleteHandler, setHandler } = useSelect();
+    const convertData = useConvertData();
+    const options = useSetOptions(category || 'All');
+    const [requestString, setRequestString] = useState('');
 
     useEffect(() => {
-        dispatch({
-            type: 'SET_DATA',
-            payload: options,
-        });
-    }, [options]);
+        if (!requestString) return;
+        sendRequest(
+            `${process.env.REACT_APP_API_URL}/products?${'sort=price'}${
+                category !== 'All' ? `&category=${category}` : ''
+            }&page=1&limit=${requestString}`
+        )
+            .then(data => {
+                setInitialItems(convertData([...data.docs]));
+            })
+            .catch(console.error);
+        return () => setInitialItems([]);
+    }, [category, sendRequest, convertData, requestString]);
 
     useEffect(() => {
-        if (products.length > 0) setInitialItems([...convertData(products)]);
-    }, [products]);
+        setHandler(options);
+    }, [options, setHandler]);
 
     useEffect(() => {
         if (initialItems.length > 0) setItems([...initialItems]);
     }, [initialItems]);
 
+    useEffect(() => {
+        if (!selectState || !selectState['show']) {
+            return;
+        }
+        const { selected, options } = selectState['show'];
+        const idx = selected.findIndex((val: boolean) => val === true);
+        if (idx !== -1) {
+            setRequestString(`${options[idx].split('/')[0]}`);
+        }
+    }, [selectState]);
+
     useSort(selectState, setSorting, setItems, initialItems);
-
-    const selectHandler = (id: string, value: string, uniqueSelect: boolean) => {
-        dispatch({
-            type: 'SELECT',
-            uniqueSelect,
-            value,
-            id,
-        });
-    };
-    const deleteHandler = (id?: string) => {
-        dispatch({
-            type: 'DELETE',
-            id,
-        });
-        setItems([...initialItems]);
-    };
-
     // Filter by brand
     useFilter(selectState, 'brand', setItems);
-
     // Filter by type
     useFilter(selectState, 'type', setItems);
-
     // Filter by RAM
     useFilter(selectState, 'RAM', setItems);
-
     // Filter by Storage
     useFilter(selectState, 'storage', setItems);
 
@@ -102,9 +77,9 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                 <div className="products__container">
                     <div className="products__filter-bar">
                         <div className="products__filter-bar--info">
-                            <h4 className="products__filter-bar--title">
-                                {(props.category && `${props.category}s`) || 'All Products'}
-                            </h4>
+                            <h2 className="products__filter-bar--title">
+                                {props.category === 'All' ? 'All Products' : props.category}
+                            </h2>
                             <p className="products__filter-bar--results">{`${items.length} results`}</p>
                         </div>
                         <div className="separator"></div>
@@ -116,14 +91,20 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                                             <MenuSelect
                                                 id={key}
                                                 key={key}
+                                                onlySelect={key === 'show'}
                                                 uniqueSelect={key === 'sort'}
                                                 onSelect={selectHandler}
                                                 onDelete={deleteHandler}
                                                 options={selectState[key]}
                                                 placeholder={`${key}..`}
-                                                label={`Select ${
-                                                    key.charAt(0).toUpperCase() + key.slice(1)
-                                                }: `}
+                                                label={
+                                                    key === 'show'
+                                                        ? 'Show items per page:'
+                                                        : `Select ${
+                                                              key.charAt(0).toUpperCase() +
+                                                              key.slice(1)
+                                                          }: `
+                                                }
                                             />
                                         );
                                     return <Fragment key={key}></Fragment>;
@@ -131,7 +112,18 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                         </div>
                     </div>
                     <ProductsSideBar className="products__container--side-bar" />
-                    <ProductsGrid key={props.category} sorting={sorting} items={items} />
+                    <div className="products__container-page">
+                        <Pagination />
+                        {isLoading && (
+                            <div className="products__container--loader">
+                                <LoadingSpinner />
+                            </div>
+                        )}
+                        {!isLoading && (
+                            <ProductsGrid key={props.category} sorting={sorting} items={items} />
+                        )}
+                        <Pagination className="margin-top" />
+                    </div>
                 </div>
                 <SectionTitle>Others are interested in these..</SectionTitle>
                 <ProductList category="Laptop" />

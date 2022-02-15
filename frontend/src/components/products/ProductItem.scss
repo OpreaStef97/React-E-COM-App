@@ -1,7 +1,7 @@
 @import '../../sass/variables.scss';
 
 .product__item {
-    height: 90%;
+    height: 100%;
     padding: 2rem;
     list-style: none;
     transition: all 0.3s;
@@ -83,10 +83,5 @@
         font-size: 1.6rem;
         font-weight: 400;
         color: $color-fourth;
-    }
-
-    &:hover {
-        padding-top: 1.5rem;
-        padding-bottom: 2.5rem;
     }
 }

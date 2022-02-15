@@ -36,7 +36,7 @@ const ProductPage: FC = props => {
             <ProductContent product={product} />
             <Reviews />
             <SectionTitle>Other similar items:</SectionTitle>
-            <ProductList category={category} />
+            <ProductList exclude={params.id} category={category} />
         </section>
     );
 };

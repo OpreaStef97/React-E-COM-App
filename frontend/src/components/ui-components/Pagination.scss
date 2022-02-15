@@ -1,0 +1,34 @@
+@import '../../sass/variables.scss';
+
+.pagination {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: $color-primary-light-1;
+    height: 4.5rem;
+
+    &-btn {
+        z-index: inherit;
+        position: inherit;
+        width: 3rem;
+        height: 3rem;
+        // background-color: $color-secondary-light-1;
+        svg {
+            width: 1.6rem;
+            height: 1.6rem;
+        }
+
+        span {
+            color: $color-primary-dark-3;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        &:hover {
+            span {
+                color: $color-primary-light-1;
+            }
+        }
+    }
+}
