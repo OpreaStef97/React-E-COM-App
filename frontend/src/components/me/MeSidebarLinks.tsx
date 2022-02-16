@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../ui-components/Button';
 import './MeSidebarLinks.scss';
 
 const MeSidebarLinks: FC<{ onClick?: () => void }> = props => {
@@ -32,11 +31,6 @@ const MeSidebarLinks: FC<{ onClick?: () => void }> = props => {
                 <Link className="me-sidebar-item__link" onClick={onClick} to="/me/purchases">
                     My purchases
                 </Link>
-            </li>
-            <li className="me-sidebar-item">
-                <Button link to="/me">
-                    LOGOUT
-                </Button>
             </li>
         </ul>
     );

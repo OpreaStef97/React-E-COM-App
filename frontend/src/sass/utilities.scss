@@ -1,7 +1,13 @@
+@import './variables.scss';
+
 .clear-margin {
     margin: 0 !important;
 }
 
 .margin-top {
     margin-top: auto !important;
+}
+
+.bg-color-1 {
+    background-color: $color-primary-light-4 !important;
 }

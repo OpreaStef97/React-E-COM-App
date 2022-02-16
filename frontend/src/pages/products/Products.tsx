@@ -8,68 +8,52 @@ import Pagination from '../../components/ui-components/Pagination';
 import SectionTitle from '../../components/ui-components/SectionTitle';
 import useConvertData from '../../hooks/use-convert-data';
 import useFetch from '../../hooks/use-fetch';
-import useFilter from '../../hooks/use-filter';
+import useLimit from '../../hooks/use-limit';
+import useRequestFilter from '../../hooks/use-request-filter';
+import useRequestSort from '../../hooks/use-request-sort';
 import useSelect from '../../hooks/use-select';
 import useSetOptions from '../../hooks/use-set-options';
-import useSort from '../../hooks/use-sort';
 import { useTitle } from '../../hooks/use-title';
 import './Products.scss';
 
 const Products: FC<{ category?: string; options?: any }> = props => {
     const { category } = props;
     const [items, setItems] = useState<any>([]);
-    const [initialItems, setInitialItems] = useState<any>([]);
-    const [sorting, setSorting] = useState<string>();
-
     const { isLoading, sendRequest } = useFetch();
     useTitle(`ReactCOM | ${(props.category && `${props.category}s`) || 'All Products'}`);
-    const { selectState, selectHandler, deleteHandler, setHandler } = useSelect();
     const convertData = useConvertData();
     const options = useSetOptions(category || 'All');
-    const [requestString, setRequestString] = useState('');
+    const { selectState, selectHandler, deleteHandler, setHandler } = useSelect();
+    const [totalSize, setTotalSize] = useState(0);
+    const [pageNumber, setPageNumber] = useState(1);
+
+    const sorting = useRequestSort(selectState);
+    const filter = useRequestFilter(selectState);
+    const limit = useLimit(selectState);
 
     useEffect(() => {
-        if (!requestString) return;
-        sendRequest(
-            `${process.env.REACT_APP_API_URL}/products?${'sort=price'}${
-                category !== 'All' ? `&category=${category}` : ''
-            }&page=1&limit=${requestString}`
-        )
-            .then(data => {
-                setInitialItems(convertData([...data.docs]));
-            })
-            .catch(console.error);
-        return () => setInitialItems([]);
-    }, [category, sendRequest, convertData, requestString]);
+        if (limit || filter) setPageNumber(1);
+    }, [limit, filter]);
 
     useEffect(() => {
         setHandler(options);
     }, [options, setHandler]);
 
     useEffect(() => {
-        if (initialItems.length > 0) setItems([...initialItems]);
-    }, [initialItems]);
+        if (!limit) return;
 
-    useEffect(() => {
-        if (!selectState || !selectState['show']) {
-            return;
-        }
-        const { selected, options } = selectState['show'];
-        const idx = selected.findIndex((val: boolean) => val === true);
-        if (idx !== -1) {
-            setRequestString(`${options[idx].split('/')[0]}`);
-        }
-    }, [selectState]);
-
-    useSort(selectState, setSorting, setItems, initialItems);
-    // Filter by brand
-    useFilter(selectState, 'brand', setItems);
-    // Filter by type
-    useFilter(selectState, 'type', setItems);
-    // Filter by RAM
-    useFilter(selectState, 'RAM', setItems);
-    // Filter by Storage
-    useFilter(selectState, 'storage', setItems);
+        sendRequest(
+            `${process.env.REACT_APP_API_URL}/products?&sort=${sorting}${
+                category !== 'All' ? `&category=${category}` : ''
+            }${filter}&page=${pageNumber}&limit=${limit}`
+        )
+            .then(data => {
+                setTotalSize(data.totalLength);
+                setItems(convertData([...data.docs]));
+            })
+            .catch(console.error);
+        return () => setItems([]);
+    }, [category, sendRequest, convertData, limit, pageNumber, sorting, filter]);
 
     return (
         <>
@@ -78,9 +62,9 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                     <div className="products__filter-bar">
                         <div className="products__filter-bar--info">
                             <h2 className="products__filter-bar--title">
-                                {props.category === 'All' ? 'All Products' : props.category}
+                                {props.category === 'All' ? 'All Products' : `${props.category}s`}
                             </h2>
-                            <p className="products__filter-bar--results">{`${items.length} results`}</p>
+                            <p className="products__filter-bar--results">{`${totalSize} results`}</p>
                         </div>
                         <div className="separator"></div>
                         <div className="products__filter-bar--select">
@@ -99,7 +83,7 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                                                 placeholder={`${key}..`}
                                                 label={
                                                     key === 'show'
-                                                        ? 'Show items per page:'
+                                                        ? 'No. of items/page:'
                                                         : `Select ${
                                                               key.charAt(0).toUpperCase() +
                                                               key.slice(1)
@@ -113,16 +97,28 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                     </div>
                     <ProductsSideBar className="products__container--side-bar" />
                     <div className="products__container-page">
-                        <Pagination />
+                        <Pagination
+                            onPageChange={page => setPageNumber(page)}
+                            totalSize={totalSize}
+                            pageNumber={pageNumber}
+                            pageSize={+limit}
+                        />
                         {isLoading && (
                             <div className="products__container--loader">
-                                <LoadingSpinner />
+                                <p>Loading...</p>
+                                <LoadingSpinner/>
                             </div>
                         )}
                         {!isLoading && (
                             <ProductsGrid key={props.category} sorting={sorting} items={items} />
                         )}
-                        <Pagination className="margin-top" />
+                        <Pagination
+                            className="margin-top"
+                            onPageChange={page => setPageNumber(page)}
+                            totalSize={totalSize}
+                            pageNumber={pageNumber}
+                            pageSize={+limit}
+                        />
                     </div>
                 </div>
                 <SectionTitle>Others are interested in these..</SectionTitle>

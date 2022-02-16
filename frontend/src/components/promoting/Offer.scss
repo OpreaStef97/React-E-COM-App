@@ -24,6 +24,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        overflow: hidden;
 
         &__title-1 {
             position: absolute;
@@ -76,8 +77,12 @@
             transition: all 0.5s;
         }
     }
+    &--loading {
+        display: flex;
+        justify-content: center;
+        width: 60rem;
+    }
     &--image {
-        // flex-grow: 1;
         height: 100%;
         width: 100%;
         background-image: linear-gradient(

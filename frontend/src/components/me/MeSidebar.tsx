@@ -1,7 +1,8 @@
 import { CaretCircleDown } from 'phosphor-react';
 import { useEffect, useRef, useState } from 'react';
 import useClickOutside from '../../hooks/use-clicks-outside';
-import Dropdown from '../home/Dropdown';
+import Dropdown from '../ui-components/Dropdown';
+import Button from '../ui-components/Button';
 import './MeSidebar.scss';
 import MeSidebarLinks from './MeSidebarLinks';
 
@@ -34,10 +35,14 @@ const MeSidebar = () => {
                     show={showDropdown}
                     className="me-sidebar-dropdown__component"
                     transitionMs={300}
+                    height="35rem"
                 >
                     <MeSidebarLinks onClick={() => setShowDropdown(false)} />
                 </Dropdown>
             </div>
+            <Button link to="/me">
+                LOGOUT
+            </Button>
         </div>
     );
 };

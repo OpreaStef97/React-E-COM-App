@@ -7,7 +7,7 @@ import useIntersect from '../../hooks/use-intersect';
 import FillBar from './FillBar';
 import './ReviewStats.scss';
 
-const ReviewStats: FC<{ reviews?: any[] }> = props => {
+const ReviewStats: FC<{ reviews?: any[]; rating?: number }> = props => {
     const { reviews } = props;
     const ref = useRef<HTMLDivElement>(null);
     const intersecting = useIntersect(ref);
@@ -41,6 +41,8 @@ const ReviewStats: FC<{ reviews?: any[] }> = props => {
 
     return (
         <div className="review-stats">
+            <p>Total Rating: {props.rating?.toFixed(1)}</p>
+            <div className='separator'></div>
             <div className="review-stats--grid" ref={ref}>
                 {stats.map((fill, idx) => {
                     return (
@@ -48,11 +50,7 @@ const ReviewStats: FC<{ reviews?: any[] }> = props => {
                             <div className="review-stats--stars">
                                 <span>{5 - idx}</span> <Star weight="fill" />
                             </div>
-                            <FillBar
-                                fill={fill}
-                                id={idx + 1}
-                                scrollKey={scrollKey + idx}
-                            />
+                            <FillBar fill={fill} id={idx + 1} scrollKey={scrollKey + idx} />
                             <span className="review-stats--percentage">{fill.toFixed(2)}%</span>
                         </Fragment>
                     );

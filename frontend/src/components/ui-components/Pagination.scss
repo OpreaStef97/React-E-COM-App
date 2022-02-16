@@ -31,4 +31,20 @@
             }
         }
     }
+
+    .active {
+        box-shadow: 0 0rem 1.5rem rgba($color-tertiary-dark-1, 30%);
+        background-color: $color-tertiary-light-1;
+        box-shadow: 0 0 1rem rgba($color-tertiary-dark-1, 30%);
+
+        span {
+            color: $color-primary-light-1;
+        }
+    }
+
+    .dots:hover {
+        box-shadow: 0 0rem 1rem rgba($color-primary-dark-3, 20%);
+        background-color: transparent;
+        cursor: default;
+    }
 }

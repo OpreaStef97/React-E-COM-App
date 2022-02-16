@@ -11,7 +11,7 @@ import './ProductPage.scss';
 
 const ProductPage: FC = props => {
     const [category, setCategory] = useState('');
-    const [product, setProduct] = useState();
+    const [product, setProduct] = useState<any>();
     const params = useParams();
     const { sendRequest } = useFetch();
 
@@ -34,7 +34,7 @@ const ProductPage: FC = props => {
     return (
         <section className="product-page">
             <ProductContent product={product} />
-            <Reviews />
+            <Reviews rating={product?.ratingsAverage} />
             <SectionTitle>Other similar items:</SectionTitle>
             <ProductList exclude={params.id} category={category} />
         </section>

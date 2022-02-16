@@ -14,7 +14,7 @@ import Modal from '../ui-components/Modal';
 import './Reviews.scss';
 import ReviewStats from './ReviewStats';
 
-const Reviews: FC = props => {
+const Reviews: FC<{rating?: number}> = props => {
     const [reviews, setReviews] = useState([]);
     const [addReview, setAddReview] = useState(false);
     const [selectTouched, setSelectTouched] = useState(false);
@@ -162,7 +162,7 @@ const Reviews: FC = props => {
                             Add a review
                         </Button>
                     </div>
-                    <ReviewStats reviews={reviews} />
+                    <ReviewStats reviews={reviews} rating={props.rating}/>
                     <ul className="reviews-content-list">
                         {reviews &&
                             reviews.length > 0 &&

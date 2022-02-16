@@ -3,12 +3,48 @@ import { FC, useCallback, useEffect, useReducer } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DUMMY_IMAGES } from '../../utils/dummy-data';
 import Offer from '../promoting/Offer';
-import Dropdown from './Dropdown';
+import Dropdown from '../ui-components/Dropdown';
 import './Menu.scss';
 import TransitionSlider from '../ui-components/TransitionSlider';
-import { showReducer } from '../../utils/reducers';
 import { Link } from 'react-router-dom';
 import useClickOutside from '../../hooks/use-clicks-outside';
+
+type State = {
+    [key: string]: boolean;
+};
+
+const showObj: State = {
+    s0: false,
+    s1: false,
+    s2: false,
+    s3: false,
+};
+
+export const showReducer = (state: State, action: any) => {
+    switch (action.type) {
+        case 'CHANGE': {
+            const newState = {
+                ...state,
+                [`s${action.payload}`]: !state[`s${action.payload}`],
+            };
+
+            Object.keys(newState).forEach(key => {
+                if (key !== `s${action.payload}`) {
+                    newState[key] = false;
+                }
+            });
+
+            return {
+                ...newState,
+            };
+        }
+        case 'CLOSE': {
+            return showObj;
+        }
+        default:
+            return showObj;
+    }
+};
 
 const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
     const [showState, dispatch] = useReducer(showReducer, {
@@ -82,7 +118,12 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
             </div>
 
             <div className="menu-dropdown">
-                <Dropdown show={showState[`s${0}`]} height="70vh" allFalse={allFalse} transitionMs={700}>
+                <Dropdown
+                    show={showState[`s${0}`]}
+                    height="70vh"
+                    allFalse={allFalse}
+                    transitionMs={700}
+                >
                     <div className="menu-dropdown-container">
                         <ul className="menu-dropdown-links">
                             <li className="menu-dropdown-links--item">
@@ -135,7 +176,12 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                         </TransitionSlider>
                     </div>
                 </Dropdown>
-                <Dropdown show={showState[`s${1}`]} allFalse={allFalse} height="70vh" transitionMs={700}>
+                <Dropdown
+                    show={showState[`s${1}`]}
+                    allFalse={allFalse}
+                    height="70vh"
+                    transitionMs={700}
+                >
                     <TransitionSlider transitionMs={100}>
                         <Offer
                             src={'../../images/iphone13Pro-promo-image.jpeg'}

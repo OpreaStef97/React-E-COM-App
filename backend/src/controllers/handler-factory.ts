@@ -74,13 +74,15 @@ export const getAll = <T>(Model: Model<T>) =>
             .sort()
             .limitFields()
             .paginate()
-            .distinct();
 
         const docs = await features.query;
+
+        const { totalLength } = req;
 
         // SEND RESPONSE
         res.status(200).json({
             status: 'success',
+            totalLength,
             results: docs.length,
             docs,
         });

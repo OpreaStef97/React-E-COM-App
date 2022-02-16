@@ -54,6 +54,7 @@ const ProductsSideBar = (props: { className?: string }) => {
             {width > 1100 && (
                 <>
                     <Offer
+                        style={{ width: '40rem' }}
                         src={'../../images/S21-Ultra-promo-image.jpeg'}
                         content={'S21 Ultra for just:'}
                         price={899}
@@ -61,6 +62,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                     />
                     <div className="separator"></div>
                     <Offer
+                        style={{ width: '40rem' }}
                         src={'../../images/iPhone13Pro-promo-image.jpeg'}
                         content={'iPhone 13 Pro for just:'}
                         price={1099}
@@ -68,7 +70,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                 </>
             )}
             {width <= 1100 && (
-                <TransitionSlider transitionMs={150}>
+                <TransitionSlider className="bg-color-1" transitionMs={150}>
                     <Offer
                         style={{ width: '60rem' }}
                         src={'../../images/S21-Ultra-promo-image.jpeg'}

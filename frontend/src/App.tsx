@@ -48,7 +48,10 @@ const App = () => {
             .then(data => {
                 dispatch(authActions.loggingIn(data.user));
             })
-            .catch(console.error);
+            .catch(err => {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const mute = err;
+            });
     }, [sendRequest, csrfToken, dispatch]);
 
     const onShowHandler = useCallback(async (state: boolean) => {
@@ -61,7 +64,7 @@ const App = () => {
             <MainNavigation ref={pathname === '/' ? ref : undefined} />
             <Notification
                 show={showNotification}
-                message={`Hello ${user && user?.name?.split(' ')[0]}!`}
+                message={`Welcome ${user && user?.name?.split(' ')[0]}!`}
                 onCancel={() => setShowNotification(false)}
             />
             <ScrollToTop>
@@ -79,7 +82,7 @@ const App = () => {
                                     <Route path="/auth" element={<Auth onShow={onShowHandler} />} />
                                 )}
                                 <Route path="/" element={<Home ref={ref} />} />
-                                <Route path="/products" element={<Products category='All'/>} />
+                                <Route path="/products" element={<Products category="All" />} />
                                 <Route
                                     path="/products/phones"
                                     element={<Products category="Phone" />}

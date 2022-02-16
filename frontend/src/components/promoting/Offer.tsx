@@ -25,7 +25,7 @@ const Offer = (props: {
                     <span className="offer--overlay__price">${props.price}</span>
                 </div>
             </div>
-            {!imageLoaded && <LoadingSpinner />}
+            {!imageLoaded && <LoadingSpinner className="offer--loading" />}
             {imageLoaded && (
                 <div
                     className="offer--image"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { SelectState } from '../utils/reducers';
+import { SelectState } from './use-select';
 import useFetch from './use-fetch';
 
 const useSetOptions = (category: string) => {
@@ -64,12 +64,12 @@ const useSetOptions = (category: string) => {
                     })
                 ),
                 sort: {
-                    options: ['Ascending', 'Descending'],
-                    selected: [false, false],
+                    options: ['Price: Low', 'Price: High', 'No. of Reviews', 'Best Rating'],
+                    selected: [false, false, false, false],
                 },
                 show: {
-                    options: ['10/page', '20/page', '30/page'],
-                    selected: [false, true, false],
+                    options: ['5/page', '10/page', '20/page', '30/page'],
+                    selected: [false, true, false, false],
                 },
             };
             setOptions(options);

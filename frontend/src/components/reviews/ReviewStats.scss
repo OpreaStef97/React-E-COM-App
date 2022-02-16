@@ -5,8 +5,19 @@
     max-height: 100%;
     background-color: $color-primary-light-1;
 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
+
+    p {
+        font-size: 3rem;
+        color: $color-tertiary-dark-1;
+    }
+
+    .separator {
+        background-color: $color-tertiary-dark-1;
+    }
 
     &--grid {
         display: grid;

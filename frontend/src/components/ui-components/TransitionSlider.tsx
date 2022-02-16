@@ -9,6 +9,7 @@ const TransitionSlider: FC<{
     delay?: number;
     autoFlow?: boolean;
     dots?: boolean;
+    className?: string;
     dotsPosition?: string;
     buttonLeft?: JSX.Element;
     buttonRight?: JSX.Element;
@@ -88,7 +89,7 @@ const TransitionSlider: FC<{
                 >
                     <div
                         key={index}
-                        className={'slide'}
+                        className={`slide ${props.className}`}
                         style={{
                             transition: `transform ${transitionMs || 300}ms ease-in-out`,
                         }}

@@ -7,16 +7,17 @@ import {
     getFieldValues,
     getProduct,
 } from '../controllers/products-controller';
+import countDocs from '../middlewares/count-docs';
+import Product from '../models/product-model';
 import reviewRouter from './review-routes';
 
 const router = express.Router();
 
 router.use('/:pid/reviews', reviewRouter);
 
-router.route('/').get(getAllProducts);
+router.route('/').get(countDocs(Product), getAllProducts);
 router.route('/values').get(getFieldValues);
 router.route('/:id').get(getProduct);
-
 
 router.use(protect);
 router.use(restrictTo('admin'));

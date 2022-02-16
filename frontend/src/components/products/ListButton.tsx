@@ -6,6 +6,7 @@ import './ListButton.scss';
 const ListButton: FC<{
     className?: string;
     in?: boolean;
+    disabled?: boolean;
     isLoading?: boolean;
     onClick?: () => void;
     type?: string;
@@ -14,8 +15,11 @@ const ListButton: FC<{
         <CSSTransition in={!props.in} timeout={200} classNames={'fade-btn'} unmountOnExit>
             <>
                 <button
+                    disabled={props.disabled}
                     onClick={props.onClick}
-                    className={`list__btn list__btn-${props.type} ${props.className}`}
+                    className={`list__btn list__btn-${props.type} ${props.className} ${
+                        props.disabled && 'list__btn-disabled'
+                    }`}
                     aria-label={'list-btn'}
                 >
                     {props.type === 'right' && (

@@ -46,6 +46,26 @@
     &:hover &--icon {
         color: $color-primary-light-1;
     }
+
+    &-disabled {
+        cursor: default;
+        background: #ccc;
+        color: #979797;
+        box-shadow: none;
+
+        .list__btn--icon {
+            color: #888;
+        }
+
+        &:hover,
+        &:active {
+            box-shadow: none;
+            background-color: #ccc;
+        }
+        &:hover .list__btn--icon {
+            color: #888;
+        }
+    }
 }
 
 .fade-btn-enter {

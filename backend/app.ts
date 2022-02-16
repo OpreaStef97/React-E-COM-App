@@ -69,7 +69,11 @@ process.on('uncaughtException', err => {
     app.use(mongoSanitize());
 
     // Prevent parameter polution
-    app.use(hpp());
+    app.use(
+        hpp({
+            whitelist: ['category', 'type', 'brand', 'default_RAM', 'default_storage'],
+        })
+    );
 
     const csrfProtection = csrf({
         cookie: true,

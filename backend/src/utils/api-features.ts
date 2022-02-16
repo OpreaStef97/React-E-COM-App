@@ -1,30 +1,48 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-class APIFeatures {
-    query: any;
-    queryString: any;
+import { FilterQuery, Query } from 'mongoose';
 
-    constructor(query: any, queryString: any) {
+class APIFeatures<T, D, G> {
+    query: Query<T, D, G>;
+    queryString: { [key: string]: any | undefined };
+
+    constructor(query: Query<T, D, G>, queryString: { [key: string]: any | undefined }) {
         this.query = query;
         this.queryString = queryString;
     }
 
-    filter() {
+    private convert(obj: { [x: string]: any }) {
+        Object.keys(obj).forEach(key => {
+            const nested = Object.keys(obj[key])[0];
+            if (isNaN(+nested)) {
+                const newKey = key + '.' + nested;
+                const val = obj[key][nested];
+                delete obj[key];
+                obj[newKey] = val;
+            }
+        });
+    }
+
+    private exclude(obj: { [x: string]: any }, ...excludedFields: string[]) {
+        excludedFields.forEach(el => {
+            delete obj[el];
+        });
+    }
+
+    public filter() {
         // Filtering
         const queryObj = { ...this.queryString };
-        const excludedFields = ['page', 'sort', 'limit', 'fields', 'field'];
-        excludedFields.forEach(el => {
-            delete queryObj[el];
-        });
+        this.convert(queryObj);
+
+        this.exclude(queryObj, 'page', 'sort', 'limit', 'fields', 'field');
 
         // Advanced filtering
         let queryStr = JSON.stringify(queryObj);
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt|ne)\b/g, match => `$${match}`); // match exact words \b
 
-        this.query = this.query.find(JSON.parse(queryStr));
+        this.query = this.query.find(JSON.parse(queryStr)) as unknown as Query<T, D, G>;
 
         return this;
     }
-    sort() {
+    public sort() {
         if (this.queryString.sort) {
             const sortBy = this.queryString.sort.split(',').join('');
             this.query = this.query.sort(sortBy);
@@ -35,21 +53,19 @@ class APIFeatures {
         return this;
     }
 
-    distinct() {
+    public distinct() {
         const queryObj = { ...this.queryString };
 
         if (queryObj.field) {
             const { field } = queryObj;
-
             delete queryObj.field;
-
-            this.query.distinct(field, queryObj);
+            this.query.distinct(field, queryObj as FilterQuery<D>);
         }
 
         return this;
     }
 
-    limitFields() {
+    public limitFields() {
         if (this.queryString.fields) {
             const fields = this.queryString.fields.split(',').join(' ');
             this.query = this.query.select(fields);
@@ -60,12 +76,25 @@ class APIFeatures {
         return this;
     }
 
-    paginate() {
+    public paginate() {
         const page = this.queryString.page * 1 || 1;
         const limit = this.queryString.limit * 1 || 100;
         const skip = (page - 1) * limit;
 
         this.query = this.query.skip(skip).limit(limit);
+
+        return this;
+    }
+
+    public count() {
+        const queryObj = { ...this.queryString };
+        this.convert(queryObj);
+        this.exclude(queryObj, 'page', 'sort', 'limit');
+
+        let queryStr = JSON.stringify(queryObj);
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt|ne)\b/g, match => `$${match}`);
+
+        this.query = this.query.count(JSON.parse(queryStr)) as unknown as Query<T, D, G>;
 
         return this;
     }

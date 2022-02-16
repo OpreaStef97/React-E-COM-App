@@ -1,6 +1,7 @@
 import { authActions } from './auth-slice';
 
 export const setCSRFToken = () => {
+
     return async (dispatch: any) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/csrf`, { credentials: 'include' });

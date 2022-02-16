@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useImageLoad from '../../hooks/use-image-load';
-import Dropdown from '../home/Dropdown';
+import Dropdown from '../ui-components/Dropdown';
 
 import './Avatar.scss';
 
