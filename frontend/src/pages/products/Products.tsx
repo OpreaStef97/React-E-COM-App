@@ -20,7 +20,7 @@ const Products: FC<{ category?: string }> = props => {
     const { category } = props;
     const [items, setItems] = useState([]);
     const { isLoading, sendRequest } = useFetch();
-    useTitle(`ReactCOM | ${props.category === 'All' ? 'All Products' : `${props.category}s`}`);
+    useTitle(`ReactECOM | ${props.category === 'All' ? 'All Products' : `${props.category}s`}`);
     const convertData = useConvertData();
     const options = useSetOptions(category || 'All');
     const { selectState, selectHandler, deleteHandler, setHandler } = useSelect();

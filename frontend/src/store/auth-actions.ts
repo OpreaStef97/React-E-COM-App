@@ -1,11 +1,13 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { authActions } from './auth-slice';
+import { cartActions } from './cart-slice';
 
 export const setCSRFToken = () => {
-
     return async (dispatch: Dispatch) => {
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/csrf`, { credentials: 'include' });
+            const res = await fetch(`${process.env.REACT_APP_API_URL}/csrf`, {
+                credentials: 'include',
+            });
 
             if (!res.ok) {
                 throw new Error('Something went wrong when accesing the server');
@@ -32,6 +34,7 @@ export const logout = () => {
             }
 
             dispatch(authActions.loggedOut());
+            dispatch(cartActions.reinitializeCart());
         } catch (err) {
             console.error(err);
         }

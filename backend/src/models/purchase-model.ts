@@ -1,17 +1,35 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import PurchaseDoc from '../interfaces/purchase-interface';
 
 const purchaseSchema = new mongoose.Schema({
-    products: [
-        {
-            product: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Product',
-                required: true,
+    products: {
+        type: [
+            {
+                product: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Product',
+                    required: true,
+                },
+                quantity: {
+                    type: Number,
+                    validate: [
+                        function (val: number) {
+                            return val <= 10;
+                        },
+                        'You exceed the maximum quantity for this product',
+                    ],
+                    required: true,
+                },
             },
-            quantity: Number,
-        },
-    ],
+        ],
+        required: true,
+        validate: [
+            function (val: any) {
+                return val.length <= 20;
+            },
+            'Number of items exceeds 20. Please contact sales for larger orders',
+        ],
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -24,11 +42,6 @@ const purchaseSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now(),
-    },
-    sessionLifetime: {
-        type: Date,
-        default: Date.now(),
-        expires: 600,
     },
     paid: {
         type: Boolean,
@@ -44,7 +57,7 @@ purchaseSchema.pre(/^find/, function (next) {
         path: 'user',
         select: 'name _id email',
     }).populate({
-        path: 'products',
+        path: 'products.product',
         select: 'name price _id',
     });
     next();

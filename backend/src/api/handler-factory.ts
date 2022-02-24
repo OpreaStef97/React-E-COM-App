@@ -14,6 +14,7 @@ export default class HandlerFactory<T> {
             // To allow for nested GET reviews on product
             let filter = {};
             if (req.params.pid) filter = { product: req.params.pid };
+            if (req.params.uid) filter = { user: req.params.uid };
             // EXECUTE QUERY
             const features = new APIFeatures(this.model.find(filter).select(select), req.query)
                 .filter()

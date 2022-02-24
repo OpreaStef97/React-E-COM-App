@@ -42,7 +42,7 @@ export const login = catchAsync(async (req, res, next) => {
     }
 
     // 2) Check if user exitst && password is correct
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select('+password').populate('cart');
 
     if (!user || !user.password || !(await user.correctPassword(password, user.password))) {
         return next(new AppError(401, 'Incorrect email or password'));
@@ -118,7 +118,7 @@ export const isLoggedIn = catchAsync(async (req: Request, res: Response, next: N
     const decoded = await verifyAsyncJWT(req.cookies.jwt, process.env.JWT_SECRET);
 
     // 2) Check if user still exists
-    const currentUser = await User.findById(decoded.id);
+    const currentUser = await User.findById(decoded.id).populate('cart');
     if (!currentUser) {
         return next();
     }

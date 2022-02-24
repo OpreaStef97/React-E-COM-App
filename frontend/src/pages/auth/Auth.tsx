@@ -7,6 +7,7 @@ import ErrorModal from '../../components/ui-components/ErrorModal';
 import useFetch from '../../hooks/use-fetch';
 import { useForm } from '../../hooks/use-form';
 import { authActions } from '../../store/auth-slice';
+import { getCartData } from '../../store/cart-actions';
 import {
     VALIDATOR_EMAIL,
     VALIDATOR_MAXLENGTH,
@@ -93,6 +94,7 @@ const Auth: FC<{ onShow: (state: boolean) => void }> = props => {
             onShow(true);
             setDisabled(true);
             dispatch(authActions.loggingIn(data.user));
+            if (data.user.cart) dispatch(getCartData(data.user.cart, csrfToken));
         } catch (err) {
             console.error(err);
         }
@@ -167,7 +169,7 @@ const Auth: FC<{ onShow: (state: boolean) => void }> = props => {
                 </form>
                 <div className="separator" style={{ backgroundColor: '#063e46' }}></div>
                 {isLoginMode && (
-                    <p className="auth-paragraph">New to ReactCOM? Create an account now &darr;</p>
+                    <p className="auth-paragraph">New to ReactECOM? Create an account now &darr;</p>
                 )}
                 <Button
                     className="auth-btn"

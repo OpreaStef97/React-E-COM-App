@@ -10,7 +10,7 @@ import { useTitle } from '../../hooks/use-title';
 import { DeviceMobile, DeviceTablet, Laptop } from 'phosphor-react';
 
 const Home = React.forwardRef((props, ref) => {
-    useTitle(`ReactCOM | Home`);
+    useTitle(`ReactECOM | Home`);
     return (
         <div className="home">
             <SlideShowMenu ref={ref} />

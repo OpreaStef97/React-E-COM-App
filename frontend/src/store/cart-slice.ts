@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { WritableDraft } from 'immer/dist/internal';
 
 export type Cart = {
     items: {
@@ -10,31 +11,54 @@ export type Cart = {
         image: string;
         price: number;
     }[];
-    changed: boolean;
     totalQuantity: number;
     totalAmount: number;
+    modifiedAt: number;
 };
 
-const initialState: Cart = {
+const setLocalStorage = (state: WritableDraft<Cart>) => {
+    localStorage.setItem(
+        'cart',
+        JSON.stringify({
+            ...state,
+        })
+    );
+};
+
+export const initialState: Cart = {
     items: [],
     totalQuantity: 0,
     totalAmount: 0,
-    changed: false,
+    modifiedAt: new Date(Date.now()).getDate(),
 };
 
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        replaceCart(state, action) {
+        reinitializeCart(state) {
+            state.totalQuantity = 0;
+            state.totalAmount = 0;
+            state.items = [];
+            state.modifiedAt = new Date(Date.now()).getDate();
+            setLocalStorage(state);
+        },
+
+        replaceCart(state, action: { payload: Cart; type: string }) {
             state.totalQuantity = action.payload.totalQuantity;
+            state.totalAmount = action.payload.totalAmount;
             state.items = action.payload.items || [];
+            state.modifiedAt = action.payload.modifiedAt;
+            setLocalStorage(state);
         },
         addItemToCart(state, action) {
             const newItem = action.payload;
             const existingItem = state.items.find(item => item.id === newItem.id);
+            if (state.items.length === 20 || existingItem?.quantity === 10) {
+                return;
+            }
             state.totalQuantity++;
-            state.changed = true;
+            state.modifiedAt = Date.now();
             if (!existingItem) {
                 state.items.push({
                     id: newItem.id,
@@ -51,12 +75,13 @@ const cartSlice = createSlice({
                 existingItem.totalPrice += existingItem.price;
                 state.totalAmount += existingItem.price;
             }
+            setLocalStorage(state);
         },
         removeItemFromCart(state, action) {
             const id = action.payload;
             const existingItem = state.items.find(item => item.id === id);
             state.totalQuantity--;
-            state.changed = true;
+            state.modifiedAt = Date.now();
             if (existingItem) {
                 state.totalAmount -= existingItem.price;
                 if (state.totalAmount < 0) state.totalAmount = 0;
@@ -67,22 +92,19 @@ const cartSlice = createSlice({
                     existingItem.totalPrice -= existingItem.price;
                 }
             }
+            setLocalStorage(state);
         },
-
         deleteItemFromCart(state, action) {
             const id = action.payload;
             const existingItem = state.items.find(item => item.id === id);
+            state.modifiedAt = Date.now();
             if (existingItem) {
                 state.totalAmount -= existingItem.totalPrice;
                 if (state.totalAmount < 0) state.totalAmount = 0;
                 state.totalQuantity -= existingItem.quantity;
-                state.changed = true;
                 state.items = state.items.filter(item => item.id !== id);
             }
-        },
-
-        paidItems(state) {
-            state = initialState;
+            setLocalStorage(state);
         },
     },
 });

@@ -20,6 +20,8 @@ import sleep from './utils/sleep';
 import Cart from './components/cart/Cart';
 import Payment from './stripe/Payment';
 import Success from './stripe/Success';
+import { getCartData } from './store/cart-actions';
+import { cartActions } from './store/cart-slice';
 
 const App = () => {
     const { pathname } = useLocation();
@@ -41,6 +43,7 @@ const App = () => {
         if (!csrfToken) {
             return;
         }
+        const redirectStatus = new URLSearchParams(window.location.search).get('redirect_status');
         sendRequest(
             `${process.env.REACT_APP_API_URL}/users/is-logged-in`,
             'POST',
@@ -52,6 +55,11 @@ const App = () => {
         )
             .then(data => {
                 dispatch(authActions.loggingIn(data.user));
+                if (redirectStatus !== 'succeeded')
+                    dispatch(getCartData(data.user.cart, csrfToken));
+                else {
+                    dispatch(cartActions.reinitializeCart());
+                }
             })
             .catch(err => {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars

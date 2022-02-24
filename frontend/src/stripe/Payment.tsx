@@ -5,10 +5,9 @@ import useFetch from '../hooks/use-fetch';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './CheckoutForm';
 import './Payment.scss';
-
 import { loadStripe } from '@stripe/stripe-js';
 import Button from '../components/ui-components/Button';
-import { sendCartData } from '../store/cart-actions';
+
 const stripePromise = loadStripe(
     'pk_test_51KUDgVGg7aAflOuXCkyFuW66rAxxdfe339dVnAOimJ2JYjr7E7LQkA1omy1edRYzbXoJE342Fv76OKXifDm91yeR00C99LGi7b'
 );
@@ -28,8 +27,7 @@ const Payment: FC = () => {
             return;
         }
 
-        dispatch(sendCartData(cart, csrfToken, user.id))
-
+        // dispatch(sendCartData(cart, csrfToken, user.id));
         sendRequest(
             `${process.env.REACT_APP_API_URL}/payments/create-payment-intent`,
             'POST',
@@ -38,9 +36,9 @@ const Payment: FC = () => {
                 'Content-Type': 'application/json',
             },
             JSON.stringify({
-                items: [
+                products: [
                     ...items.map((item: any) => {
-                        return { id: item.id as string, quantity: item.quantity as number };
+                        return { product: item.id as string, quantity: item.quantity as number };
                     }),
                 ],
             }),

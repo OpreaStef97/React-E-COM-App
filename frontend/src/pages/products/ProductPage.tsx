@@ -29,7 +29,7 @@ const ProductPage: FC = props => {
         };
     }, [sendRequest, params.id]);
 
-    useTitle('ReactCOM | Product');
+    useTitle('ReactECOM | Product');
 
     return (
         <section className="product-page">

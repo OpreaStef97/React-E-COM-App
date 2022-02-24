@@ -1,11 +1,20 @@
 import { CircleWavyCheck } from 'phosphor-react';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Button from '../components/ui-components/Button';
+import { cartActions } from '../store/cart-slice';
 import './Success.scss';
 
 const Success: FC = props => {
-    const params = useParams();
+    // const params = useParams();
+    // const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     if (params.redirect_status === 'succeeded') {
+    //         dispatch(cartActions.reinitializeCart());
+    //     }
+    // }, [dispatch, params.redirect_status]);
 
     return (
         <section className="success">

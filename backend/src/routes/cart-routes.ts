@@ -1,14 +1,21 @@
 import express from 'express';
-import HandlerFactory from '../api/handler-factory';
-import { protect } from '../controllers/auth-controller';
-import Cart from '../models/cart-model';
-
-const factory = new HandlerFactory(Cart);
+import { protect, restrictTo } from '../controllers/auth-controller';
+import {
+    createOneCart,
+    createOrPutCart,
+    deleteOneCart,
+    getAllCarts,
+} from '../controllers/cart-controller';
 
 const router = express.Router();
 
 router.use(protect);
 
-router.route('/').get(factory.getAll()).post(factory.createOne());
+router.put('/', createOrPutCart);
+
+router.use(restrictTo('admin'));
+router.get('/', getAllCarts);
+
+router.route('/:id').post(createOneCart).delete(deleteOneCart);
 
 export default router;

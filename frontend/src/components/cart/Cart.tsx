@@ -8,7 +8,7 @@ import Button from '../ui-components/Button';
 import './Cart.scss';
 
 const Cart: FC = () => {
-    const { cart } = useSelector((state: any) => state);
+    const { cart, auth } = useSelector((state: any) => state);
     const { items, totalQuantity, totalAmount } = cart;
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -84,7 +84,7 @@ const Cart: FC = () => {
                         <Button
                             icon={<SignIn className="cart__footer-icon" />}
                             link
-                            to="/payment"
+                            to={auth.isLoggedIn ? '/payment' : '/auth'}
                             inverse
                         >
                             Checkout
