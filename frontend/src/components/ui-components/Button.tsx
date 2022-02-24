@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import './Button.scss';
 
 const Button: FC<{
+    id?: string;
     link?: boolean;
     disabled?: boolean;
     to?: string;
@@ -11,6 +12,7 @@ const Button: FC<{
     light?: boolean;
     active?: boolean;
     role?: string;
+    icon?: JSX.Element;
     style?: { [key: string]: string };
     onClick?: (...args: any[]) => void;
 }> = props => {
@@ -22,6 +24,7 @@ const Button: FC<{
         <>
             {!props.link && (
                 <button
+                    id={props.id}
                     role={props.role}
                     className={`${
                         props.light
@@ -32,11 +35,13 @@ const Button: FC<{
                     style={props.style}
                     disabled={props.disabled}
                 >
+                    {props.icon}
                     <span>{props.children}</span>
                 </button>
             )}
             {props.link && props.to && (
                 <Link
+                    id={props.id}
                     to={props.to}
                     className={`${
                         props.light
@@ -46,6 +51,7 @@ const Button: FC<{
                     onClick={props.onClick}
                     style={props.style}
                 >
+                    {props.icon}
                     <span>{props.children}</span>
                 </Link>
             )}

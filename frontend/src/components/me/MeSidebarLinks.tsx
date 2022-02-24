@@ -18,11 +18,6 @@ const MeSidebarLinks: FC<{ onClick?: () => void }> = props => {
                 </Link>
             </li>
             <li className="me-sidebar-item">
-                <Link className="me-sidebar-item__link" onClick={onClick} to="/me/cart">
-                    My cart
-                </Link>
-            </li>
-            <li className="me-sidebar-item">
                 <Link className="me-sidebar-item__link" onClick={onClick} to="/me/reviews">
                     My reviews
                 </Link>

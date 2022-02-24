@@ -17,15 +17,20 @@ import MePage from './pages/me-page/MePage';
 import { setCSRFToken } from './store/auth-actions';
 import { authActions } from './store/auth-slice';
 import sleep from './utils/sleep';
+import Cart from './components/cart/Cart';
+import Payment from './stripe/Payment';
+import Success from './stripe/Success';
 
 const App = () => {
     const { pathname } = useLocation();
     const [showNotification, setShowNotification] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
-    const { csrfToken, user, isLoggedIn } = useSelector((state: any) => state.auth);
-    const { isLoading, sendRequest } = useFetch();
+    const { auth, cart } = useSelector((state: any) => state);
+    const { csrfToken, user, isLoggedIn } = auth;
+    const { totalAmount } = cart;
 
+    const { isLoading, sendRequest } = useFetch();
     const location = useLocation();
 
     useEffect(() => {
@@ -67,21 +72,24 @@ const App = () => {
                 message={`Welcome ${user && user?.name?.split(' ')[0]}!`}
                 onCancel={() => setShowNotification(false)}
             />
-            <ScrollToTop>
-                <TransitionGroup component={null}>
-                    <CSSTransition
-                        key={location.pathname.startsWith('/me') ? '' : location.pathname}
-                        timeout={400}
-                        classNames="fade"
-                    >
-                        <main>
+            <TransitionGroup component={null}>
+                <CSSTransition
+                    key={location.pathname.startsWith('/me') ? '' : location.pathname}
+                    timeout={400}
+                    classNames="fade"
+                >
+                    <main>
+                        <ScrollToTop>
                             <Routes location={location}>
+                                <Route path="/" element={<Home ref={ref} />} />
+                                <Route path="/cart" element={<Cart />} />
+                                {totalAmount > 0 && <Route path="/payment" element={<Payment />} />}
+                                <Route path="/payment/success" element={<Success />} />
                                 {isLoggedIn ? (
                                     <Route path="/me/*" element={<MePage />} />
                                 ) : (
                                     <Route path="/auth" element={<Auth onShow={onShowHandler} />} />
                                 )}
-                                <Route path="/" element={<Home ref={ref} />} />
                                 <Route path="/products" element={<Products category="All" />} />
                                 <Route
                                     path="/products/phones"
@@ -98,10 +106,10 @@ const App = () => {
                                 <Route path="/product/:slug/:id" element={<ProductPage />} />
                                 <Route path="*" element={<Navigate to={'/'} />} />
                             </Routes>
-                        </main>
-                    </CSSTransition>
-                </TransitionGroup>
-            </ScrollToTop>
+                        </ScrollToTop>
+                    </main>
+                </CSSTransition>
+            </TransitionGroup>
             <Footer isLoading={isLoading} />
         </ErrorBoundary>
     );

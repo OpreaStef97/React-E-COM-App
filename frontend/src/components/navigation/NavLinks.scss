@@ -51,6 +51,10 @@
                     span {
                         display: none;
                     }
+                    .cart-counter {
+                        right: 12%;
+                        display: inline-flex;
+                    }
                     svg {
                         width: 3rem;
                         height: 3rem;
@@ -85,6 +89,7 @@
         &-cart {
             &:link,
             &:visited {
+                position: relative;
                 color: $color-tertiary-light-3;
                 text-decoration: none;
                 box-shadow: none;
@@ -128,5 +133,43 @@
                 }
             }
         }
+    }
+}
+
+.cart-counter {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    position: absolute;
+    height: 1.7rem;
+    width: 1.7rem;
+    background-color: $color-tertiary-light-3;
+    top: 15%;
+    right: 22%;
+    border-radius: 50%;
+    color: $color-tertiary-dark-1;
+
+    animation: expand-in-and-out 0.5s;
+}
+
+@keyframes expand-in-and-out {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.nav-links__list-cart:hover {
+    .cart-counter {
+        background-color: $color-tertiary-dark-1;
+        color: $color-tertiary-light-3;
     }
 }

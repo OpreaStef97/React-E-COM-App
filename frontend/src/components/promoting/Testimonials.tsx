@@ -11,7 +11,7 @@ const Testimonials = () => {
     useEffect(() => {
         sendRequest(`${process.env.REACT_APP_API_URL}/users?page=2&limit=5`)
             .then(data => {
-                setUserData(data.users);
+                setUserData(data.docs);
             })
             .catch(console.error);
         return () => setUserData([]);

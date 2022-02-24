@@ -2,13 +2,14 @@ import { useLocation } from 'react-router-dom';
 import Button from '../ui-components/Button';
 import Offer from '../promoting/Offer';
 import './ProductsSideBar.scss';
-import useWindowWidth from '../../hooks/use-window-width';
+import useWindow from '../../hooks/use-window';
 import TransitionSlider from '../ui-components/TransitionSlider';
+import { DeviceMobile, DeviceTablet, Laptop, ShoppingBagOpen } from 'phosphor-react';
 
 const ProductsSideBar = (props: { className?: string }) => {
     const { pathname } = useLocation();
 
-    const width = useWindowWidth(null, null);
+    const [width] = useWindow();
 
     return (
         <div className={`products__side-bar ${props.className}`}>
@@ -20,6 +21,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                         light
                         link
                         active={pathname === '/products/laptops' ? true : false}
+                        icon={<Laptop />}
                     >
                         Laptops
                     </Button>
@@ -30,6 +32,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                         light
                         link
                         active={pathname === '/products/phones' ? true : false}
+                        icon={<DeviceMobile />}
                     >
                         Phones
                     </Button>
@@ -40,12 +43,13 @@ const ProductsSideBar = (props: { className?: string }) => {
                         light
                         link
                         active={pathname === '/products/tablets' ? true : false}
+                        icon={<DeviceTablet />}
                     >
                         Tablets
                     </Button>
                 </li>
                 <li className="products__side-bar__list--item">
-                    <Button to={'/products'} light link>
+                    <Button to={'/products'} light link icon={<ShoppingBagOpen />}>
                         Others...
                     </Button>
                 </li>

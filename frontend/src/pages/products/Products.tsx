@@ -3,7 +3,6 @@ import MenuSelect from '../../components/form/MenuSelect';
 import ProductList from '../../components/products/ProductList';
 import ProductsGrid from '../../components/products/ProductsGrid';
 import ProductsSideBar from '../../components/products/ProductsSideBar';
-import LoadingSpinner from '../../components/ui-components/LoadingSpinner';
 import Pagination from '../../components/ui-components/Pagination';
 import SectionTitle from '../../components/ui-components/SectionTitle';
 import useConvertData from '../../hooks/use-convert-data';
@@ -13,14 +12,15 @@ import useRequestFilter from '../../hooks/use-request-filter';
 import useRequestSort from '../../hooks/use-request-sort';
 import useSelect from '../../hooks/use-select';
 import useSetOptions from '../../hooks/use-set-options';
+import useSmoothScroll from '../../hooks/use-smooth-scroll';
 import { useTitle } from '../../hooks/use-title';
 import './Products.scss';
 
-const Products: FC<{ category?: string; options?: any }> = props => {
+const Products: FC<{ category?: string }> = props => {
     const { category } = props;
-    const [items, setItems] = useState<any>([]);
+    const [items, setItems] = useState([]);
     const { isLoading, sendRequest } = useFetch();
-    useTitle(`ReactCOM | ${(props.category && `${props.category}s`) || 'All Products'}`);
+    useTitle(`ReactCOM | ${props.category === 'All' ? 'All Products' : `${props.category}s`}`);
     const convertData = useConvertData();
     const options = useSetOptions(category || 'All');
     const { selectState, selectHandler, deleteHandler, setHandler } = useSelect();
@@ -32,7 +32,7 @@ const Products: FC<{ category?: string; options?: any }> = props => {
     const limit = useLimit(selectState);
 
     useEffect(() => {
-        if (limit || filter) setPageNumber(1);
+        setPageNumber(1);
     }, [limit, filter]);
 
     useEffect(() => {
@@ -54,6 +54,8 @@ const Products: FC<{ category?: string; options?: any }> = props => {
             .catch(console.error);
         return () => setItems([]);
     }, [category, sendRequest, convertData, limit, pageNumber, sorting, filter]);
+
+    const smoothScroll = useSmoothScroll();
 
     return (
         <>
@@ -103,18 +105,14 @@ const Products: FC<{ category?: string; options?: any }> = props => {
                             pageNumber={pageNumber}
                             pageSize={+limit}
                         />
-                        {isLoading && (
-                            <div className="products__container--loader">
-                                <p>Loading...</p>
-                                <LoadingSpinner/>
-                            </div>
-                        )}
-                        {!isLoading && (
-                            <ProductsGrid key={props.category} sorting={sorting} items={items} />
-                        )}
+                        {isLoading && <div className="products__container--loader"></div>}
+                        {!isLoading && <ProductsGrid key={props.category} items={items} />}
                         <Pagination
                             className="margin-top"
-                            onPageChange={page => setPageNumber(page)}
+                            onPageChange={async page => {
+                                await smoothScroll();
+                                setPageNumber(page);
+                            }}
                             totalSize={totalSize}
                             pageNumber={pageNumber}
                             pageSize={+limit}

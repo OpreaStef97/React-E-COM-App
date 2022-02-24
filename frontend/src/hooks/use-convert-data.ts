@@ -6,7 +6,7 @@ export default function useConvertData() {
             products.map((product: any) => {
                 return {
                     name: product.name,
-                    image: `${process.env.REACT_APP_RESOURCES_URL}/images/products//${product.images[0]}`,
+                    images: product.images,
                     price: product.price,
                     brand: product.brand,
                     RAM: product.default.RAM,

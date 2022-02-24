@@ -3,7 +3,9 @@ import mongoose from 'mongoose';
 
 import Review from '../models/review-model';
 import catchAsync from '../utils/catch-async';
-import { createOne, deleteOne, getAll, getOne, updateOne } from './handler-factory';
+import HandlerFactory from '../api/handler-factory';
+
+const factory = new HandlerFactory(Review);
 
 export const setProductUserIds = (req: Request, res: Response, next: NextFunction) => {
     if (!req.body.product) req.body.product = req.params.pid;
@@ -11,11 +13,11 @@ export const setProductUserIds = (req: Request, res: Response, next: NextFunctio
     next();
 };
 
-export const getAllReviews = getAll(Review);
-export const getReview = getOne(Review, 'product', '-status');
-export const createReview = createOne(Review);
-export const updateReview = updateOne(Review);
-export const deleteReview = deleteOne(Review);
+export const getAllReviews = factory.getAll();
+export const getReview = factory.getOne('product', '-status');
+export const createReview = factory.createOne();
+export const updateReview = factory.updateOne();
+export const deleteReview = factory.deleteOne();
 
 export const getReviewRatingsPerProduct = catchAsync(async (req, res) => {
     console.log(req.params.pid);

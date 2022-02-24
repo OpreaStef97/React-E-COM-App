@@ -1,5 +1,8 @@
-import { CaretLeft, CaretRight } from 'phosphor-react';
-import { FC, Fragment, useState } from 'react';
+import { CaretLeft, CaretRight, ShoppingCart } from 'phosphor-react';
+import React from 'react';
+import { FC, Fragment, useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { cartActions } from '../../store/cart-slice';
 import Button from '../ui-components/Button';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
 import Stars from '../ui-components/Stars';
@@ -8,9 +11,13 @@ import './ProductContent.scss';
 import ProductOptions from './ProductOptions';
 
 const ProductContent: FC<{ product: any }> = props => {
-    const [imageLoaded, setImageLoaded] = useState(false);
-
     const { product } = props;
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const dispatch = useDispatch();
+
+    const addItemToCartHandler = useCallback((item: any) => {
+        dispatch(cartActions.addItemToCart(item));
+    }, [dispatch]);
 
     return (
         <div className="product-content">
@@ -66,11 +73,24 @@ const ProductContent: FC<{ product: any }> = props => {
                     })}
             </div>
             <div className="product-content__cart">
-                <Button style={{ transform: 'scale(1.3)' }}>ADD TO CART</Button>
+                <Button
+                    onClick={() =>
+                        addItemToCartHandler({
+                            id: product.id,
+                            slug: product.slug,
+                            price: product.price,
+                            image: product.images[0],
+                            name: product.name,
+                        })
+                    }
+                    icon={<ShoppingCart className="product-content__cart--icon" />}
+                    style={{ transform: 'scale(1.3)' }}
+                >
+                    ADD TO CART
+                </Button>
             </div>
         </div>
     );
 };
-
 
 export default ProductContent;

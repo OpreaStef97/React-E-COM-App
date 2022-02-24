@@ -1,8 +1,9 @@
 import AppError from '../models/error-model';
 import User from '../models/user-model';
-import APIFeatures from '../utils/api-features';
 import catchAsync from '../utils/catch-async';
-import { createOne, deleteOne, getOne, updateOne } from './handler-factory';
+import HandlerFactory from '../api/handler-factory';
+
+const factory = new HandlerFactory(User);
 
 const filterObj = (obj: { [key: string]: string }, ...allowedFields: string[]) => {
     const newObj: { [key: string]: string } = {};
@@ -14,28 +15,11 @@ const filterObj = (obj: { [key: string]: string }, ...allowedFields: string[]) =
     return newObj;
 };
 
-export const getAllUsers = catchAsync(async (req, res) => {
-    const features = new APIFeatures(
-        User.find().select('name photo id') /*returns query obj*/,
-        req.query
-    )
-        .filter()
-        .sort()
-        .limitFields()
-        .paginate();
-
-    const users = await features.query;
-
-    res.status(200).json({
-        status: 'success',
-        users,
-    });
-});
-
-export const getUser = getOne(User);
-export const updateUser = updateOne(User);
-export const createUser = createOne(User);
-export const deleteUser = deleteOne(User);
+export const getAllUsers = factory.getAll('name photo id');
+export const getUser = factory.getOne();
+export const updateUser = factory.updateOne();
+export const createUser = factory.createOne();
+export const deleteUser = factory.deleteOne();
 
 export const updateMe = catchAsync(async (req, res, next) => {
     // 1) Create error if user POSTs password data

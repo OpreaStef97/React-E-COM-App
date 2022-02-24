@@ -1,8 +1,9 @@
+import { Dispatch } from '@reduxjs/toolkit';
 import { authActions } from './auth-slice';
 
 export const setCSRFToken = () => {
 
-    return async (dispatch: any) => {
+    return async (dispatch: Dispatch) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/csrf`, { credentials: 'include' });
 
@@ -20,7 +21,7 @@ export const setCSRFToken = () => {
 };
 
 export const logout = () => {
-    return async (dispatch: any) => {
+    return async (dispatch: Dispatch) => {
         try {
             const res = await fetch(`${process.env.REACT_APP_API_URL}/users/logout`, {
                 credentials: 'include',

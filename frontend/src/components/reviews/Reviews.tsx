@@ -14,12 +14,11 @@ import Modal from '../ui-components/Modal';
 import './Reviews.scss';
 import ReviewStats from './ReviewStats';
 
-const Reviews: FC<{rating?: number}> = props => {
+const Reviews: FC<{rating?: number, id?: string}> = props => {
     const [reviews, setReviews] = useState([]);
     const [addReview, setAddReview] = useState(false);
     const [selectTouched, setSelectTouched] = useState(false);
     const { sendRequest, isLoading } = useFetch();
-    const params = useParams();
     const { csrfToken } = useSelector((state: any) => state.auth);
     const { selectState, setHandler, selectHandler, deleteHandler } = useSelect();
     const [formState, inputHandler] = useForm(
@@ -35,20 +34,23 @@ const Reviews: FC<{rating?: number}> = props => {
         },
         false
     );
+
+    const {id} = props;
+
     useEffect(() => {
-        sendRequest(`${process.env.REACT_APP_API_URL}/products/${params.id}/reviews`)
+        sendRequest(`${process.env.REACT_APP_API_URL}/products/${id}/reviews`)
             .then(data => {
                 setReviews(data.docs);
             })
             .catch(console.error);
 
         return () => setReviews([]);
-    }, [sendRequest, params]);
+    }, [sendRequest, id]);
 
     useEffect(() => {
         setHandler({
             rating: {
-                options: ['1⭐', '2⭐', '3⭐', '4⭐', '5⭐'],
+                options: ['5⭐', '4⭐', '3⭐', '2⭐', '1⭐'],
                 selected: [false, false, false, false, false],
             },
         });
@@ -74,7 +76,7 @@ const Reviews: FC<{rating?: number}> = props => {
             return;
         }
         sendRequest(
-            `${process.env.REACT_APP_API_URL}/products/${params.id}/reviews`,
+            `${process.env.REACT_APP_API_URL}/products/${id}/reviews`,
             'POST',
             {
                 'Content-Type': 'application/json',

@@ -1,0 +1,103 @@
+@import '../sass/variables.scss';
+@import '../sass/utilities.scss';
+
+.payment {
+    height: 90vh;
+    padding: 0 1rem;
+    margin: 10rem auto;
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: 52.5em) {
+        height: auto;
+    }
+
+    &__container {
+        background-color: $color-primary-light-1;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.2);
+        height: 80vh;
+        min-width: 70vw;
+        border-radius: 1rem;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        @media (max-width: 52.5em) {
+            height: auto;
+        }
+    }
+
+    &__header {
+        height: 10rem;
+        flex-shrink: 0;
+        width: 100%;
+        background-image: linear-gradient(to right, $color-primary-light-3, $color-primary);
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        h2 {
+            font-size: 3rem;
+            color: $color-primary-dark-2;
+        }
+
+        svg {
+            height: 7rem;
+            width: 7rem;
+            color: $color-primary-dark-2;
+        }
+
+        &-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        p {
+            display: inline-block;
+            width: 15rem;
+            font-size: 3rem;
+            font-weight: 500;
+            color: $color-primary-dark-3;
+        }
+    }
+
+    &__footer {
+        padding: 0 4rem;
+        width: 100%;
+        background-image: linear-gradient(to right, $color-tertiary, $color-tertiary-light-1);
+        height: 10rem;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        svg {
+            height: 1.6rem;
+            width: 1.6rem;
+        }
+
+        p {
+            font-size: 3rem;
+            color: $color-tertiary-dark-3;
+        }
+    }
+
+    &__checkout {
+        padding: 2rem 20%;
+        width: 100%;
+
+        @include scroll();
+
+        @media (max-width: 68.75em) {
+            padding: 1rem 10rem;
+        }
+
+        @media (max-width: 52.5em) {
+            flex-grow: 1;
+            padding: 1rem 1rem;
+        }
+    }
+}

@@ -1,5 +1,5 @@
 import { CircleNotch } from 'phosphor-react';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from '../../components/form/Input';
 import Button from '../../components/ui-components/Button';
@@ -105,7 +105,13 @@ const Auth: FC<{ onShow: (state: boolean) => void }> = props => {
     return (
         <section className="auth">
             <div className="auth-container">
-                <ErrorModal error={error} onClear={clearError} />
+                <ErrorModal
+                    error={error}
+                    onClear={(e: React.MouseEvent) => {
+                        e.preventDefault();
+                        clearError();
+                    }}
+                />
                 <h2>{isLoginMode ? 'Authenticate' : 'Create an account'}</h2>
                 <div className="separator" style={{ backgroundColor: '#063e46' }}></div>
                 <form className="auth-form" onSubmit={authSubmitHandler}>

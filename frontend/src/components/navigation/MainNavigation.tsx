@@ -6,7 +6,7 @@ import Search from './Search';
 import Logo from '../ui-components/Logo';
 import NavLinks from './NavLinks';
 import MainHeader from './MainHeader';
-import useWindowWidth from '../../hooks/use-window-width';
+import useWindow from '../../hooks/use-window';
 import BackDrop from '../ui-components/BackDrop';
 import SideDrawer from './SideDrawer';
 import useIntersect from '../../hooks/use-intersect';
@@ -17,7 +17,7 @@ const MainNav = React.forwardRef((props, ref) => {
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
     const navigate = useNavigate();
 
-    const width = useWindowWidth(null, null);
+    const [width] = useWindow();
     const intersecting = useIntersect(ref as RefObject<unknown>);
 
     useEffect(() => {

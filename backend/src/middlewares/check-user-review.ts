@@ -8,7 +8,7 @@ export const checkUserReview = catchAsync(async (req, res, next) => {
         return next(new AppError(404, "Can't find any document for the provided id"));
     }
     if (doc.user.id !== req.user.id) {
-        return next(new AppError(403, 'You are not the creator for this review`'));
+        return next(new AppError(403, 'You are not the creator of this review'));
     }
 
     next();

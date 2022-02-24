@@ -9,7 +9,10 @@ import Avatar from './Avatar';
 import './NavLinks.scss';
 
 const NavLinks: FC<{ onClick?: () => void }> = props => {
-    const { isLoggedIn, user } = useSelector((state: any) => state.auth);
+    const { auth, cart } = useSelector((state: any) => state);
+
+    const { isLoggedIn, user } = auth;
+    const { totalQuantity } = cart;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -59,12 +62,17 @@ const NavLinks: FC<{ onClick?: () => void }> = props => {
             <li className="nav-links__list-item nav-links__list-item--cart">
                 <Link
                     className="nav-links__list-link nav-links__list-cart"
-                    to="/"
+                    to="/cart"
                     aria-label="nav-links-cart"
                     onClick={props.onClick}
                 >
                     <span>CART</span>
                     <ShoppingCart />
+                    {totalQuantity > 0 && (
+                        <span key={totalQuantity} className="cart-counter">
+                            {totalQuantity}
+                        </span>
+                    )}
                 </Link>
             </li>
         </ul>

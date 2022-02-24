@@ -56,9 +56,6 @@ const MenuSelect: FC<{
                 ref={ref}
             >
                 <div className={`menu-select__select ${props.error ? 'error' : ''}`}>
-                    <div onClick={showHandler} className="menu-select__select-placeholder">
-                        <p>{props.error ? props.errorText : placeholder}</p>
-                    </div>
                     {!props.onlySelect && (
                         <button
                             onClick={onDelete && onDelete.bind(null, id)}
@@ -76,8 +73,14 @@ const MenuSelect: FC<{
                             <XCircle className="menu-select__select-close-icon" />
                         </button>
                     )}
+                    <div onClick={showHandler} className="menu-select__select-placeholder">
+                        <p>{props.error ? props.errorText : placeholder}</p>
+                    </div>
                     <button
-                        onClick={showHandler}
+                        onClick={e => {
+                            e.preventDefault();
+                            showHandler();
+                        }}
                         aria-label="open-select"
                         className="menu-select__select-open"
                     >

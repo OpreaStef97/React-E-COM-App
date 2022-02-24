@@ -11,3 +11,40 @@
 .bg-color-1 {
     background-color: $color-primary-light-4 !important;
 }
+
+@mixin scroll {
+    overflow-y: overlay;
+
+    @supports not (overflow-y: overlay) {
+        overflow-y: auto;
+    }
+
+    &::-webkit-scrollbar {
+        width: 2em;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $color-primary-light-3;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $color-primary-dark-1;
+        border: 0.25em solid $color-primary-light-3;
+        border-radius: 1em;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: $color-primary-dark-2;
+    }
+
+    @supports (scrollbar-color: red blue) {
+        * {
+            scrollbar-color: $color-primary-dark-1 $color-primary-light-3;
+            scrollbar-width: auto;
+        }
+    }
+
+    @media (max-width: 52.5em) {
+        overflow-y: visible;
+    }
+}

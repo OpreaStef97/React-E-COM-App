@@ -14,7 +14,7 @@
 
 .modal {
     min-width: clamp(40rem, 40vw, 60vw);
-    min-height: clamp(30vh, 30%, 80vh);
+    min-height: 25rem;
     background: $color-primary-light-1;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
     border-radius: 1rem;
@@ -47,7 +47,7 @@
     &-form {
         height: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         flex-direction: column;
         padding-bottom: 1rem;
     }
@@ -57,7 +57,7 @@
     }
 
     &__content {
-        height: 100%;
+        min-height: 16rem;
         display: flex;
         justify-content: center;
         align-items: center;

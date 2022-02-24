@@ -27,6 +27,7 @@
                 rgba($color-primary-dark-2, 0.4) 100%
             );
             justify-content: center;
+            gap: 2rem;
             align-items: center;
             flex-direction: column;
 
@@ -39,19 +40,17 @@
                 display: inline-block;
                 font-weight: 400;
                 display: inline-block;
-                font-size: 4rem;
+                font-size: 3rem;
             }
 
             @media (max-width: 52.5em) {
-                padding-right: 3rem;
-                padding-left: 3rem;
+                padding: 3rem;
                 justify-content: start;
                 height: 50%;
                 width: 100%;
 
-                clip-path: polygon(0 0, 200% 0, 0% 70%, 0% 100%);
+                clip-path: polygon(0 0, 200% 0, 0% 90%, 0% 100%);
                 h2 {
-                    margin-top: 5rem;
                     font-size: 2.5rem;
                 }
             }

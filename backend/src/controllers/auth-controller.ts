@@ -1,28 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import AppError from '../models/error-model';
 import User from '../models/user-model';
-import { signAsyncJWT, verifyAsyncJWT } from '../utils/async-jwt';
+import { verifyAsyncJWT } from '../utils/async-jwt';
 import catchAsync from '../utils/catch-async';
-
-const createToken = async (id: string) => {
-    if (
-        !process.env.JWT_SECRET ||
-        !process.env.JWT_EXPIRES_IN ||
-        !process.env.JWT_COOKIE_EXPIRES_IN
-    )
-        throw new AppError(500, 'Something went very wrong');
-    const token = await signAsyncJWT({ id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-    });
-    const cookieOptions: { [key: string]: string | boolean | number | Date } = {
-        expires: new Date(Date.now() + +process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-    };
-
-    return { token, cookieOptions };
-};
+import createCookieToken from '../utils/create-cookie-token';
 
 export const signUp = catchAsync(async (req, res) => {
     const { name, email, password, passwordConfirm } = req.body;
@@ -38,7 +19,7 @@ export const signUp = catchAsync(async (req, res) => {
     const sess = await User.startSession();
     sess.startTransaction();
     await newUser.save({ session: sess });
-    const { token, cookieOptions } = await createToken(newUser._id);
+    const { token, cookieOptions } = await createCookieToken(newUser._id);
     await sess.commitTransaction();
     await sess.endSession();
 
@@ -68,7 +49,7 @@ export const login = catchAsync(async (req, res, next) => {
     }
 
     // 3) If everything ok, send token to client
-    const { token, cookieOptions } = await createToken(user._id);
+    const { token, cookieOptions } = await createCookieToken(user._id);
 
     const resultUser = {
         ...user.toObject({ getters: true }),
@@ -191,7 +172,7 @@ export const updatePassword = catchAsync(async (req, res, next) => {
     user.passwordConfirm = req.body.passwordConfirm;
     await user.save();
 
-    const { token, cookieOptions } = await createToken(user._id);
+    const { token, cookieOptions } = await createCookieToken(user._id);
 
     await session.commitTransaction();
     session.endSession();

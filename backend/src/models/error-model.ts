@@ -1,4 +1,4 @@
-class AppError extends Error {
+export default class AppError extends Error {
     public status: string;
     public statusCode: number;
     public message: string;
@@ -13,5 +13,3 @@ class AppError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
-
-export default AppError;

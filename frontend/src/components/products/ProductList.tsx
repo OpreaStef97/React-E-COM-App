@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import useFetch from '../../hooks/use-fetch';
 import usePrevious from '../../hooks/use-previos';
-import useWindowWidth from '../../hooks/use-window-width';
+import useShowCards from '../../hooks/use-show-cards';
 import ListButton from './ListButton';
 import ProductItem from './ProductItem';
 
@@ -9,13 +9,12 @@ import './ProductList.scss';
 
 const ProductList: FC<{ category?: string; exclude?: string }> = props => {
     const [index, setIndex] = useState(0);
-    const [numberOfShownCards, setNumberOfShownCards] = useState(3);
     const [allDataLoaded, setAllDataLoaded] = useState(false);
     const [products, setProducts] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [max, setMax] = useState<number>(-1);
 
-    useWindowWidth(setNumberOfShownCards, setIndex);
+    const numberOfShownCards = useShowCards();
 
     const { category, exclude } = props;
     const { isLoading, sendRequest } = useFetch();
@@ -27,11 +26,15 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
             setAllDataLoaded(false);
             setPage(1);
             setMax(-1);
+            setIndex(0);
         }
     }, [prevNumberOfShownCards, numberOfShownCards]);
 
     // first request
     useEffect(() => {
+        if (!numberOfShownCards) {
+            return;
+        }
         sendRequest(
             `${process.env.REACT_APP_API_URL}/products?page=1&limit=${
                 numberOfShownCards < 3 ? 4 : numberOfShownCards
@@ -74,6 +77,9 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
     );
 
     const moveRightHandler = () => {
+        if (!numberOfShownCards) {
+            return;
+        }
         if (!allDataLoaded) {
             if (numberOfShownCards >= 3 && page === index + 1)
                 sendRequestHandler(numberOfShownCards);
@@ -109,16 +115,10 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
                         products.map((product: any, idx: number) => {
                             return (
                                 <ProductItem
+                                    product={product}
                                     key={idx}
-                                    name={product.name}
-                                    price={product.price}
                                     numberOfShownCards={numberOfShownCards}
                                     idx={idx}
-                                    imgUrl={`${process.env.REACT_APP_RESOURCES_URL}/images/products//${product.images[0]}`}
-                                    id={product.id}
-                                    ratingsAverage={product.ratingsAverage}
-                                    ratingsQuantity={product.ratingsQuantity}
-                                    slug={product.slug}
                                 />
                             );
                         })}

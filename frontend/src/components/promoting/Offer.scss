@@ -34,7 +34,7 @@
             justify-content: center;
             align-items: center;
             font-size: 2rem;
-            background-color: rgba(230, 73, 128, 0.9);
+            background-color: rgba($color-tertiary-dark-1, 0.9);
             height: 5rem;
             width: 110%;
             transform: rotate(-10deg);
@@ -47,7 +47,7 @@
             justify-content: center;
             align-items: center;
             font-size: 2rem;
-            background-color: rgba(230, 73, 128, 1);
+            background-color: rgba($color-tertiary-dark-1, 1);
             height: 5rem;
             width: 110%;
             transform: rotate(10deg);
@@ -55,7 +55,7 @@
         &__box {
             height: 25%;
             width: 100%;
-            background-color: rgba(230, 73, 128, 0.6);
+            background-color: rgba($color-tertiary-dark-1, 0.6);
             justify-self: flex-end;
             margin-top: auto;
             display: flex;

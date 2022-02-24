@@ -20,7 +20,7 @@ const Pagination: FC<{
     });
 
     if (pageNumber === 0 || (paginationRange && paginationRange.length < 2)) {
-        return null;
+        return <div style={{ height: '4.5rem', width: '100%' }}></div>;
     }
 
     const nextHandler = () => {

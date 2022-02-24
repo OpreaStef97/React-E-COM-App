@@ -29,7 +29,7 @@ const MePage: FC = props => {
             ></Modal>
             <section className="me">
                 <div className="me-container">
-                    <div className="me-header">
+                    <header className="me-header">
                         <h2>
                             Hi {`${user && user.name && user.name.split(' ')[0]}`}, here you can
                             manage your account.
@@ -42,7 +42,7 @@ const MePage: FC = props => {
                                 alt={`${user.name}' pic`}
                             />
                         )}
-                    </div>
+                    </header>
                     <MeSidebar />
                     <div className="me-content">
                         <TransitionGroup>
@@ -63,10 +63,6 @@ const MePage: FC = props => {
                                             element={
                                                 <div className="me-favorites">My Favorites</div>
                                             }
-                                        />
-                                        <Route
-                                            path="/cart"
-                                            element={<div className="me-cart">My Cart</div>}
                                         />
                                         <Route
                                             path="/reviews"

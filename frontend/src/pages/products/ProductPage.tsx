@@ -27,14 +27,14 @@ const ProductPage: FC = props => {
             setCategory('');
             setProduct(undefined);
         };
-    }, [sendRequest, params]);
+    }, [sendRequest, params.id]);
 
     useTitle('ReactCOM | Product');
 
     return (
         <section className="product-page">
             <ProductContent product={product} />
-            <Reviews rating={product?.ratingsAverage} />
+            <Reviews rating={product?.ratingsAverage} id={params.id} />
             <SectionTitle>Other similar items:</SectionTitle>
             <ProductList exclude={params.id} category={category} />
         </section>

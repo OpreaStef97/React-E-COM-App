@@ -13,7 +13,6 @@
         position: inherit;
         width: 3rem;
         height: 3rem;
-        // background-color: $color-secondary-light-1;
         svg {
             width: 1.6rem;
             height: 1.6rem;
@@ -34,7 +33,7 @@
 
     .active {
         box-shadow: 0 0rem 1.5rem rgba($color-tertiary-dark-1, 30%);
-        background-color: $color-tertiary-light-1;
+        background-color: $color-tertiary;
         box-shadow: 0 0 1rem rgba($color-tertiary-dark-1, 30%);
 
         span {

@@ -16,9 +16,13 @@ const xssClean = require('xss-clean');
 import productsRouter from './src/routes/product-routes';
 import usersRouter from './src/routes/user-routes';
 import reviewsRouter from './src/routes/review-routes';
+import purchasesRouter from './src/routes/purchase-routes';
+import cartRouter from './src/routes/cart-routes';
 
 import AppError from './src/models/error-model';
 import globalErrorHandler from './src/controllers/error-controller';
+import { webHookEventListener } from './src/controllers/purchase-controller';
+// import { createCarts } from './src/middlewares/carts';
 
 dotenv.config({ path: './config.env' });
 const app = express();
@@ -41,11 +45,18 @@ process.on('uncaughtException', err => {
         cors({
             credentials: true,
             origin: ['http://localhost:3000', 'http://192.168.100.32:3000'],
-            allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+            allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'stripe-signature'],
         })
     );
 
-    app.use(express.json({ limit: '10kb' }));
+    app.use((req, res, next) => {
+        if (req.originalUrl === '/webhook') {
+            next();
+        } else {
+            express.json({ limit: '10kb' })(req, res, next);
+        }
+    });
+
     app.use(express.urlencoded({ extended: true, limit: '10kb' }));
     app.use(cookieParser());
 
@@ -54,7 +65,7 @@ process.on('uncaughtException', err => {
         expressLimiter({
             max: 5000,
             windowMs: 60 * 60 * 1000,
-            message: 'Too many requests from this IP, please try again in an hour',
+            message: 'Too many reqs from this IP, please try again in an hour',
         })
     );
 
@@ -71,9 +82,12 @@ process.on('uncaughtException', err => {
     // Prevent parameter polution
     app.use(
         hpp({
-            whitelist: ['category', 'type', 'brand', 'default_RAM', 'default_storage'],
+            whitelist: ['category', 'type', 'brand', 'default[RAM]', 'default[storage]', '_id'],
         })
     );
+
+    app.post('/webhook', express.raw({ type: 'application/json' }), webHookEventListener);
+    // app.post('/api/carts', createCarts);
 
     const csrfProtection = csrf({
         cookie: true,
@@ -93,11 +107,12 @@ process.on('uncaughtException', err => {
     app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
     // ROUTES
-    /////////////////////////////////////
-
+    ////////////////////////////////////
     app.use('/api/products', productsRouter);
+    app.use('/api/cart', cartRouter);
     app.use('/api/users', usersRouter);
     app.use('/api/reviews', reviewsRouter);
+    app.use('/api/payments', purchasesRouter);
 
     app.all('*', (req, res, next) => {
         next(new AppError(404, `Can't find ${req.originalUrl} on this server`));
