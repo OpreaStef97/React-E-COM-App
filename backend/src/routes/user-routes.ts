@@ -14,6 +14,7 @@ import {
     deleteUser,
     getAllUsers,
     getUser,
+    putFavorite,
     updateMe,
     updateUser,
 } from '../controllers/user-controller';
@@ -32,6 +33,7 @@ router.get('/logout', logout);
 
 router.use(protect);
 
+router.put('/favorites', putFavorite);
 router.patch('/update-password', updatePassword);
 router.patch('/update-me', fileUpload.single('photo'), resizePhoto, updateMe);
 router.delete('/delete-me', deleteMe);

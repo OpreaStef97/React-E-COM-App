@@ -43,11 +43,11 @@ const cartSchema = new mongoose.Schema({
     modifiedAt: {
         type: Date,
         default: Date.now(),
+        expires: '30d',
     },
     createdAt: {
         type: Date,
         default: Date.now(),
-        expires: '30d',
     },
 });
 
@@ -55,9 +55,6 @@ cartSchema.index({ user: 1 }, { unique: true });
 
 cartSchema.pre(/^find/, function (next) {
     this.populate({
-        path: 'user',
-        select: 'name _id email',
-    }).populate({
         path: 'products.product',
         select: 'name _id images slug price',
     });

@@ -2,9 +2,9 @@ import { CaretCircleDown } from 'phosphor-react';
 import { useEffect, useRef, useState } from 'react';
 import useClickOutside from '../../hooks/use-clicks-outside';
 import Dropdown from '../ui-components/Dropdown';
-import Button from '../ui-components/Button';
 import './MeSidebar.scss';
 import MeSidebarLinks from './MeSidebarLinks';
+import LogoutButton from '../ui-components/LogoutButton';
 
 const MeSidebar = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -40,9 +40,7 @@ const MeSidebar = () => {
                     <MeSidebarLinks onClick={() => setShowDropdown(false)} />
                 </Dropdown>
             </div>
-            <Button link to="/me">
-                LOGOUT
-            </Button>
+            <LogoutButton />
         </div>
     );
 };

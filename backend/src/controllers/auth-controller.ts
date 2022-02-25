@@ -42,7 +42,7 @@ export const login = catchAsync(async (req, res, next) => {
     }
 
     // 2) Check if user exitst && password is correct
-    const user = await User.findOne({ email }).select('+password').populate('cart');
+    const user = await User.findOne({ email }).select('+password').populate('cart favorites');
 
     if (!user || !user.password || !(await user.correctPassword(password, user.password))) {
         return next(new AppError(401, 'Incorrect email or password'));

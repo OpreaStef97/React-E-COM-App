@@ -3,10 +3,11 @@ import ProductDoc from './product-interface';
 import UserDoc from './user-interface';
 
 export default interface CartDoc extends Document {
+    modifiedAt: Date;
     id: string;
-    user: UserDoc;
+    user: UserDoc | string;
     products: {
-        product: ProductDoc;
+        product: ProductDoc | string;
         quantity: number;
     }[];
     totalQuantity: number;

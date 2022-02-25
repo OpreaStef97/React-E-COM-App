@@ -6,9 +6,11 @@ import Dropdown from '../ui-components/Dropdown';
 import './Avatar.scss';
 
 const Avatar: FC<{
+    drawer?: boolean;
     photo?: string;
     name?: string;
     style?: { [key: string]: string };
+    onClick?: () => void;
 }> = props => {
     const loadedSrc = useImageLoad(props.photo || '');
     const [showDropdown, setShowDropdown] = useState(false);
@@ -23,17 +25,20 @@ const Avatar: FC<{
                 to="/me"
                 className="avatar-main-link"
                 style={{ ...props.style }}
-                onClick={() => setShowDropdown(prev => !prev)}
+                onClick={() => {
+                    setShowDropdown(prev => !prev);
+                    props.onClick && props.onClick();
+                }}
             >
                 <span>{props.name?.toUpperCase()}</span>
                 {loadedSrc && <img src={loadedSrc} alt={props.name} />}
             </Link>
-            {showDropdown && <span className="avatar-triangle">▲</span>}
+            {!props.drawer && showDropdown && <span className="avatar-triangle">▲</span>}
             <Dropdown
                 allFalse={showDropdown}
-                show={showDropdown}
+                show={!props.drawer && showDropdown}
                 className="avatar-dropdown__component"
-                height='25rem'
+                height="25rem"
                 transitionMs={450}
             >
                 <div className="avatar-dropdown">

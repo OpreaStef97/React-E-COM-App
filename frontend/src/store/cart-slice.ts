@@ -29,7 +29,7 @@ export const initialState: Cart = {
     items: [],
     totalQuantity: 0,
     totalAmount: 0,
-    modifiedAt: new Date(Date.now()).getDate(),
+    modifiedAt: 0,
 };
 
 const cartSlice = createSlice({
@@ -40,7 +40,7 @@ const cartSlice = createSlice({
             state.totalQuantity = 0;
             state.totalAmount = 0;
             state.items = [];
-            state.modifiedAt = new Date(Date.now()).getDate();
+            state.modifiedAt = 0;
             setLocalStorage(state);
         },
 

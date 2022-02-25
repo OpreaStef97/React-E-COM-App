@@ -1,35 +1,44 @@
 import HandlerFactory from '../api/handler-factory';
 import Cart from '../models/cart-model';
-import AppError from '../models/error-model';
 import catchAsync from '../utils/catch-async';
 
 const factory = new HandlerFactory(Cart);
 
-export const createOrPutCart = catchAsync(async function (req, res, next) {
-    if (!req.user.id) {
-        return next(new AppError(401, 'Please authenticate to perform this action'));
-    }
+export const putCart = catchAsync(async function (req, res) {
+    let cart = await Cart.findOne({ user: req.user.id });
 
-    const cart = await Cart.findOne({ user: req.user.id });
-
-    delete req.body.totalAmount;
-    delete req.body.totalQuantity;
-    req.body.user = req.user.id;
+    const { products } = req.body;
 
     if (!cart) {
-        factory.createOne()(req, res, next);
-    } else {
-        const updatedCart = await Cart.findByIdAndUpdate(cart.id, { ...req.body }, { new: true });
-
-        if (!updatedCart) {
-            return new AppError(404, 'Document not found');
-        }
-
-        res.status(200).json({
-            status: 'success',
-            updatedCart,
-        });
+        cart = new Cart();
     }
+
+    const mapProducts = new Map<string, number>();
+
+    for (const item of products) {
+        if (!mapProducts.has(item.product)) {
+            mapProducts.set(item.product, item.quantity);
+            continue;
+        }
+        mapProducts.set(item.product, mapProducts.get(item.product) + item.quantity);
+    }
+
+    cart.products = Array.from(mapProducts).map(([product, quantity]) => {
+        return {
+            product,
+            quantity,
+        };
+    });
+
+    cart.user = req.user.id;
+    cart.modifiedAt = new Date(Date.now());
+
+    await cart.save();
+
+    res.status(200).json({
+        status: 'success',
+        cart,
+    });
 });
 
 export const getAllCarts = factory.getAll();

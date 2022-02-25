@@ -10,6 +10,8 @@ import useWindow from '../../hooks/use-window';
 import BackDrop from '../ui-components/BackDrop';
 import SideDrawer from './SideDrawer';
 import useIntersect from '../../hooks/use-intersect';
+import LogoutButton from '../ui-components/LogoutButton';
+import CartButton from '../ui-components/CartButton';
 
 const MainNav = React.forwardRef((props, ref) => {
     const [sticky, setSticky] = useState(false);
@@ -47,7 +49,8 @@ const MainNav = React.forwardRef((props, ref) => {
             <SideDrawer show={drawerIsOpen}>
                 <nav className="main-navigation__drawer-nav">
                     <Search className="main-navigation__search-bar" />
-                    <NavLinks onClick={showDrawerHandler} />
+                    <NavLinks drawer onClick={showDrawerHandler} />
+                    <LogoutButton onClick={showDrawerHandler} />
                 </nav>
             </SideDrawer>
 
@@ -68,6 +71,7 @@ const MainNav = React.forwardRef((props, ref) => {
                 <div className="main-header__logo" onClick={() => navigate('/')}>
                     <Logo />
                 </div>
+                {width <= 840 && <CartButton className='main-navigation__cart-btn'/>}
                 <nav className="main-navigation__header-nav">
                     <Search className="main-navigation__search-bar" />
                     <NavLinks />

@@ -9,6 +9,10 @@
     position: relative;
     box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
 
+    @media(max-width: 52.5em) {
+        height: 50vh;
+    }
+
     &-description {
         color: $color-primary-light-2;
 
@@ -49,7 +53,7 @@
                 height: 50%;
                 width: 100%;
 
-                clip-path: polygon(0 0, 200% 0, 0% 90%, 0% 100%);
+                clip-path: polygon(0 0, 100% 0%, 100% 68%, 0 90%);
                 h2 {
                     font-size: 2.5rem;
                 }

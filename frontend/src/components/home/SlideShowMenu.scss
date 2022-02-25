@@ -11,6 +11,18 @@
     margin-top: 10rem;
     margin-bottom: 10rem;
 
+    @media(max-width: 52.5em) {
+        height: 50vh;
+    }
+
+    &__container {
+        height: 70vh;
+        @media(max-width: 52.5em) {
+            height: calc(50vh - 8rem);
+        }
+    
+    }
+
     &-header {
         background-color: $color-primary-light-1;
         height: 8rem;

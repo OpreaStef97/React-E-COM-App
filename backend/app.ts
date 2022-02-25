@@ -51,10 +51,9 @@ process.on('uncaughtException', err => {
 
     app.use((req, res, next) => {
         if (req.originalUrl === '/webhook') {
-            next();
-        } else {
-            express.json({ limit: '10kb' })(req, res, next);
+            return next();
         }
+        express.json({ limit: '10kb' })(req, res, next);
     });
 
     app.use(express.urlencoded({ extended: true, limit: '10kb' }));
@@ -97,7 +96,6 @@ process.on('uncaughtException', err => {
 
     app.get('/api/csrf', (req, res) => {
         // Pass the Csrf Token
-
         res.json({
             csrfToken: req.csrfToken(),
         });
@@ -109,7 +107,7 @@ process.on('uncaughtException', err => {
     // ROUTES
     ////////////////////////////////////
     app.use('/api/products', productsRouter);
-    app.use('/api/cart', cartRouter);
+    app.use('/api/carts', cartRouter);
     app.use('/api/users', usersRouter);
     app.use('/api/reviews', reviewsRouter);
     app.use('/api/payments', purchasesRouter);

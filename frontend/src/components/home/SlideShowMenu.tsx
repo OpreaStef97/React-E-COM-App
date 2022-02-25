@@ -24,7 +24,7 @@ const SlideShowMenu = React.forwardRef((props, ref) => {
                     All Products
                 </Button>
             </div>
-            <div style={{ height: '70vh' }}>
+            <div className='slideshow-menu__container'>
                 <TransitionSlider autoFlow dots flowTo="right" delay={5000} transitionMs={300}>
                     {promoImages.map((src, idx) => (
                         <SlideImage key={idx} src={src} />

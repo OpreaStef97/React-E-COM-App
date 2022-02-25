@@ -76,19 +76,21 @@ const Cart: FC = () => {
                     )}
                 </ul>
                 <footer className="cart__footer">
-                    <Button link to="/products" inverse>
-                        Back to store
-                    </Button>
-                    {totalAmount > 0 && <p>Total amount: {`$${(totalAmount / 100).toFixed(2)}`}</p>}
                     {totalAmount > 0 && (
-                        <Button
-                            icon={<SignIn className="cart__footer-icon" />}
-                            link
-                            to={auth.isLoggedIn ? '/payment' : '/auth'}
-                            inverse
-                        >
-                            Checkout
-                        </Button>
+                        <>
+                            <Button link to="/products" inverse>
+                                Back to store
+                            </Button>
+                            <p>Total amount: {`$${(totalAmount / 100).toFixed(2)}`}</p>
+                            <Button
+                                icon={<SignIn className="cart__footer-icon" />}
+                                link
+                                to={auth.isLoggedIn ? '/payment' : '/auth'}
+                                inverse
+                            >
+                                Checkout
+                            </Button>
+                        </>
                     )}
                 </footer>
             </div>

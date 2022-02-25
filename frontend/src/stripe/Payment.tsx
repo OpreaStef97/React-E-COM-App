@@ -7,6 +7,8 @@ import CheckoutForm from './CheckoutForm';
 import './Payment.scss';
 import { loadStripe } from '@stripe/stripe-js';
 import Button from '../components/ui-components/Button';
+import ErrorModal from '../components/ui-components/ErrorModal';
+import { cartActions } from '../store/cart-slice';
 
 const stripePromise = loadStripe(
     'pk_test_51KUDgVGg7aAflOuXCkyFuW66rAxxdfe339dVnAOimJ2JYjr7E7LQkA1omy1edRYzbXoJE342Fv76OKXifDm91yeR00C99LGi7b'
@@ -20,7 +22,7 @@ const Payment: FC = () => {
 
     const dispatch = useDispatch();
 
-    const { sendRequest } = useFetch();
+    const { error, clearError, sendRequest } = useFetch();
 
     useEffect(() => {
         if (!csrfToken) {
@@ -47,40 +49,49 @@ const Payment: FC = () => {
             .then(data => {
                 setClientSecret(data.clientSecret);
             })
-            .catch(console.error);
+            .catch(() => dispatch(cartActions.reinitializeCart()));
     }, [csrfToken, sendRequest, items, dispatch, cart, user.id]);
 
     return (
-        <section className="payment">
-            <div className="payment__container">
-                <header className="payment__header">
-                    <div className="payment__header-box">
-                        <h2>PAYMENT</h2>
-                        <CreditCard />
+        <>
+            <ErrorModal
+                error={error}
+                onClear={(e: React.MouseEvent) => {
+                    e.preventDefault();
+                    clearError();
+                }}
+            />
+            <section className="payment">
+                <div className="payment__container">
+                    <header className="payment__header">
+                        <div className="payment__header-box">
+                            <h2>PAYMENT</h2>
+                            <CreditCard />
+                        </div>
+                        <p>{totalQuantity} Items</p>
+                    </header>
+                    <div className="payment__checkout">
+                        {clientSecret && (
+                            <Elements
+                                stripe={stripePromise}
+                                options={{
+                                    clientSecret,
+                                    appearance: { theme: 'flat' },
+                                }}
+                            >
+                                <CheckoutForm />
+                            </Elements>
+                        )}
                     </div>
-                    <p>{totalQuantity} Items</p>
-                </header>
-                <div className="payment__checkout">
-                    {clientSecret && (
-                        <Elements
-                            stripe={stripePromise}
-                            options={{
-                                clientSecret,
-                                appearance: { theme: 'flat' },
-                            }}
-                        >
-                            <CheckoutForm />
-                        </Elements>
-                    )}
+                    <footer className="payment__footer">
+                        <Button link inverse to="/cart" icon={<ShoppingCart />}>
+                            Back To cart
+                        </Button>
+                        <p>Total Amount: {`$${(totalAmount / 100).toFixed(2)}`}</p>
+                    </footer>
                 </div>
-                <footer className="payment__footer">
-                    <Button link inverse to="/cart" icon={<ShoppingCart />}>
-                        Back To cart
-                    </Button>
-                    <p>Total Amount: {`$${(totalAmount / 100).toFixed(2)}`}</p>
-                </footer>
-            </div>
-        </section>
+            </section>
+        </>
     );
 };
 export default Payment;

@@ -12,6 +12,10 @@
     justify-content: center;
     align-items: center;
 
+    @media(max-width: 52.5em) {
+        height: 40vh;
+    }
+
     &--overlay {
         z-index: 50;
         padding: 2rem 0 0 0;

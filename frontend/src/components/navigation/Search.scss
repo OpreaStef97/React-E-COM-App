@@ -6,6 +6,8 @@
 
 .search {
     flex: 0 0 40%;
+    max-width: 50vw;
+    height: 4rem;
 
     display: flex;
     align-items: center;
@@ -23,6 +25,7 @@
         width: 80%;
 
         transition: all 0.2s;
+        margin-left: -3rem;
         margin-right: -4.5rem;
 
         box-shadow: 0 0 0.3rem rgba($color-primary-dark-3, 0.6);

@@ -74,11 +74,6 @@ body {
     transform: scale(0.99);
     transition: opacity 300ms, transform 300ms;
 }
-
-::selection {
-    background-color: $color-primary;
-}
-
 /*
 ::-webkit-scrollbar {
     width: 2em;

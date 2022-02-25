@@ -8,6 +8,7 @@ import './Menu.scss';
 import TransitionSlider from '../ui-components/TransitionSlider';
 import { Link } from 'react-router-dom';
 import useClickOutside from '../../hooks/use-clicks-outside';
+import useWindow from '../../hooks/use-window';
 
 type State = {
     [key: string]: boolean;
@@ -98,6 +99,8 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
         clearClick();
     }, [showState, menuClick, clicked, clearClick]);
 
+    const [width] = useWindow();
+
     return (
         <div ref={ref}>
             <div className="menu" onClick={menuClickHandler}>
@@ -120,7 +123,7 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
             <div className="menu-dropdown">
                 <Dropdown
                     show={showState[`s${0}`]}
-                    height="70vh"
+                    height={width <= 840 ? 'calc(50vh - 8rem)' : '70vh'}
                     allFalse={allFalse}
                     transitionMs={700}
                 >
@@ -154,7 +157,7 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                                 </Link>
                             </li>
                         </ul>
-                        <TransitionSlider idx={index} transitionMs={200}>
+                        {/* <TransitionSlider idx={index} transitionMs={200}>
                             {DUMMY_IMAGES.map((src, idx) => {
                                 return (
                                     <img
@@ -173,13 +176,13 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                                     />
                                 );
                             })}
-                        </TransitionSlider>
+                        </TransitionSlider> */}
                     </div>
                 </Dropdown>
                 <Dropdown
                     show={showState[`s${1}`]}
                     allFalse={allFalse}
-                    height="70vh"
+                    height={width <= 840 ? 'calc(50vh - 8rem)' : '70vh'}
                     transitionMs={700}
                 >
                     <TransitionSlider transitionMs={100}>

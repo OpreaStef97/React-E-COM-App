@@ -13,6 +13,7 @@ const Button: FC<{
     active?: boolean;
     role?: string;
     icon?: JSX.Element;
+    iconAfter?: boolean;
     style?: { [key: string]: string };
     onClick?: (...args: any[]) => void;
 }> = props => {
@@ -26,33 +27,35 @@ const Button: FC<{
                 <button
                     id={props.id}
                     role={props.role}
-                    className={`${
+                    className={`${props.className} ${
                         props.light
                             ? `btn-light ${props.light && props.active ? 'btn-light-active' : ''}`
                             : `btn ${props.inverse ? 'btn-inverse' : ''}`
-                    } ${props.className} ${props.disabled ? 'btn-disabled' : ''}`}
+                    } ${props.disabled ? 'btn-disabled' : ''}`}
                     onClick={props.onClick}
                     style={props.style}
                     disabled={props.disabled}
                 >
-                    {props.icon}
+                    {!props.iconAfter && props.icon}
                     <span>{props.children}</span>
+                    {props.iconAfter && props.icon}
                 </button>
             )}
             {props.link && props.to && (
                 <Link
                     id={props.id}
                     to={props.to}
-                    className={`${
+                    className={`${props.className} ${
                         props.light
                             ? `link-light ${props.active ? 'link-light-active' : ''}`
                             : `link ${props.inverse ? 'link-inverse' : ''}`
-                    } ${props.className}`}
+                    }`}
                     onClick={props.onClick}
                     style={props.style}
                 >
-                    {props.icon}
+                    {!props.iconAfter && props.icon}
                     <span>{props.children}</span>
+                    {props.iconAfter && props.icon}
                 </Link>
             )}
         </>

@@ -55,19 +55,28 @@ export const createPaymentIntent = catchAsync(async (req, res, next) => {
     let cart = await Cart.findOne({ user: userId });
 
     if (!cart) {
-        cart = await Cart.create({
-            user: userId,
-            products,
-        });
-    } else {
-        cart = await Cart.findByIdAndUpdate(
-            cart.id,
-            { products, modifiedAt: new Date(Date.now()) },
-            { new: true }
-        );
+        cart = new Cart();
     }
+    const mapProducts = new Map<string, number>();
+    for (const item of products) {
+        if (!mapProducts.has(item.product)) {
+            mapProducts.set(item.product, item.quantity);
+            continue;
+        }
+        mapProducts.set(item.product, mapProducts.get(item.product) + item.quantity);
+    }
+    cart.products = Array.from(mapProducts).map(([product, quantity]) => {
+        return {
+            product,
+            quantity,
+        };
+    });
+    cart.user = req.user.id;
+    cart.modifiedAt = new Date(Date.now());
 
-    if (!cart || !process.env.STRIPE_SECRET_KEY) {
+    await cart.save();
+
+    if (!process.env.STRIPE_SECRET_KEY) {
         return next(new AppError(500, 'Something went wrong'));
     }
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2020-08-27' });

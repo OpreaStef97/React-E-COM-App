@@ -78,8 +78,26 @@
         }
 
         p {
+            text-align: center;
             font-size: 3rem;
             color: $color-primary-light-1;
+        }
+
+        @media (max-width: 52.5em) {
+            // height: 20rem;
+            padding: 0 1rem;
+            gap: 2rem;
+            // flex-direction: column;
+            p {
+                font-size: 2rem;
+            }
+        }
+
+        a:link,
+        a:visited {
+            span {
+                font-size: 1.2rem;
+            }
         }
     }
 

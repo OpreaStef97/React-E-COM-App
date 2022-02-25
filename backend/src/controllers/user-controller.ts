@@ -2,6 +2,7 @@ import AppError from '../models/error-model';
 import User from '../models/user-model';
 import catchAsync from '../utils/catch-async';
 import HandlerFactory from '../api/handler-factory';
+import Favorite from '../models/favorite-model';
 
 const factory = new HandlerFactory(User);
 
@@ -58,5 +59,28 @@ export const deleteMe = catchAsync(async (req, res) => {
     res.status(204).json({
         status: 'success',
         data: null,
+    });
+});
+
+export const putFavorite = catchAsync(async (req, res) => {
+    const { products } = req.body;
+
+    let fav = await Favorite.findOne({ user: req.user.id });
+
+    if (!fav) {
+        fav = new Favorite();
+    }
+
+    const productSet = new Set<string>(products);
+
+    fav.products = [...productSet];
+    fav.user = req.user.id;
+    fav.modifiedAt = new Date(Date.now());
+
+    await fav.save();
+
+    res.status(200).json({
+        status: 'success',
+        fav,
     });
 });

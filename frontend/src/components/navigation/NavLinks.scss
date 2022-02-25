@@ -85,91 +85,11 @@
                 }
             }
         }
-
-        &-cart {
-            &:link,
-            &:visited {
-                position: relative;
-                color: $color-tertiary-light-3;
-                text-decoration: none;
-                box-shadow: none;
-                background-image: linear-gradient(
-                    130deg,
-                    $color-tertiary-dark-1 0%,
-                    $color-tertiary-dark-1 50%,
-                    $color-primary-light-1 0%
-                );
-                background-size: 250%;
-                transition: all 0.4s;
-
-                box-shadow: 0 0 0.3rem rgba($color-tertiary-dark-3, 0.6);
-            }
-
-            &:hover,
-            &:active {
-                background-position: 100%;
-                color: $color-primary-dark-3;
-            }
-        }
     }
 }
 
 .sticky .nav-links {
     &__list-item {
         color: $color-primary-dark-3;
-        &--cart {
-            a {
-                &:link,
-                &:visited {
-                    text-decoration: none;
-                    box-shadow: none;
-                    background-image: linear-gradient(
-                        130deg,
-                        $color-tertiary-dark-1 0%,
-                        $color-tertiary-dark-1 50%,
-                        $color-primary-light-1 0%
-                    );
-                    box-shadow: 0 0 0.3rem rgba($color-tertiary-dark-3, 0.6);
-                }
-            }
-        }
-    }
-}
-
-.cart-counter {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.1rem;
-    position: absolute;
-    height: 1.7rem;
-    width: 1.7rem;
-    background-color: $color-tertiary-light-3;
-    top: 15%;
-    right: 22%;
-    border-radius: 50%;
-    color: $color-tertiary-dark-1;
-
-    animation: expand-in-and-out 0.5s;
-}
-
-@keyframes expand-in-and-out {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(2);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-.nav-links__list-cart:hover {
-    .cart-counter {
-        background-color: $color-tertiary-dark-1;
-        color: $color-tertiary-light-3;
     }
 }
