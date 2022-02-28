@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react';
 import { FC, useCallback, useEffect, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { DUMMY_IMAGES } from '../../utils/dummy-data';
 import Offer from '../promoting/Offer';
 import Dropdown from '../ui-components/Dropdown';
 import './Menu.scss';
@@ -9,11 +7,11 @@ import TransitionSlider from '../ui-components/TransitionSlider';
 import { Link } from 'react-router-dom';
 import useClickOutside from '../../hooks/use-clicks-outside';
 import useWindow from '../../hooks/use-window';
+import { DeviceMobile, DeviceTablet, Laptop, ShoppingBag } from 'phosphor-react';
 
 type State = {
     [key: string]: boolean;
 };
-
 const showObj: State = {
     s0: false,
     s1: false,
@@ -56,8 +54,6 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
     });
     const [menuClick, setMenuClick] = useState(true);
     const [allFalse, setAllFalse] = useState(true);
-    const [index, setIndex] = useState(0);
-    const navigate = useNavigate();
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -71,10 +67,6 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
         },
         [showState]
     );
-
-    const onHoverHandler = (idx: number) => {
-        setIndex(idx);
-    };
 
     // for closing the dropdown
     const menuClickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -123,9 +115,10 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
             <div className="menu-dropdown">
                 <Dropdown
                     show={showState[`s${0}`]}
-                    height={width <= 840 ? 'calc(50vh - 8rem)' : '70vh'}
+                    height={'15rem' /*width <= 840 ? 'calc(50vh - 8rem)' : '70vh'*/}
                     allFalse={allFalse}
-                    transitionMs={700}
+                    transitionMs={400}
+                    delayMs={700}
                 >
                     <div className="menu-dropdown-container">
                         <ul className="menu-dropdown-links">
@@ -133,8 +126,8 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                                 <Link
                                     className="menu-dropdown-link"
                                     to={'/products/phones'}
-                                    onMouseEnter={onHoverHandler.bind(null, 0)}
                                 >
+                                    <DeviceMobile />
                                     {'Phones'}
                                 </Link>
                             </li>
@@ -142,8 +135,8 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                                 <Link
                                     className="menu-dropdown-link"
                                     to={'/products/laptops'}
-                                    onMouseEnter={onHoverHandler.bind(null, 1)}
                                 >
+                                    <Laptop />
                                     {'Laptops'}
                                 </Link>
                             </li>
@@ -151,32 +144,21 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                                 <Link
                                     className="menu-dropdown-link"
                                     to={'/products/tablets'}
-                                    onMouseEnter={onHoverHandler.bind(null, 2)}
                                 >
+                                    <DeviceTablet />
                                     {'Tablets'}
                                 </Link>
                             </li>
+                            <li className="menu-dropdown-links--item">
+                                <Link
+                                    className="menu-dropdown-link"
+                                    to={'/products'}
+                                >
+                                    <ShoppingBag />
+                                    {'Others..'}
+                                </Link>
+                            </li>
                         </ul>
-                        {/* <TransitionSlider idx={index} transitionMs={200}>
-                            {DUMMY_IMAGES.map((src, idx) => {
-                                return (
-                                    <img
-                                        onClick={() => navigate('/products')}
-                                        className="menu-image"
-                                        key={idx}
-                                        style={{
-                                            cursor: 'pointer',
-                                            objectFit: 'cover',
-                                            height: '50vh',
-                                            width: '70vw',
-                                            borderRadius: '1rem',
-                                        }}
-                                        src={src}
-                                        alt={src}
-                                    />
-                                );
-                            })}
-                        </TransitionSlider> */}
                     </div>
                 </Dropdown>
                 <Dropdown

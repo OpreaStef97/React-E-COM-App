@@ -7,7 +7,9 @@ import ErrorModal from '../../components/ui-components/ErrorModal';
 import useFetch from '../../hooks/use-fetch';
 import { useForm } from '../../hooks/use-form';
 import { authActions } from '../../store/auth-slice';
-import { getCartData } from '../../store/cart-actions';
+import { modifyCartData } from '../../store/cart-actions';
+import { modifyFavData } from '../../store/fav-actions';
+import { delayedNotification } from '../../store/ui-slice';
 import {
     VALIDATOR_EMAIL,
     VALIDATOR_MAXLENGTH,
@@ -16,13 +18,12 @@ import {
 } from '../../utils/validators';
 import './Auth.scss';
 
-const Auth: FC<{ onShow: (state: boolean) => void }> = props => {
+const Auth: FC = props => {
     const [isLoginMode, setIsLoginMode] = useState(true);
     const [disable, setDisabled] = useState(true);
     const { isLoading, error, clearError, sendRequest } = useFetch();
     const { csrfToken } = useSelector((state: any) => state.auth);
     const dispatch = useDispatch();
-    const { onShow } = props;
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -91,10 +92,17 @@ const Auth: FC<{ onShow: (state: boolean) => void }> = props => {
                 ),
                 'include'
             );
-            onShow(true);
             setDisabled(true);
+            dispatch(
+                delayedNotification({
+                    status: 'success',
+                    delay: 400,
+                    message: `Welcome ${data.user.name.split(' ')[0]}`,
+                })
+            );
             dispatch(authActions.loggingIn(data.user));
-            if (data.user.cart) dispatch(getCartData(data.user.cart, csrfToken));
+            if (data.user.cart) dispatch(modifyCartData(data.user.cart, csrfToken));
+            if (data.user.favorites) dispatch(modifyFavData(data.user.favorites, csrfToken));
         } catch (err) {
             console.error(err);
         }

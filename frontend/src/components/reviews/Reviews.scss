@@ -75,6 +75,25 @@
             justify-content: center;
         }
 
+        &-empty {
+            display: flex;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 3rem;
+
+            p {
+                text-align: center;
+                font-size: 2.5rem;
+                font-weight: 400;
+            }
+
+            button {
+                transform: scale(1.2);
+            }
+        }
+
         @media (max-width: 68.75em) {
             grid-template-columns: 1fr;
             grid-template-rows: 1fr;
@@ -103,6 +122,12 @@
     box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.2);
 }
 
+.modal-review__footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
 .load {
     width: 3rem;
     height: 3rem;
@@ -110,6 +135,19 @@
     animation: lds-dual-ring 0.4s infinite;
 }
 
-.modal-review__btn:hover .load {
-    color: $color-primary-dark-3;
+.modal-review__btn {
+    box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
+
+    &--submit {
+        background-image: linear-gradient(
+            130deg,
+            $color-secondary-dark-2 0%,
+            $color-secondary-dark-2 50%,
+            $color-primary-light-1 0%
+        );
+    }
+
+    &:hover .load {
+        color: $color-primary-dark-3;
+    }
 }

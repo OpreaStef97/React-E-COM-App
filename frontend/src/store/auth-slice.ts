@@ -8,6 +8,7 @@ type Auth = {
               id: string;
               photo: string;
               role: string;
+              favorites: any[];
           }
         | {};
     isLoggedIn: boolean;

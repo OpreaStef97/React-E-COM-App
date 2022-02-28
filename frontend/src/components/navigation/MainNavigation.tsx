@@ -11,13 +11,19 @@ import BackDrop from '../ui-components/BackDrop';
 import SideDrawer from './SideDrawer';
 import useIntersect from '../../hooks/use-intersect';
 import LogoutButton from '../ui-components/LogoutButton';
-import CartButton from '../ui-components/CartButton';
+import CartButton from '../cart/CartButton';
+import Notification from '../ui-components/Notification';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiActions } from '../../store/ui-slice';
 
 const MainNav = React.forwardRef((props, ref) => {
     const [sticky, setSticky] = useState(false);
     const [animation, setAnimation] = useState(true);
     const [drawerIsOpen, setDrawerIsOpen] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { ui } = useSelector((state: any) => state);
 
     const [width] = useWindow();
     const intersecting = useIntersect(ref as RefObject<unknown>);
@@ -71,12 +77,18 @@ const MainNav = React.forwardRef((props, ref) => {
                 <div className="main-header__logo" onClick={() => navigate('/')}>
                     <Logo />
                 </div>
-                {width <= 840 && <CartButton className='main-navigation__cart-btn'/>}
+                {width <= 840 && <CartButton className="main-navigation__cart-btn" />}
                 <nav className="main-navigation__header-nav">
                     <Search className="main-navigation__search-bar" />
                     <NavLinks />
                 </nav>
             </MainHeader>
+            <Notification
+                show={ui.visible}
+                className={`${sticky && 'sticky'}`}
+                message={ui.notification.message}
+                onCancel={() => dispatch(uiActions.toggle())}
+            />
         </>
     );
 });

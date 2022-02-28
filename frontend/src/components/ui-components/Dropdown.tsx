@@ -11,6 +11,7 @@ const Dropdown: FC<{
     className?: string;
     links?: { name?: string; to?: string }[];
     transitionMs?: number;
+    delayMs?: number;
     animationMs?: number;
     style?: { [key: string]: string };
     children?: React.ReactNode;
@@ -25,7 +26,7 @@ const Dropdown: FC<{
     return (
         <CSSTransition
             in={transition}
-            timeout={props.allFalse ? 0 : props.transitionMs || 700}
+            timeout={props.allFalse ? 0 : props.delayMs || 700}
             mountOnEnter
             unmountOnExit
             onEntered={() => setChange(true)}
@@ -38,9 +39,9 @@ const Dropdown: FC<{
                     }`}
                     style={{
                         ...props.style,
-                        transition: `all ${props.transitionMs || 300}ms ${
-                            'cubic-bezier(0.75, 0, 0.25, 1)'
-                        }`,
+                        transition: `all ${
+                            props.transitionMs || 300
+                        }ms ${'cubic-bezier(0.75, 0, 0.25, 1)'}`,
                         height: `${change ? props.height || '50vh' : '0'}`,
                     }}
                 >

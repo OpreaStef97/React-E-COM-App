@@ -20,7 +20,6 @@ export const updateReview = factory.updateOne();
 export const deleteReview = factory.deleteOne();
 
 export const getReviewRatingsPerProduct = catchAsync(async (req, res) => {
-    console.log(req.params.pid);
     const ObjectId = mongoose.Types.ObjectId;
 
     const stats = await Review.aggregate([

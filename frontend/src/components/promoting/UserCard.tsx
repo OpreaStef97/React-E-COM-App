@@ -6,6 +6,7 @@ import './UserCard.scss';
 
 const UserCard: FC<{
     idx?: number;
+    datePosted?: string;
     imgSrc?: string;
     userName?: string;
     className?: string;
@@ -29,6 +30,11 @@ const UserCard: FC<{
                 />
             )}
             <div>
+                {props.datePosted && (
+                    <p className="user__card--review">{`${new Date(
+                        props.datePosted || ''
+                    ).toLocaleString()}`}</p>
+                )}
                 <p className="user__card--review">
                     {props.review ||
                         `Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam sint fuga dolorum

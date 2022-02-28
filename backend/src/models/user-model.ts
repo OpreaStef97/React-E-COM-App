@@ -76,6 +76,11 @@ userSchema.virtual('favorites', {
     localField: '_id',
 });
 
+// userSchema.pre(/^find/, function (next) {
+//     this.populate('cart favorites');
+//     next();
+// });
+
 userSchema.pre('save', async function (next) {
     // Only run this function if password was actually modified
     if (!this.isModified('password')) return next();

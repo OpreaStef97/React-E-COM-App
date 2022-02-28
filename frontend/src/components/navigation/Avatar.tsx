@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useImageLoad from '../../hooks/use-image-load';
+import useWindow from '../../hooks/use-window';
 import Dropdown from '../ui-components/Dropdown';
 
 import './Avatar.scss';
@@ -14,6 +15,7 @@ const Avatar: FC<{
 }> = props => {
     const loadedSrc = useImageLoad(props.photo || '');
     const [showDropdown, setShowDropdown] = useState(false);
+    const [width] = useWindow();
 
     return (
         <div
@@ -33,10 +35,10 @@ const Avatar: FC<{
                 <span>{props.name?.toUpperCase()}</span>
                 {loadedSrc && <img src={loadedSrc} alt={props.name} />}
             </Link>
-            {!props.drawer && showDropdown && <span className="avatar-triangle">▲</span>}
+            <div style={{ position: 'absolute', height: '2rem', width: '100%' }}></div>
             <Dropdown
                 allFalse={showDropdown}
-                show={!props.drawer && showDropdown}
+                show={width > 1100 && showDropdown}
                 className="avatar-dropdown__component"
                 height="25rem"
                 transitionMs={450}

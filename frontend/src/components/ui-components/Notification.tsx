@@ -7,7 +7,9 @@ import './Notification.scss';
 const Notification: FC<{
     show: boolean;
     message?: string;
+    className?: string;
     error?: boolean;
+    style?: { [k: string]: string };
     onCancel?: () => void;
 }> = props => {
     const { onCancel, show } = props;
@@ -35,7 +37,12 @@ const Notification: FC<{
             mountOnEnter
             unmountOnExit
         >
-            <div className={`notification ${props.error ? 'notification-err' : ''}`}>
+            <div
+                className={`notification ${props.error ? 'notification-err' : ''} ${
+                    props.className
+                }`}
+                style={{ ...props.style }}
+            >
                 <p className="notification-msg">{props.message}</p>
                 <XCircle className="notification-close" onClick={showHandler} />
             </div>

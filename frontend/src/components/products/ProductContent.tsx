@@ -1,8 +1,9 @@
-import { CaretLeft, CaretRight, ShoppingCart } from 'phosphor-react';
+import { CaretLeft, CaretRight, Heart, ShoppingCart } from 'phosphor-react';
 import React from 'react';
-import { FC, Fragment, useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC, Fragment, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { cartActions } from '../../store/cart-slice';
+import { favActions } from '../../store/fav-slice';
 import Button from '../ui-components/Button';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
 import Stars from '../ui-components/Stars';
@@ -14,10 +15,21 @@ const ProductContent: FC<{ product: any }> = props => {
     const { product } = props;
     const [imageLoaded, setImageLoaded] = useState(false);
     const dispatch = useDispatch();
+    const { items } = useSelector((state: any) => state.favorites);
 
-    const addItemToCartHandler = useCallback((item: any) => {
+
+    const addItemToCartHandler = (item: any) => {
         dispatch(cartActions.addItemToCart(item));
-    }, [dispatch]);
+    };
+
+    const addItemToFavHandler = (item: any) => {
+        const fav = (items as any[]).some((item: any) => item.id === product.id);
+        if (!fav) {
+            dispatch(favActions.addItemToFavBox(item));
+        } else {
+            dispatch(favActions.deleteItemFromFavBox(item.id));
+        }
+    };
 
     return (
         <div className="product-content">
@@ -51,6 +63,26 @@ const ProductContent: FC<{ product: any }> = props => {
             <div className="product-content__options">
                 <div className="product-content__options--price">
                     {product && <p>{`$${product.price}`}</p>}
+                    {product && (
+                        <button
+                            className="product-content__options--fav-btn"
+                            onClick={addItemToFavHandler.bind(null, {
+                                id: product.id,
+                                slug: product.slug,
+                                price: product.price,
+                                image: product.images[0],
+                                name: product.name,
+                            })}
+                        >
+                            <Heart
+                                weight={
+                                    items.some((item: any) => item.id === product.id)
+                                        ? 'fill'
+                                        : 'regular'
+                                }
+                            />
+                        </button>
+                    )}
                 </div>
                 <div className="product-content__options--reviews">
                     <div className="product-content__options--star-container">

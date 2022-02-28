@@ -4,6 +4,6 @@ import UserDoc from './user-interface';
 
 export default interface FavoriteDoc extends Document {
     user: UserDoc | string;
-    products: ProductDoc | string [];
+    products: { product: ProductDoc | string }[];
     modifiedAt: Date;
 }

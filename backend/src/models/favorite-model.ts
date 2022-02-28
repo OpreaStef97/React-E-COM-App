@@ -11,17 +11,19 @@ const favoriteSlice = new mongoose.Schema({
     products: {
         type: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Product',
-                required: true,
+                product: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Product',
+                    required: true,
+                },
             },
         ],
         required: true,
         validate: [
             function (val: any) {
-                return val.length <= 20;
+                return val.length <= 10;
             },
-            'Number of items exceeds 20. Please contact sales for larger orders',
+            'Number of items exceeds 10. Please contact sales for larger orders',
         ],
     },
     modifiedAt: {
@@ -34,7 +36,7 @@ favoriteSlice.index({ user: 1 }, { unique: true });
 
 favoriteSlice.pre(/^find/, function (next) {
     this.populate({
-        path: 'products',
+        path: 'products.product',
         select: 'name _id images slug price',
     });
 

@@ -12,12 +12,8 @@ const purchaseSchema = new mongoose.Schema({
                 },
                 quantity: {
                     type: Number,
-                    validate: [
-                        function (val: number) {
-                            return val <= 10;
-                        },
-                        'You exceed the maximum quantity for this product',
-                    ],
+                    min: [1, "Can't process a quantity smaller than 1"],
+                    max: [10, "You exceed the maximum quantity for this product!"],
                     required: true,
                 },
             },

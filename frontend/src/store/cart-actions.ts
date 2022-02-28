@@ -35,7 +35,7 @@ export function sendCartData(cart: Cart, csrfToken: string) {
     };
 }
 
-export function getCartData(cart: any[], csrfToken: string) {
+export function modifyCartData(cart: any[], csrfToken: string) {
     return async (dispatch: Dispatch) => {
         const localCart = localStorage.getItem('cart');
         let lcart;
@@ -43,7 +43,7 @@ export function getCartData(cart: any[], csrfToken: string) {
             lcart = JSON.parse(localCart || '{}');
             if (
                 localCart &&
-                (cart.length === 0 || lcart.modifiedAt > new Date(cart[0].modifiedAt).getDate())
+                (cart.length === 0 || lcart.modifiedAt > new Date(cart[0].modifiedAt).getTime())
             ) {
                 if ((lcart as Cart).totalAmount < 0 || (lcart as Cart).totalQuantity < 0) {
                     throw new Error('User modified the cart data');
@@ -54,7 +54,7 @@ export function getCartData(cart: any[], csrfToken: string) {
                 await updateCart(lcart, csrfToken);
                 return;
             }
-            if (cart.length > 0)
+            if (cart.length > 0) {
                 return dispatch(
                     cartActions.replaceCart({
                         items: cart[0].products.map(
@@ -72,12 +72,26 @@ export function getCartData(cart: any[], csrfToken: string) {
                         ),
                         totalQuantity: cart[0].totalQuantity,
                         totalAmount: cart[0].totalAmount,
-                        modifiedAt: new Date(cart[0].modifiedAt).getDate(),
+                        modifiedAt: new Date(cart[0].modifiedAt).getTime(),
                     })
                 );
+            }
         } catch (err) {
             console.error(err);
             dispatch(cartActions.reinitializeCart());
         }
     };
 }
+
+export const replaceLocalCart = () => async (dispatch: Dispatch) => {
+    const localCart = localStorage.getItem('cart');
+    try {
+        if (!localCart) {
+            throw new Error('User modified the cart data');
+        }
+        dispatch(cartActions.replaceCart(JSON.parse(localCart)));
+    } catch (err) {
+        console.error(err);
+        dispatch(cartActions.reinitializeCart());
+    }
+};

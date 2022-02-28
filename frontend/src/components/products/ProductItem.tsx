@@ -1,8 +1,10 @@
+import { Heart } from 'phosphor-react';
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useImageLoad from '../../hooks/use-image-load';
 import { cartActions } from '../../store/cart-slice';
+import { favActions } from '../../store/fav-slice';
 import Button from '../ui-components/Button';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
 import Stars from '../ui-components/Stars';
@@ -27,6 +29,17 @@ const ProductItem: FC<{
 
     const addItemToCartHandler = (item: any) => {
         dispatch(cartActions.addItemToCart(item));
+    };
+
+    const { items } = useSelector((state: any) => state.favorites);
+
+    const addItemToFavHandler = (item: any) => {
+        const fav = (items as any[]).some((item: any) => item.id === product.id);
+        if (!fav) {
+            dispatch(favActions.addItemToFavBox(item));
+        } else {
+            dispatch(favActions.deleteItemFromFavBox(item.id));
+        }
     };
 
     return (
@@ -62,8 +75,26 @@ const ProductItem: FC<{
                             <Stars rating={product.ratingsAverage || 0} />
                         </div>
                         <span className="rating">{product.ratingsQuantity || 0}</span>
+                        <button
+                            className="product__item--fav-btn"
+                            onClick={addItemToFavHandler.bind(null, {
+                                id: product.id,
+                                slug: product.slug,
+                                price: product.price,
+                                image: product.images[0],
+                                name: product.name,
+                            })}
+                        >
+                            <Heart
+                                weight={
+                                    items.some((item: any) => item.id === product.id)
+                                        ? 'fill'
+                                        : 'regular'
+                                }
+                            />
+                        </button>
                     </div>
-                    <div className='product__item--footer'>
+                    <div className="product__item--footer">
                         <Button
                             inverse
                             onClick={addItemToCartHandler.bind(null, {

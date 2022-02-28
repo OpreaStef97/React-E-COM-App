@@ -66,8 +66,8 @@ const selectReducer = (
     }
 };
 
-export default function useSelect() {
-    const [selectState, dispatch] = useReducer(selectReducer, {});
+export default function useSelect(initialState?: SelectState) {
+    const [selectState, dispatch] = useReducer(selectReducer, initialState || {});
 
     const setHandler = useCallback(
         (options: any) =>

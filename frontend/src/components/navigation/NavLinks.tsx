@@ -1,10 +1,11 @@
-import { SignIn, Heart } from 'phosphor-react';
+import { SignIn } from 'phosphor-react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import CartButton from '../ui-components/CartButton';
+import CartButton from '../cart/CartButton';
 import LogoutButton from '../ui-components/LogoutButton';
 import Avatar from './Avatar';
+import Favorites from './Favorites';
 import './NavLinks.scss';
 
 const NavLinks: FC<{ onClick?: () => void; drawer?: boolean }> = props => {
@@ -36,17 +37,11 @@ const NavLinks: FC<{ onClick?: () => void; drawer?: boolean }> = props => {
                     </Link>
                 )}
             </li>
-            <li className="nav-links__list-item">
-                <Link
-                    className="nav-links__list-link"
-                    to="/"
-                    aria-label="nav-links-favorites"
-                    onClick={props.onClick}
-                >
-                    <span>FAVORITES</span>
-                    <Heart />
-                </Link>
-            </li>
+            {isLoggedIn && (
+                <li className="nav-links__list-item">
+                    <Favorites />
+                </li>
+            )}
             {!props.drawer && (
                 <li className="nav-links__list-item">
                     <CartButton />

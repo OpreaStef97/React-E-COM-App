@@ -4,15 +4,7 @@ import catchAsync from '../utils/catch-async';
 
 const factory = new HandlerFactory(Cart);
 
-export const putCart = catchAsync(async function (req, res) {
-    let cart = await Cart.findOne({ user: req.user.id });
-
-    const { products } = req.body;
-
-    if (!cart) {
-        cart = new Cart();
-    }
-
+export const cartProcessing = (products: any) => {
     const mapProducts = new Map<string, number>();
 
     for (const item of products) {
@@ -23,13 +15,24 @@ export const putCart = catchAsync(async function (req, res) {
         mapProducts.set(item.product, mapProducts.get(item.product) + item.quantity);
     }
 
-    cart.products = Array.from(mapProducts).map(([product, quantity]) => {
+    return Array.from(mapProducts).map(([product, quantity]) => {
         return {
             product,
             quantity,
         };
-    });
+    })
+}
 
+export const putCart = catchAsync(async function (req, res) {
+    let cart = await Cart.findOne({ user: req.user.id });
+
+    const { products } = req.body;
+
+    if (!cart) {
+        cart = new Cart();
+    }
+
+    cart.products = cartProcessing(products);
     cart.user = req.user.id;
     cart.modifiedAt = new Date(Date.now());
 

@@ -1,6 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { authActions } from './auth-slice';
-import { cartActions } from './cart-slice';
 
 export const setCSRFToken = () => {
     return async (dispatch: Dispatch) => {
@@ -34,7 +33,6 @@ export const logout = () => {
             }
 
             dispatch(authActions.loggedOut());
-            dispatch(cartActions.reinitializeCart());
         } catch (err) {
             console.error(err);
         }

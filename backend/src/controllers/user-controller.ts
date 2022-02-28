@@ -71,9 +71,13 @@ export const putFavorite = catchAsync(async (req, res) => {
         fav = new Favorite();
     }
 
-    const productSet = new Set<string>(products);
+    const productSet = new Set<string>(products.map(({ product }: { product: string }) => product));
 
-    fav.products = [...productSet];
+    fav.products = [...productSet].map(product => {
+        return {
+            product,
+        };
+    });
     fav.user = req.user.id;
     fav.modifiedAt = new Date(Date.now());
 

@@ -27,11 +27,11 @@ const Button: FC<{
                 <button
                     id={props.id}
                     role={props.role}
-                    className={`${props.className} ${
+                    className={`${
                         props.light
                             ? `btn-light ${props.light && props.active ? 'btn-light-active' : ''}`
                             : `btn ${props.inverse ? 'btn-inverse' : ''}`
-                    } ${props.disabled ? 'btn-disabled' : ''}`}
+                    } ${props.disabled ? 'disabled' : ''} ${props.className}`}
                     onClick={props.onClick}
                     style={props.style}
                     disabled={props.disabled}
@@ -45,11 +45,11 @@ const Button: FC<{
                 <Link
                     id={props.id}
                     to={props.to}
-                    className={`${props.className} ${
+                    className={`${
                         props.light
                             ? `link-light ${props.active ? 'link-light-active' : ''}`
                             : `link ${props.inverse ? 'link-inverse' : ''}`
-                    }`}
+                    } ${props.className}`}
                     onClick={props.onClick}
                     style={props.style}
                 >

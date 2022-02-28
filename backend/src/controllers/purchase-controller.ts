@@ -6,6 +6,7 @@ import Purchase from '../models/purchase-model';
 import HandlerFactory from '../api/handler-factory';
 import sleep from '../utils/sleep';
 import Cart from '../models/cart-model';
+import { cartProcessing } from './cart-controller';
 
 const createNewPurchase = async (userId: string) => {
     try {
@@ -25,8 +26,7 @@ const createNewPurchase = async (userId: string) => {
 
         await purchase.save();
         cart.products = [];
-        await cart.save()
-
+        await cart.save();
     } catch (err) {
         console.error(err);
     }
@@ -57,20 +57,8 @@ export const createPaymentIntent = catchAsync(async (req, res, next) => {
     if (!cart) {
         cart = new Cart();
     }
-    const mapProducts = new Map<string, number>();
-    for (const item of products) {
-        if (!mapProducts.has(item.product)) {
-            mapProducts.set(item.product, item.quantity);
-            continue;
-        }
-        mapProducts.set(item.product, mapProducts.get(item.product) + item.quantity);
-    }
-    cart.products = Array.from(mapProducts).map(([product, quantity]) => {
-        return {
-            product,
-            quantity,
-        };
-    });
+
+    cart.products = cartProcessing(products);
     cart.user = req.user.id;
     cart.modifiedAt = new Date(Date.now());
 
@@ -126,9 +114,7 @@ export const webHookEventListener = (req: Request, res: Response, next: NextFunc
     const paymentIntent = event.data.object;
     switch (event.type) {
         case 'payment_intent.succeeded':
-            {
-                createNewPurchase(paymentIntent.metadata.userId);
-            }
+            createNewPurchase(paymentIntent.metadata.userId);
             break;
         default:
             // Unexpected event type

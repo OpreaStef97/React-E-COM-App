@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import useFetch from './hooks/use-fetch';
 
-import Notification from './components/ui-components/Notification';
 import ErrorBoundary from './error/ErrorBoundary';
 import Footer from './components/footer/Footer';
 import MainNavigation from './components/navigation/MainNavigation';
@@ -16,23 +15,23 @@ import Auth from './pages/auth/Auth';
 import MePage from './pages/me-page/MePage';
 import { setCSRFToken } from './store/auth-actions';
 import { authActions } from './store/auth-slice';
-import sleep from './utils/sleep';
 import Cart from './components/cart/Cart';
 import Payment from './stripe/Payment';
 import Success from './stripe/Success';
-import { getCartData } from './store/cart-actions';
+import { modifyCartData, replaceLocalCart } from './store/cart-actions';
 import { cartActions } from './store/cart-slice';
+import { modifyFavData, replaceLocalFav } from './store/fav-actions';
 
 const App = () => {
     const { pathname } = useLocation();
-    const [showNotification, setShowNotification] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const { auth, cart } = useSelector((state: any) => state);
-    const { csrfToken, user, isLoggedIn } = auth;
+    const { csrfToken, isLoggedIn } = auth;
     const { totalAmount } = cart;
 
     const { isLoading, sendRequest } = useFetch();
+    const { ui } = useSelector((state: any) => state);
     const location = useLocation();
 
     useEffect(() => {
@@ -55,31 +54,25 @@ const App = () => {
         )
             .then(data => {
                 dispatch(authActions.loggingIn(data.user));
-                if (redirectStatus !== 'succeeded')
-                    dispatch(getCartData(data.user.cart, csrfToken));
-                else {
+                dispatch(modifyFavData(data.user.favorites, csrfToken));
+
+                if (redirectStatus !== 'succeeded') {
+                    dispatch(modifyCartData(data.user.cart, csrfToken));
+                } else {
                     dispatch(cartActions.reinitializeCart());
                 }
             })
             .catch(err => {
+                dispatch(replaceLocalCart());
+                dispatch(replaceLocalFav());
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const mute = err;
             });
     }, [sendRequest, csrfToken, dispatch]);
 
-    const onShowHandler = useCallback(async (state: boolean) => {
-        await sleep(400);
-        setShowNotification(state);
-    }, []);
-
     return (
         <ErrorBoundary>
             <MainNavigation ref={pathname === '/' ? ref : undefined} />
-            <Notification
-                show={showNotification}
-                message={`Welcome ${user && user?.name?.split(' ')[0]}!`}
-                onCancel={() => setShowNotification(false)}
-            />
             <TransitionGroup component={null}>
                 <CSSTransition
                     key={location.pathname.startsWith('/me') ? '' : location.pathname}
@@ -96,7 +89,7 @@ const App = () => {
                                 {isLoggedIn ? (
                                     <Route path="/me/*" element={<MePage />} />
                                 ) : (
-                                    <Route path="/auth" element={<Auth onShow={onShowHandler} />} />
+                                    <Route path="/auth" element={<Auth />} />
                                 )}
                                 <Route path="/products" element={<Products category="All" />} />
                                 <Route
@@ -111,7 +104,10 @@ const App = () => {
                                     path="/products/laptops"
                                     element={<Products category="Laptop" />}
                                 />
-                                <Route path="/product/:slug/:id" element={<ProductPage />} />
+                                <Route
+                                    path="/product/:slug/:id"
+                                    element={<ProductPage key={+ui.reset} />}
+                                />
                                 <Route path="*" element={<Navigate to={'/'} />} />
                             </Routes>
                         </ScrollToTop>

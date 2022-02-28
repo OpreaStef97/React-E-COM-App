@@ -70,12 +70,10 @@ export default class HandlerFactory<T> {
 
     public updateOne() {
         return catchAsync(async (req, res, next) => {
-            const doc = await this.model
-                .findByIdAndUpdate(req.params.id, req.body, {
-                    new: true,
-                    runValidators: true,
-                })
-                .clone();
+            const doc = await this.model.findByIdAndUpdate(req.params.id, req.body, {
+                new: true,
+                runValidators: true,
+            });
 
             if (!doc) {
                 return next(new AppError(404, 'No document found with that ID'));
@@ -90,7 +88,7 @@ export default class HandlerFactory<T> {
 
     public deleteOne() {
         return catchAsync(async (req, res, next) => {
-            const doc = await this.model.findByIdAndDelete(req.params.id).clone();
+            const doc = await this.model.findByIdAndDelete(req.params.id);
             if (!doc) {
                 return next(new AppError(404, 'No document found with that ID'));
             }

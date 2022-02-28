@@ -1,0 +1,187 @@
+@import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
+
+.favorites {
+    position: relative;
+
+    &__main-link {
+        position: relative;
+    }
+
+    &__counter {
+        position: absolute;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        height: 1.7rem;
+        width: 1.7rem;
+        background-color: $color-primary-dark-2;
+        top: 10%;
+        right: 9%;
+        border-radius: 50%;
+        color: $color-primary-light-1;
+
+        animation: expand-in-and-out 0.5s;
+
+        @media (max-width: 68.75em) {
+            top: 10%;
+            right: 12%;
+        }
+    }
+
+    &__dropdown__component {
+        left: 50%;
+        transform: translate(-50%);
+        top: 115%;
+        width: 40rem;
+        border-radius: 1rem;
+        background-color: $color-primary-light-1;
+        cursor: default;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        overflow-y: hidden;
+
+        box-shadow: 0 0 1.5rem rgba($color-primary-dark-3, 0.5);
+
+        @media (max-width: 68.75em) {
+            left: -160%;
+        }
+
+        &::-webkit-scrollbar {
+            width: 1.2em;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: $color-primary-light-2;
+            border-radius: 1rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $color-primary-dark-1;
+            border: 0.25em solid $color-primary-light-2;
+            border-radius: 1em;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background: $color-primary-dark-2;
+        }
+
+        @supports (scrollbar-color: red blue) {
+            * {
+                scrollbar-color: $color-primary-dark-1 $color-primary-light-3;
+                scrollbar-width: auto;
+            }
+        }
+    }
+
+    &:hover &__dropdown__component {
+        overflow: overlay;
+        z-index: 1600;
+        @supports not (overflow: overlay) {
+            overflow: auto;
+        }
+        animation: hide-scroll 0.5s;
+    }
+
+    &:hover &__main-link {
+        &:link,
+        &:visited {
+            box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
+        }
+    }
+
+    &__dropdown {
+        flex-grow: 1;
+        gap: 1.5rem;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    &__empty {
+        margin-top: auto;
+        font-size: 1.6rem;
+        text-align: center;
+    }
+
+    &__list {
+        width: 100%;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    &__item {
+        display: flex;
+        position: relative;
+        height: 15rem;
+        border-radius: 1rem;
+        background-color: $color-primary-light-1;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.25);
+        overflow: hidden;
+
+        img {
+            display: inline-flex;
+            cursor: pointer;
+            height: 15rem;
+            width: 15rem;
+            object-fit: contain;
+        }
+
+        &-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            padding: 2rem;
+            h3 {
+                font-size: 1.4rem;
+                text-align: center;
+            }
+
+            &--btn {
+                height: 3rem;
+                width: 12rem;
+
+                span {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+
+        &-close {
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            height: 3rem;
+            width: 3rem;
+
+            position: absolute;
+            border: none;
+            align-self: flex-end;
+            background-color: inherit;
+
+            svg {
+                color: $color-tertiary-dark-1;
+                height: 3rem;
+                width: 3rem;
+                transition: all 0.3s;
+            }
+
+            &:hover {
+                svg {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
