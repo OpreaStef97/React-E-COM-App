@@ -16,7 +16,7 @@ const filterObj = (obj: { [key: string]: string }, ...allowedFields: string[]) =
     return newObj;
 };
 
-export const getAllUsers = factory.getAll('name photo id');
+export const getAllUsers = factory.getAll({ select: 'name photo id' });
 export const getUser = factory.getOne();
 export const updateUser = factory.updateOne();
 export const createUser = factory.createOne();
@@ -36,7 +36,7 @@ export const updateMe = catchAsync(async (req, res, next) => {
     // body.role: 'admin'
 
     // 2) Filtered out unwanted fields names that are not allowed to be updated
-    const filteredBody = filterObj(req.body, 'name', 'email');
+    const filteredBody = filterObj(req.body, 'name', 'email', 'phone');
     if (req.file) filteredBody.photo = req.file.filename;
 
     // 3) Update user document

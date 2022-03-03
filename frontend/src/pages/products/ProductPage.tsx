@@ -16,7 +16,7 @@ const ProductPage: FC = props => {
     const { sendRequest } = useFetch();
 
     useEffect(() => {
-        sendRequest(`${process.env.REACT_APP_API_URL}/products/${params.id}`)
+        sendRequest({ url: `${process.env.REACT_APP_API_URL}/products/${params.id}` })
             .then(data => {
                 setProduct(data.doc);
                 setCategory(data.doc.category);

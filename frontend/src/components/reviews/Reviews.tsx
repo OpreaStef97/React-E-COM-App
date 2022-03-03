@@ -1,20 +1,17 @@
-import { CircleNotch } from 'phosphor-react';
-import React, { FC, Fragment, useEffect, useMemo, useState } from 'react';
+import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/use-fetch';
-import { useForm } from '../../hooks/use-form';
+
 import useReviewSort from '../../hooks/use-review-sort';
 import useSelect from '../../hooks/use-select';
-import { delayedNotification, uiActions } from '../../store/ui-slice';
-import { VALIDATOR_REQUIRE } from '../../utils/validators';
-import Input from '../form/Input';
+import { delayedNotification } from '../../store/ui-slice';
 import MenuSelect from '../form/MenuSelect';
 import Button from '../ui-components/Button';
-import Modal from '../ui-components/Modal';
 import ReviewList from './ReviewList';
-import './Reviews.scss';
 import ReviewStats from './ReviewStats';
+import './Reviews.scss';
+import ReviewModal from './ReviewModal';
 
 const Reviews: FC<{ rating?: number; id?: string }> = props => {
     const { id } = props;
@@ -23,11 +20,13 @@ const Reviews: FC<{ rating?: number; id?: string }> = props => {
     const [selectTouched, setSelectTouched] = useState(false);
     const { auth } = useSelector((state: any) => state);
     const { sendRequest, isLoading } = useFetch();
-    const [deleteReview, setDeleteReview] = useState(false);
     const [length, setLength] = useState<number>();
     const [checkReview, setCheckReview] = useState();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+    const [ratingValue, setRatingValue] = useState<string>('');
+
     const { selectState, selectHandler, deleteHandler } = useSelect({
         rating: {
             options: ['5⭐', '4⭐', '3⭐', '2⭐', '1⭐'],
@@ -43,22 +42,14 @@ const Reviews: FC<{ rating?: number; id?: string }> = props => {
         },
     });
 
-    const [formState, inputHandler] = useForm(
-        { rating: { value: '', isValid: false }, review: { value: '', isValid: false } },
-        false
-    );
-
-    const options = useMemo(() => {
-        if (!selectState.rating) return [];
-        return selectState.rating.options;
-    }, [selectState]);
-
     const { sortingD, sortingR } = useReviewSort(selectState);
 
     useEffect(() => {
-        sendRequest(
-            `${process.env.REACT_APP_API_URL}/products/${id}/reviews?sort=${sortingR || sortingD}`
-        )
+        sendRequest({
+            url: `${process.env.REACT_APP_API_URL}/products/${id}/reviews?sort=${
+                sortingR || sortingD
+            }`,
+        })
             .then(data => {
                 setReviews(data.docs);
                 setLength(data.docs.length);
@@ -82,122 +73,48 @@ const Reviews: FC<{ rating?: number; id?: string }> = props => {
         }
         const idx = selectState.rating.selected.findIndex((s: boolean) => s === true);
         const value = selectState.rating.options[idx];
-        inputHandler('rating', value, !!value);
-    }, [selectState, inputHandler]);
+        setRatingValue(value);
+    }, [selectState]);
 
     useEffect(() => {
         const review = checkReview as any;
         if (review) {
             selectHandler('rating', `${review.rating}⭐`, false, false);
         }
-    }, [checkReview, selectHandler, options]);
+    }, [checkReview, selectHandler]);
 
-    const addReviewHandler = () => {
+    const addReviewHandler = useCallback(() => {
         if (auth.isLoggedIn) {
             setAddReview(prev => !prev);
             setSelectTouched(false);
         } else {
-            navigate('/auth');
+            navigate('/auth', {
+                state: { from: location.pathname },
+            });
+            dispatch(
+                delayedNotification({
+                    delay: 300,
+                    message: 'Please authenticate before adding a review',
+                    status: 'error',
+                })
+            );
         }
-    };
-
-    const submitHandler = (event: React.FormEvent) => {
-        event.preventDefault();
-        if (!formState.isValid && !deleteReview) {
-            return;
-        }
-        sendRequest(
-            `${process.env.REACT_APP_API_URL}/products/${id}/reviews/${
-                checkReview ? (checkReview as any).id : ''
-            }`,
-            checkReview ? (deleteReview ? 'DELETE' : 'PATCH') : 'POST',
-            {
-                'Content-Type': 'application/json',
-                'x-csrf-token': auth.csrfToken,
-            },
-            deleteReview
-                ? ''
-                : JSON.stringify({
-                      rating: parseInt(formState.inputs.rating?.value?.slice(0, 1) as string),
-                      review: formState.inputs.review?.value,
-                  }),
-            'include'
-        )
-            .then(data => {
-                setAddReview(prev => !prev);
-                dispatch(
-                    delayedNotification({
-                        delay: 200,
-                        status: 'success',
-                        message: checkReview
-                            ? deleteReview
-                                ? 'Review Deleted'
-                                : 'Review Updated'
-                            : 'Thank you for your review!',
-                    })
-                );
-                dispatch(uiActions.setUIReset());
-            })
-            .catch(err => setAddReview(prev => !prev));
-
-        setDeleteReview(false);
-    };
+    }, [auth.isLoggedIn, dispatch, location.pathname, navigate]);
 
     return (
         <Fragment>
-            <Modal
-                show={addReview}
-                onCancel={addReviewHandler}
-                header={checkReview ? 'Modify Review' : 'Write a review'}
-                headerClass="modal-review__header"
-                footer={
-                    <div className="modal-review__footer">
-                        <Button
-                            className="modal-review__btn modal-review__btn--submit"
-                            disabled={!formState.isValid}
-                            role="submit"
-                        >
-                            {isLoading && <CircleNotch className="load" />}
-                            {!isLoading && 'SUBMIT'}
-                        </Button>
-                        {checkReview && (
-                            <Button
-                                onClick={() => setDeleteReview(true)}
-                                className="modal-review__btn"
-                                role="submit"
-                            >
-                                {isLoading && <CircleNotch className="load" />}
-                                {!isLoading && 'DELETE'}
-                            </Button>
-                        )}
-                    </div>
-                }
-                onSubmit={submitHandler}
-            >
-                <div className="modal-review__content">
-                    <MenuSelect
-                        id={'rating'}
-                        className="modal-review__menu"
-                        placeholder="Select rating.."
-                        options={selectState['rating']}
-                        uniqueSelect
-                        errorText="Select rating!"
-                        error={!formState.inputs.rating?.isValid && selectTouched}
-                        onSelect={selectHandler}
-                        onDelete={deleteHandler}
-                        onTouch={() => setSelectTouched(true)}
-                    />
-                    <Input
-                        id="review"
-                        type="textarea"
-                        label="Add a review:"
-                        validators={[VALIDATOR_REQUIRE()]}
-                        onInput={inputHandler}
-                        initialValid={!!checkReview}
-                        initialValue={(checkReview as any)?.review || ''}
-                    />
-                </div>
-            </Modal>
+            <ReviewModal
+                value={ratingValue}
+                selectState={selectState}
+                checkReview={checkReview}
+                productId={id || ''}
+                addReview={addReview}
+                selectTouched={selectTouched}
+                onReview={addReviewHandler}
+                onSelect={selectHandler}
+                onDelete={deleteHandler}
+                onTouch={() => setSelectTouched(true)}
+            />
             <div className="reviews">
                 <div className="reviews-content">
                     <div className="reviews-content-header">

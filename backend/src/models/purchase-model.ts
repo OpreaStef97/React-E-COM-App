@@ -54,7 +54,7 @@ purchaseSchema.pre(/^find/, function (next) {
         select: 'name _id email',
     }).populate({
         path: 'products.product',
-        select: 'name price _id',
+        select: 'name price _id images',
     });
     next();
 });

@@ -86,6 +86,7 @@ const MainNav = React.forwardRef((props, ref) => {
             <Notification
                 show={ui.visible}
                 className={`${sticky && 'sticky'}`}
+                error={ui.notification.status === 'error'}
                 message={ui.notification.message}
                 onCancel={() => dispatch(uiActions.toggle())}
             />

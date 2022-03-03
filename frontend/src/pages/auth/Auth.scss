@@ -3,6 +3,7 @@
 .auth {
     height: clamp(65rem, 70vh, 80vh);
     margin-bottom: 10rem;
+    transition: height 0.3s;
 
     &-container {
         margin: 0 auto;
@@ -16,17 +17,12 @@
         display: flex;
         padding: 2rem;
         gap: 2rem;
-        // justify-content: space-around;
         flex-direction: column;
         align-items: center;
 
         h2 {
             font-size: 3rem;
             color: $color-primary-dark-1;
-        }
-
-        .separator {
-            margin-top: 1rem;
         }
     }
     &-paragraph {
@@ -39,6 +35,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        justify-content: center;
         gap: 1rem;
         width: 100%;
 
@@ -51,9 +48,12 @@
     }
 
     &-form &-btn {
-        margin-top: 2rem;
+        height: 10rem;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
 
-        &:hover {
+        button:hover {
             .auth-form--load {
                 color: $color-primary-dark-3;
             }

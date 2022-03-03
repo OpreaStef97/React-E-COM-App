@@ -1,15 +1,16 @@
 import { CircleNotch } from 'phosphor-react';
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Input from '../../components/form/Input';
 import Button from '../../components/ui-components/Button';
-import ErrorModal from '../../components/ui-components/ErrorModal';
 import useFetch from '../../hooks/use-fetch';
 import { useForm } from '../../hooks/use-form';
 import { authActions } from '../../store/auth-slice';
 import { modifyCartData } from '../../store/cart-actions';
 import { modifyFavData } from '../../store/fav-actions';
-import { delayedNotification } from '../../store/ui-slice';
+import { delayedNotification, uiActions } from '../../store/ui-slice';
+import sleep from '../../utils/sleep';
 import {
     VALIDATOR_EMAIL,
     VALIDATOR_MAXLENGTH,
@@ -18,12 +19,16 @@ import {
 } from '../../utils/validators';
 import './Auth.scss';
 
+type LocationState = { [s: string]: string };
+
 const Auth: FC = props => {
     const [isLoginMode, setIsLoginMode] = useState(true);
     const [disable, setDisabled] = useState(true);
-    const { isLoading, error, clearError, sendRequest } = useFetch();
+    const { isLoading, sendRequest } = useFetch();
     const { csrfToken } = useSelector((state: any) => state.auth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const [formState, inputHandler, setFormData] = useForm(
         {
@@ -70,28 +75,25 @@ const Auth: FC = props => {
     const authSubmitHandler = async (event: React.FormEvent) => {
         event.preventDefault();
         try {
-            const data = await sendRequest(
-                `${process.env.REACT_APP_API_URL}/users/${isLoginMode ? 'login' : 'signup'}`,
-                'POST',
-                {
+            const data = await sendRequest({
+                url: `${process.env.REACT_APP_API_URL}/users/${isLoginMode ? 'login' : 'signup'}`,
+                method: 'POST',
+                headers: {
                     'Content-Type': 'application/json',
                     'x-csrf-token': csrfToken,
                 },
-                JSON.stringify(
-                    isLoginMode
-                        ? {
-                              email: formState.inputs.email?.value,
-                              password: formState.inputs.password?.value,
-                          }
-                        : {
-                              name: formState.inputs.name?.value,
-                              email: formState.inputs.email?.value,
-                              password: formState.inputs.password?.value,
-                              passwordConfirm: formState.inputs.passwordConfirm?.value,
-                          }
-                ),
-                'include'
-            );
+                body: isLoginMode
+                    ? {
+                          email: formState.inputs.email?.value,
+                          password: formState.inputs.password?.value,
+                      }
+                    : {
+                          email: formState.inputs.email?.value,
+                          password: formState.inputs.password?.value,
+                          passwordConfirm: formState.inputs.passwordConfirm?.value,
+                      },
+                credentials: 'include',
+            });
             setDisabled(true);
             dispatch(
                 delayedNotification({
@@ -100,11 +102,30 @@ const Auth: FC = props => {
                     message: `Welcome ${data.user.name.split(' ')[0]}`,
                 })
             );
-            dispatch(authActions.loggingIn(data.user));
             if (data.user.cart) dispatch(modifyCartData(data.user.cart, csrfToken));
             if (data.user.favorites) dispatch(modifyFavData(data.user.favorites, csrfToken));
+
+            if (
+                location.state &&
+                (location.state as LocationState).from &&
+                (location.state as LocationState).from !== '/auth'
+            ) {
+                navigate((location.state as LocationState).from, {
+                    replace: true,
+                });
+            } else {
+                navigate('/', { replace: true });
+            }
+            await sleep(200);
+
+            dispatch(authActions.loggingIn(data.user));
         } catch (err) {
-            console.error(err);
+            dispatch(
+                uiActions.showNotification({
+                    status: 'error',
+                    message: err instanceof Error ? err.message : 'Something went wrong',
+                })
+            );
         }
     };
 
@@ -115,13 +136,6 @@ const Auth: FC = props => {
     return (
         <section className="auth">
             <div className="auth-container">
-                <ErrorModal
-                    error={error}
-                    onClear={(e: React.MouseEvent) => {
-                        e.preventDefault();
-                        clearError();
-                    }}
-                />
                 <h2>{isLoginMode ? 'Authenticate' : 'Create an account'}</h2>
                 <div className="separator" style={{ backgroundColor: '#063e46' }}></div>
                 <form className="auth-form" onSubmit={authSubmitHandler}>
@@ -165,15 +179,16 @@ const Auth: FC = props => {
                             onInput={inputHandler}
                         />
                     )}
-                    <Button
-                        className="auth-btn"
-                        role="submit"
-                        style={{ transform: 'scale(1.2)' }}
-                        disabled={disable}
-                    >
-                        {isLoading && <CircleNotch className="auth-form--load" />}
-                        {!isLoading && `${isLoginMode ? 'LOGIN' : 'SIGNUP'}`}
-                    </Button>
+                    <div className="auth-btn">
+                        <Button
+                            role="submit"
+                            style={{ transform: 'scale(1.2)' }}
+                            disabled={disable}
+                        >
+                            {isLoading && <CircleNotch className="auth-form--load" />}
+                            {!isLoading && `${isLoginMode ? 'LOGIN' : 'SIGNUP'}`}
+                        </Button>
+                    </div>
                 </form>
                 <div className="separator" style={{ backgroundColor: '#063e46' }}></div>
                 {isLoginMode && (

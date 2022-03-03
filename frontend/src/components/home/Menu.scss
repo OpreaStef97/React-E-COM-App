@@ -101,7 +101,7 @@
         list-style: none;
         justify-content: space-around;
         align-items: center;
-        flex-wrap: wrap;
+        // flex-wrap: wrap;
         overflow: hidden;
         gap: 1rem;
 
@@ -116,6 +116,13 @@
                 font-size: 3rem;
                 color: $color-fourth;
             }
+        }
+
+        @media(max-width: 52.5em) {
+            gap: 3rem;
+            margin-left: 3rem;
+            align-items: flex-start;
+            flex-direction: column;
         }
     }
 

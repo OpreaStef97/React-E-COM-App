@@ -44,7 +44,7 @@ export const putCart = catchAsync(async function (req, res) {
     });
 });
 
-export const getAllCarts = factory.getAll();
+export const getAllCarts = factory.getAll({});
 
 // admin routes
 export const getOneCart = factory.getOne();

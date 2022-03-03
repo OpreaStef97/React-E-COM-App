@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import useFetch from '../../hooks/use-fetch';
 import usePrevious from '../../hooks/use-previos';
 import useShowCards from '../../hooks/use-show-cards';
@@ -35,11 +35,11 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
         if (!numberOfShownCards) {
             return;
         }
-        sendRequest(
-            `${process.env.REACT_APP_API_URL}/products?page=1&limit=${
-                numberOfShownCards < 3 ? 4 : numberOfShownCards
-            }${category ? `&category=${category}` : ''}${exclude ? `&_id[ne]=${exclude}` : ''}`
-        )
+        sendRequest({
+            url: `${process.env.REACT_APP_API_URL}/products?page=1&limit=${
+                numberOfShownCards < 3 ? 10 : numberOfShownCards
+            }${category ? `&category=${category}` : ''}${exclude ? `&_id[ne]=${exclude}` : ''}`,
+        })
             .then(data => {
                 if (data.results > 0) setProducts([...data.docs]);
             })
@@ -53,11 +53,11 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
     const sendRequestHandler = useCallback(
         async (limit: number) => {
             try {
-                const data = await sendRequest(
-                    `${process.env.REACT_APP_API_URL}/products?page=${page + 1}&limit=${limit}${
-                        category ? `&category=${category}` : ''
-                    }`
-                );
+                const data = await sendRequest({
+                    url: `${process.env.REACT_APP_API_URL}/products?page=${
+                        page + 1
+                    }&limit=${limit}${category ? `&category=${category}` : ''}`,
+                });
                 if (data.results > 0) {
                     setProducts(prevProducts => {
                         prevProducts.push(...data.docs);
@@ -66,31 +66,22 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
                     setPage(page => ++page);
                     setIndex(prevIdx => ++prevIdx);
                 } else {
-                    setAllDataLoaded(true);
                     setMax(index);
+                    setAllDataLoaded(true);
                 }
             } catch (message) {
                 return console.error(message);
             }
         },
-        [category, page, sendRequest, index]
+        [category, index, page, sendRequest]
     );
 
     const moveRightHandler = () => {
         if (!numberOfShownCards) {
             return;
         }
-        if (!allDataLoaded) {
-            if (numberOfShownCards >= 3 && page === index + 1)
-                sendRequestHandler(numberOfShownCards);
-
-            // to not send a request at every 2 cards
-            if (numberOfShownCards === 2 && (index + 1) % 2 === 0 && (index + 1) / 2 === page)
-                sendRequestHandler(4);
-
-            // to not send a request at every one card
-            if (numberOfShownCards === 1 && (index + 1) % 4 === 0 && (index + 1) / 4 === page)
-                sendRequestHandler(4);
+        if (!allDataLoaded && numberOfShownCards >= 3 && page === index + 1) {
+            sendRequestHandler(numberOfShownCards);
         }
         if (index < products.length / numberOfShownCards - 1) {
             setIndex(prevIdx => ++prevIdx);
@@ -101,9 +92,33 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
         if (index > 0) setIndex(prevIdx => --prevIdx);
     };
 
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
+
+    const touchStartHandler = (e: React.TouchEvent) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const touchMoveHandler = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const touchEndHandler = () => {
+        if (touchStart - touchEnd > 75) {
+            moveRightHandler();
+        }
+        if (touchStart - touchEnd < -75) {
+            moveLeftHandler();
+        }
+    };
+
     return (
         <div className="product-list">
-            <ListButton in={index === 0} type={'left'} onClick={moveLeftHandler} />
+            <ListButton
+                in={index === 0}
+                type={'left'}
+                onClick={() => !isLoading && moveLeftHandler()}
+            />
             <div className="product-list-container">
                 <ul
                     className="product-list-container--list"
@@ -115,6 +130,9 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
                         products.map((product: any, idx: number) => {
                             return (
                                 <ProductItem
+                                    onTouchStart={touchStartHandler}
+                                    onTouchMove={touchMoveHandler}
+                                    onTouchEnd={touchEndHandler}
                                     product={product}
                                     key={idx}
                                     numberOfShownCards={numberOfShownCards}
@@ -126,9 +144,13 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
             </div>
             <ListButton
                 isLoading={isLoading}
-                in={index === max}
+                in={
+                    index ===
+                    (numberOfShownCards &&
+                        (numberOfShownCards >= 3 ? max : products.length / numberOfShownCards - 1))
+                }
                 type="right"
-                onClick={moveRightHandler}
+                onClick={() => !isLoading && moveRightHandler()}
             />
         </div>
     );

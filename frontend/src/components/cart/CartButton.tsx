@@ -87,6 +87,8 @@ const CartButton: FC<{ className?: string }> = props => {
                 to="/cart"
                 icon={<ShoppingCart className="cart-icon" />}
                 iconAfter
+                onClick={closeHandler}
+                aria-label="cart-button"
             >
                 CART
             </Button>

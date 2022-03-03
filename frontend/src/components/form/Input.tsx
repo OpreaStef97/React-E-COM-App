@@ -5,6 +5,7 @@ import './Input.scss';
 type Props = {
     id?: string;
     className?: string;
+    labelClassName?: string;
     label?: string;
     element?: string;
     type?: string;
@@ -81,7 +82,7 @@ const Input: FC<Props> = props => {
         props.element === 'input' ? (
             <input
                 id={props.id}
-                className={props.className}
+                className={`form-control-input ${props.className}`}
                 type={props.type}
                 placeholder={props.placeholder}
                 onChange={changeHandler}
@@ -91,11 +92,12 @@ const Input: FC<Props> = props => {
         ) : (
             <textarea
                 id={props.id}
-                className={props.className}
+                className={`form-control-textarea ${props.className}`}
                 rows={props.rows || 3}
                 onChange={changeHandler}
                 onBlur={touchHandler}
                 value={inputState.value}
+                maxLength={500}
             />
         );
 
@@ -105,7 +107,9 @@ const Input: FC<Props> = props => {
                 !inputState.isValid && inputState.isTouched && 'form-control--invalid'
             }`}
         >
-            <label htmlFor={props.id}>{props.label}</label>
+            <label className={`form-control-label ${props.labelClassName}`} htmlFor={props.id}>
+                {props.label}
+            </label>
             {element}
             <p
                 className="form-control-error"

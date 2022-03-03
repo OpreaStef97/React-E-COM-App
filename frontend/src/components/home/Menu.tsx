@@ -115,7 +115,7 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
             <div className="menu-dropdown">
                 <Dropdown
                     show={showState[`s${0}`]}
-                    height={'15rem' /*width <= 840 ? 'calc(50vh - 8rem)' : '70vh'*/}
+                    height={width > 840 ? '15rem' : '30rem'}
                     allFalse={allFalse}
                     transitionMs={400}
                     delayMs={700}
@@ -123,37 +123,25 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                     <div className="menu-dropdown-container">
                         <ul className="menu-dropdown-links">
                             <li className="menu-dropdown-links--item">
-                                <Link
-                                    className="menu-dropdown-link"
-                                    to={'/products/phones'}
-                                >
+                                <Link className="menu-dropdown-link" to={'/products/phones'}>
                                     <DeviceMobile />
                                     {'Phones'}
                                 </Link>
                             </li>
                             <li className="menu-dropdown-links--item">
-                                <Link
-                                    className="menu-dropdown-link"
-                                    to={'/products/laptops'}
-                                >
+                                <Link className="menu-dropdown-link" to={'/products/laptops'}>
                                     <Laptop />
                                     {'Laptops'}
                                 </Link>
                             </li>
                             <li className="menu-dropdown-links--item">
-                                <Link
-                                    className="menu-dropdown-link"
-                                    to={'/products/tablets'}
-                                >
+                                <Link className="menu-dropdown-link" to={'/products/tablets'}>
                                     <DeviceTablet />
                                     {'Tablets'}
                                 </Link>
                             </li>
                             <li className="menu-dropdown-links--item">
-                                <Link
-                                    className="menu-dropdown-link"
-                                    to={'/products'}
-                                >
+                                <Link className="menu-dropdown-link" to={'/products'}>
                                     <ShoppingBag />
                                     {'Others..'}
                                 </Link>
@@ -167,7 +155,7 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                     height={width <= 840 ? 'calc(50vh - 8rem)' : '70vh'}
                     transitionMs={700}
                 >
-                    <TransitionSlider transitionMs={100}>
+                    <TransitionSlider transitionMs={150}>
                         <Offer
                             src={'../../images/iphone13Pro-promo-image.jpeg'}
                             content={'iPhone 13 Pro for just:'}

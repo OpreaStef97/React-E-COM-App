@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Fragment, useEffect, useRef } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,6 @@ import Success from './stripe/Success';
 import { modifyCartData, replaceLocalCart } from './store/cart-actions';
 import { cartActions } from './store/cart-slice';
 import { modifyFavData, replaceLocalFav } from './store/fav-actions';
-
 const App = () => {
     const { pathname } = useLocation();
     const ref = useRef<HTMLDivElement>(null);
@@ -43,15 +42,14 @@ const App = () => {
             return;
         }
         const redirectStatus = new URLSearchParams(window.location.search).get('redirect_status');
-        sendRequest(
-            `${process.env.REACT_APP_API_URL}/users/is-logged-in`,
-            'POST',
-            {
+        sendRequest({
+            url: `${process.env.REACT_APP_API_URL}/users/is-logged-in`,
+            method: 'POST',
+            headers: {
                 'x-csrf-token': csrfToken,
             },
-            null,
-            'include'
-        )
+            credentials: 'include',
+        })
             .then(data => {
                 dispatch(authActions.loggingIn(data.user));
                 dispatch(modifyFavData(data.user.favorites, csrfToken));
@@ -71,51 +69,55 @@ const App = () => {
     }, [sendRequest, csrfToken, dispatch]);
 
     return (
-        <ErrorBoundary>
-            <MainNavigation ref={pathname === '/' ? ref : undefined} />
-            <TransitionGroup component={null}>
-                <CSSTransition
-                    key={location.pathname.startsWith('/me') ? '' : location.pathname}
-                    timeout={400}
-                    classNames="fade"
-                >
-                    <main>
-                        <ScrollToTop>
-                            <Routes location={location}>
-                                <Route path="/" element={<Home ref={ref} />} />
-                                <Route path="/cart" element={<Cart />} />
-                                {totalAmount > 0 && <Route path="/payment" element={<Payment />} />}
-                                <Route path="/payment/success" element={<Success />} />
-                                {isLoggedIn ? (
-                                    <Route path="/me/*" element={<MePage />} />
-                                ) : (
-                                    <Route path="/auth" element={<Auth />} />
-                                )}
-                                <Route path="/products" element={<Products category="All" />} />
-                                <Route
-                                    path="/products/phones"
-                                    element={<Products category="Phone" />}
-                                />
-                                <Route
-                                    path="/products/tablets"
-                                    element={<Products category="Tablet" />}
-                                />
-                                <Route
-                                    path="/products/laptops"
-                                    element={<Products category="Laptop" />}
-                                />
-                                <Route
-                                    path="/product/:slug/:id"
-                                    element={<ProductPage key={+ui.reset} />}
-                                />
-                                <Route path="*" element={<Navigate to={'/'} />} />
-                            </Routes>
-                        </ScrollToTop>
-                    </main>
-                </CSSTransition>
-            </TransitionGroup>
-            <Footer isLoading={isLoading} />
-        </ErrorBoundary>
+        <Fragment>
+            <ErrorBoundary>
+                <MainNavigation ref={pathname === '/' ? ref : undefined} />
+                <TransitionGroup component={null}>
+                    <CSSTransition
+                        key={location.pathname.startsWith('/me') ? '' : location.pathname}
+                        timeout={400}
+                        classNames="fade"
+                    >
+                        <main>
+                            <ScrollToTop>
+                                <Routes location={location}>
+                                    <Route path="/" element={<Home ref={ref} />} />
+                                    <Route path="/cart" element={<Cart />} />
+                                    {totalAmount > 0 && (
+                                        <Route path="/payment" element={<Payment />} />
+                                    )}
+                                    <Route path="/payment/success" element={<Success />} />
+                                    {isLoggedIn ? (
+                                        <Route path="/me/*" element={<MePage key={ui.reset} />} />
+                                    ) : (
+                                        <Route path="/auth" element={<Auth />} />
+                                    )}
+                                    <Route path="/products" element={<Products category="All" />} />
+                                    <Route
+                                        path="/products/phones"
+                                        element={<Products category="Phone" />}
+                                    />
+                                    <Route
+                                        path="/products/tablets"
+                                        element={<Products category="Tablet" />}
+                                    />
+                                    <Route
+                                        path="/products/laptops"
+                                        element={<Products category="Laptop" />}
+                                    />
+                                    <Route
+                                        path="/product/:slug/:id"
+                                        element={<ProductPage key={ui.reset} />}
+                                    />
+                                    <Route path="*" element={<Navigate to={'/'} />} />
+                                </Routes>
+                            </ScrollToTop>
+                        </main>
+                    </CSSTransition>
+                </TransitionGroup>
+                <Footer isLoading={isLoading} />
+            </ErrorBoundary>
+        </Fragment>
     );
 };
 

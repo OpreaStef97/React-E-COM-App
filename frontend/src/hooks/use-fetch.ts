@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+type HttpFetch = {
+    url: string;
+    method?: string;
+    headers?: { [key: string]: string };
+    body?: { [key: string]: any } | null;
+    formData?: FormData | null;
+    credentials?: RequestCredentials;
+};
+
 const useFetch = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>();
@@ -7,13 +16,14 @@ const useFetch = () => {
     const activeHttpRequests = useRef<AbortController[]>([]);
 
     const sendRequest = useCallback(
-        async (
-            url: string,
-            method: string = 'GET',
-            headers: { [key: string]: string } = {},
+        async ({
+            url,
+            method = 'GET',
+            headers = {},
             body = null,
-            credentials = 'omit'
-        ) => {
+            credentials = 'omit',
+            formData = null,
+        }: HttpFetch) => {
             setIsLoading(true);
 
             // in case the user switches pages while sending the request
@@ -23,7 +33,7 @@ const useFetch = () => {
             try {
                 const response = await fetch(url, {
                     method,
-                    body,
+                    body: (body ? JSON.stringify(body) : null) || formData,
                     headers,
                     signal: httpAbortCtrl.signal,
                     credentials,
@@ -38,7 +48,10 @@ const useFetch = () => {
                     throw new Error('Something went wrong');
                 }
 
-                if (response.statusText === 'No Content') return;
+                if (response.statusText === 'No Content') {
+                    setIsLoading(false);
+                    return;
+                }
 
                 const responseData = await response.json();
 

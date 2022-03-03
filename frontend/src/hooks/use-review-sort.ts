@@ -13,10 +13,10 @@ export default function useReviewSort(selectState: SelectState) {
         if (idx !== -1) {
             switch (options[idx]) {
                 case 'Top rated':
-                    setSortingR('rating');
+                    setSortingR('-rating');
                     break;
                 case 'Low rated':
-                    setSortingR('-rating');
+                    setSortingR('rating');
                     break;
             }
         } else setSortingR('');

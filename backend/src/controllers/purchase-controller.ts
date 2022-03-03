@@ -125,7 +125,7 @@ export const webHookEventListener = (req: Request, res: Response, next: NextFunc
 
 const factory = new HandlerFactory(Purchase);
 
-export const getAllPurchaseRecords = factory.getAll();
+export const getAllPurchaseRecords = factory.getAll({});
 export const getOnePurchaseRecord = factory.getOne();
 export const createPurchaseRecord = factory.createOne();
 export const updatePurchaseRecord = factory.updateOne();

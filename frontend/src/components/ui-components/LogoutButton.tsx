@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { logout } from '../../store/auth-actions';
 import { sendCartData } from '../../store/cart-actions';
 import { sendFavData } from '../../store/fav-actions';
@@ -10,6 +10,7 @@ import Button from './Button';
 const LogoutButton: FC<{ onClick?: () => void; style?: { [key: string]: string } }> = props => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const { cart, auth, favorites } = useSelector((state: any) => state);
 
     const logoutHandler = async () => {
@@ -18,7 +19,9 @@ const LogoutButton: FC<{ onClick?: () => void; style?: { [key: string]: string }
         dispatch(logout());
         props.onClick && props.onClick();
         await sleep(500);
-        navigate('/auth');
+        navigate('/auth', {
+            state: { from: location.pathname },
+        });
     };
 
     return (

@@ -25,7 +25,7 @@ const ReviewStats: FC<{ length: number; rating?: number }> = props => {
     useEffect(() => {
         if (length === 0) return;
         const cntArr = [0, 0, 0, 0, 0];
-        sendRequest(`${process.env.REACT_APP_API_URL}/products/${params.id}/reviews/stats`)
+        sendRequest({ url: `${process.env.REACT_APP_API_URL}/products/${params.id}/reviews/stats` })
             .then(data => {
                 data.stats.forEach((s: any) => {
                     cntArr[s._id - 1] = s.count;

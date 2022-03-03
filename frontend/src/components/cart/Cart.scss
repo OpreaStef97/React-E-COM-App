@@ -109,7 +109,7 @@
         align-items: center;
         gap: 5rem;
 
-        @include scroll();
+        @include scroll($color-primary-light-3, $color-primary-dark-1, $color-primary-dark-3);
     }
 
     &__item {

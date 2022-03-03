@@ -7,7 +7,7 @@ type UINotification = {
         status: string | null;
         message: string | null;
     };
-    reset: boolean;
+    reset: number;
 };
 
 type Action = {
@@ -21,13 +21,18 @@ export const delayedNotification = createAsyncThunk('sleep', async (action: Acti
     return action;
 });
 
+export const delayedUIReset = createAsyncThunk('ui-reset', async (action: { delay?: number }) => {
+    await sleep(action.delay || 400);
+    return action;
+});
+
 const initialState: UINotification = {
     visible: false,
     notification: {
         status: null,
         message: null,
     },
-    reset: false,
+    reset: 0,
 };
 
 const uiSlice = createSlice({
@@ -38,7 +43,7 @@ const uiSlice = createSlice({
             state.visible = !state.visible;
         },
         setUIReset(state) {
-            state.reset = !state.reset;
+            state.reset = Math.random();
         },
         showNotification(state, action) {
             state.visible = true;
@@ -55,6 +60,9 @@ const uiSlice = createSlice({
                 status: action.payload.status,
                 message: action.payload.message,
             };
+        });
+        builder.addCase(delayedUIReset.fulfilled, (state, action) => {
+            state.reset = Math.random();
         });
     },
 });

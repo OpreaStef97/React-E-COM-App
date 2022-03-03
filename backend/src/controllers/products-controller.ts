@@ -6,7 +6,7 @@ import HandlerFactory from '../api/handler-factory';
 
 const factory = new HandlerFactory(Product);
 
-export const getAllProducts = factory.getAll();
+export const getAllProducts = factory.getAll({});
 export const getProduct = factory.getOne();
 export const createProduct = factory.createOne();
 export const updateProduct = factory.updateOne();

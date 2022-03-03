@@ -2,6 +2,7 @@ import './TransitionSlider.scss';
 import React, { useEffect, useState, useCallback, FC, ReactElement } from 'react';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { CaretLeft, CaretRight } from 'phosphor-react';
+import useWindow from '../../hooks/use-window';
 
 const TransitionSlider: FC<{
     flowTo?: string;
@@ -18,6 +19,7 @@ const TransitionSlider: FC<{
     const [index, setIndex] = useState(0);
     const [forward, setFoward] = useState(true);
     const [clicked, setClicked] = useState(false);
+    const [width] = useWindow();
 
     const { idx, flowTo, autoFlow, delay, transitionMs, children: childrenElements } = props;
 
@@ -68,6 +70,28 @@ const TransitionSlider: FC<{
         };
     }, [autoFlow, flowTo, delay, nextSlideHandler, prevSlideHandler, clicked]);
 
+    const [touchStart, setTouchStart] = useState(0);
+    const [touchEnd, setTouchEnd] = useState(0);
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (touchStart - touchEnd > 50) {
+            prevSlideHandler();
+            setClicked(true);
+        }
+        if (touchStart - touchEnd < -50) {
+            nextSlideHandler();
+            setClicked(true);
+        }
+    };
+
     return (
         <section className={`slideshow ${forward ? 'forwards' : 'backwards'}`}>
             <div
@@ -93,6 +117,9 @@ const TransitionSlider: FC<{
                         style={{
                             transition: `transform ${transitionMs || 300}ms ease-in-out`,
                         }}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
                     >
                         {children[index]}
                     </div>
@@ -115,20 +142,21 @@ const TransitionSlider: FC<{
                             justifyContent: `${props.dotsPosition || 'start'}`,
                         }}
                     >
-                        {children.map((_: any, idx: number) => (
-                            <div
-                                key={idx}
-                                className={`slideshow-dot ${
-                                    idx === index ? 'slideshow-dot-active' : ''
-                                }`}
-                                onClick={() => {
-                                    setIndex(idx);
-                                    setClicked(true);
-                                }}
-                            >
-                                <div className="slideshow-dot--inner"></div>
-                            </div>
-                        ))}
+                        {width > 840 &&
+                            children.map((_: any, idx: number) => (
+                                <div
+                                    key={idx}
+                                    className={`slideshow-dot ${
+                                        idx === index ? 'slideshow-dot-active' : ''
+                                    }`}
+                                    onClick={() => {
+                                        setIndex(idx);
+                                        setClicked(true);
+                                    }}
+                                >
+                                    <div className="slideshow-dot--inner"></div>
+                                </div>
+                            ))}
                     </div>
                 </div>
             )}

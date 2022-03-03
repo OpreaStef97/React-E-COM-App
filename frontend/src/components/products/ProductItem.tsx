@@ -1,5 +1,5 @@
 import { Heart } from 'phosphor-react';
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useImageLoad from '../../hooks/use-image-load';
@@ -18,6 +18,9 @@ const ProductItem: FC<{
         [key: string]: any;
     };
     className?: string;
+    onTouchStart?: (e: React.TouchEvent) => void;
+    onTouchMove?: (e: React.TouchEvent) => void;
+    onTouchEnd?: (e: React.TouchEvent) => void;
 }> = props => {
     const { product } = props;
 
@@ -44,6 +47,9 @@ const ProductItem: FC<{
 
     return (
         <li
+            onTouchStart={props.onTouchStart}
+            onTouchMove={props.onTouchMove}
+            onTouchEnd={props.onTouchEnd}
             className={`product__item ${props.className}`}
             style={{
                 width: `calc(100% / ${props.numberOfShownCards || 1})`,
@@ -84,6 +90,7 @@ const ProductItem: FC<{
                                 image: product.images[0],
                                 name: product.name,
                             })}
+                            aria-label="fav-button"
                         >
                             <Heart
                                 weight={

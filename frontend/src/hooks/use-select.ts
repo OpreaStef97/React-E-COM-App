@@ -24,6 +24,7 @@ const selectReducer = (
             // find to which menu belongs the select event
             const idx = state[action.id].options.findIndex((value: any) => action.value === value);
 
+            // if the select-menu has the onlySelect prop toggle between selected items
             if (action.onlySelect) {
                 state[action.id].selected[idx] = true;
 
@@ -38,7 +39,7 @@ const selectReducer = (
             // update the state array for the given id
             state[action.id].selected[idx] = !state[action.id].selected[idx];
 
-            // if the select-menu have the uniqueSelect prop cancel other selected items
+            // if the select-menu has the uniqueSelect prop cancel other selected items
             if (action.uniqueSelect) {
                 const deleteSelected = state[action.id].selected;
                 for (let i = 0; i < deleteSelected.length; ++i) {

@@ -6,42 +6,45 @@
 
     &-container {
         margin: 0 auto;
-        height: 80vh;
-        width: 90vw;
+        height: auto;
+        width: 80vw;
+        border-radius: 1rem;
+        overflow: hidden;
 
         display: grid;
-
-        grid-template-columns: 1fr 3fr;
-        grid-template-rows: 1fr 5fr;
-        gap: 1rem;
+        grid-template-columns: 1fr;
+        border-radius: 1rem;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
 
         @media (max-width: 52.5em) {
-            grid-template-columns: 1fr;
-            grid-template-rows: 1.5fr 1fr 5fr;
+            width: 90vw;
         }
     }
 
     &-header {
         padding: 0 2rem;
-        border-radius: 1rem;
+        height: 9rem;
         background-color: $color-primary-light-3;
         box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
 
         display: flex;
         justify-content: space-around;
         align-items: center;
+        gap: 2rem;
+
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
 
         h2 {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 500;
         }
 
         &__image {
             display: block;
+            border-radius: 50rem;
             cursor: pointer;
-            height: 8rem;
-            width: 8rem;
-            border-radius: 50%;
+            height: 7.5rem;
+            width: 7.5rem;
 
             transition: all 0.3s;
 
@@ -49,46 +52,116 @@
                 box-shadow: 0 0 0.1rem 0.2rem rgba($color-primary-dark-3, 0.9);
             }
         }
+
+        @media (max-width: 52.5em) {
+            h2 {
+                font-size: 2rem;
+            }
+        }
     }
 
     &-content {
-        background-color: $color-primary-light-2;
-        border-radius: 1rem;
-        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
+        background-color: $color-primary-light-3;
         display: flex;
         justify-content: center;
         align-items: center;
         width: 100%;
+        height: 65vh;
+
+        @media (max-width: 52.5em) {
+            height: auto;
+            align-items: flex-start;
+        }
+    }
+}
+
+.image-upload {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    gap: 2rem;
+    width: 100%;
+
+    &__preview {
+        display: flex;
+        padding: 1rem;
+        width: 100%;
+        justify-content: space-around;
+        img {
+            display: block;
+            height: 16rem;
+            width: 16rem;
+            border-radius: 50%;
+        }
     }
 
-    &-info {
+    &__footer {
+        height: 6rem;
+        width: 100%;
+        background-color: $color-primary-dark-1;
         display: flex;
-        width: 50rem;
-        height: 40rem;
-        background-color: red;
+        justify-content: space-around;
+        align-items: center;
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 1rem;
     }
-    &-favorites {
+
+    &__header {
+        background-color: $color-primary-dark-1;
+    }
+
+    &__box {
         display: flex;
-        width: 50rem;
-        height: 40rem;
-        background-color: green;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        overflow: hidden;
     }
-    &-cart {
+
+    &__input {
+        height: 4rem;
+        width: 15rem;
+        font-size: 1.4rem;
         display: flex;
-        width: 50rem;
-        height: 40rem;
-        background-color: yellow;
+        justify-content: center;
+        align-items: center;
+
+        padding: 0.5rem;
+        font-family: sans-serif;
+        border-radius: 50rem;
+        cursor: pointer;
+        text-transform: uppercase;
+        color: $color-tertiary-light-3;
+
+        background-image: linear-gradient(
+            130deg,
+            $color-tertiary-dark-1 0%,
+            $color-tertiary-dark-1 50%,
+            $color-primary-light-1 0%
+        );
+        background-size: 250%;
+        box-shadow: 0 0rem 0.5rem rgba($color-tertiary-dark-3, 0.15);
+        transition: all 0.4s;
+
+        &:hover,
+        &:active {
+            background-position: 100%;
+            color: $color-primary-dark-3;
+        }
     }
-    &-reviews {
-        display: flex;
-        width: 50rem;
-        height: 40rem;
-        background-color: orange;
-    }
-    &-purchases {
-        display: flex;
-        width: 50rem;
-        height: 40rem;
-        background-color: orangered;
-    }
+}
+
+.change-btn {
+    background-image: linear-gradient(
+        130deg,
+        $color-primary-dark-2 0%,
+        $color-primary-dark-2 50%,
+        $color-primary-light-1 0%
+    );
+}
+.modal-form {
+    width: auto;
+    padding-bottom: 0;
 }

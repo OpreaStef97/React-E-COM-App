@@ -12,35 +12,34 @@
     background-color: $color-primary-light-4 !important;
 }
 
-@mixin scroll {
+@mixin scroll($color1, $color2, $color3) {
     overflow-y: overlay;
 
     @supports not (overflow-y: overlay) {
         overflow-y: auto;
     }
-
     &::-webkit-scrollbar {
         width: 2em;
     }
 
     &::-webkit-scrollbar-track {
-        background: $color-primary-light-3;
+        background: $color1;
     }
 
     &::-webkit-scrollbar-thumb {
-        background: $color-primary-dark-1;
-        border: 0.25em solid $color-primary-light-3;
+        background: $color2;
+        border: 0.25em solid $color1;
         border-radius: 1em;
         min-height: 5em;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        background: $color-primary-dark-2;
+        background: $color3;
     }
 
     @supports (scrollbar-color: red blue) {
         * {
-            scrollbar-color: $color-primary-dark-1 $color-primary-light-3;
+            scrollbar-color: $color2 $color1;
             scrollbar-width: auto;
         }
     }

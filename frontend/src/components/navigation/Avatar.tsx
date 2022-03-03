@@ -55,14 +55,14 @@ const Avatar: FC<{
                             Your Account
                         </Link>
                         <Link
-                            to="/me"
+                            to="/me/reviews"
                             className="avatar-link"
                             onClick={() => setShowDropdown(prev => !prev)}
                         >
                             Your Reviews
                         </Link>
                         <Link
-                            to="/me"
+                            to="/me/purchases"
                             className="avatar-link"
                             onClick={() => setShowDropdown(prev => !prev)}
                         >

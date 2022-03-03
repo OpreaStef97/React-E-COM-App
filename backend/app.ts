@@ -22,7 +22,6 @@ import cartRouter from './src/routes/cart-routes';
 import AppError from './src/models/error-model';
 import globalErrorHandler from './src/controllers/error-controller';
 import { webHookEventListener } from './src/controllers/purchase-controller';
-// import { createCarts } from './src/middlewares/carts';
 
 dotenv.config({ path: './config.env' });
 const app = express();
@@ -38,7 +37,18 @@ process.on('uncaughtException', err => {
 
 (async () => {
     // Setting CSP
-    app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+    app.use(
+        helmet({
+            // contentSecurityPolicy: {
+            //     directives: {
+            //         defaultSrc: ["'self'", 'https://*.stripe.com'],
+            //         scriptSrc: ["'self'", 'https://*.stripe.com'],
+            //     },
+            // },
+            crossOriginResourcePolicy: { policy: 'cross-origin' },
+            // crossOriginEmbedderPolicy: false,
+        })
+    );
 
     // Setting CORS
     app.use(
@@ -103,6 +113,7 @@ process.on('uncaughtException', err => {
 
     // Serving static files
     app.use('/images', express.static(path.join(__dirname, 'public/images')));
+    // app.use(express.static(path.join('public/build')));
 
     // ROUTES
     ////////////////////////////////////
@@ -111,6 +122,10 @@ process.on('uncaughtException', err => {
     app.use('/api/users', usersRouter);
     app.use('/api/reviews', reviewsRouter);
     app.use('/api/payments', purchasesRouter);
+
+    // app.use((req, res) => {
+    //     res.sendFile(path.resolve(__dirname, 'public/build', 'index.html'));
+    // });
 
     app.all('*', (req, res, next) => {
         next(new AppError(404, `Can't find ${req.originalUrl} on this server`));

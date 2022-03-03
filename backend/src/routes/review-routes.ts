@@ -20,7 +20,6 @@ router.use(protect);
 
 router.post('/', restrictTo('user', 'admin'), setProductUserIds, createReview);
 
-
 router
     .route('/:id')
     .get(getReview)

@@ -9,7 +9,7 @@ const Testimonials = () => {
     const { sendRequest } = useFetch();
 
     useEffect(() => {
-        sendRequest(`${process.env.REACT_APP_API_URL}/users?page=2&limit=5`)
+        sendRequest({ url: `${process.env.REACT_APP_API_URL}/users?page=2&limit=5` })
             .then(data => {
                 setUserData(data.docs);
             })

@@ -1,0 +1,156 @@
+@import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
+
+.me-favorites {
+    flex-grow: 1;
+    display: flex;
+    width: 80vw;
+    height: 100%;
+    background-color: $color-tertiary-light-3;
+    z-index: 40;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 2rem;
+
+    &__title {
+        align-self: flex-start;
+        display: inline-flex;
+        font-size: 2.6rem;
+        color: $color-tertiary-dark-2;
+        align-items: center;
+        height: 6rem;
+        padding-left: 3rem;
+    }
+
+    &__list {
+        padding: 1rem;
+        display: flex;
+        background-color: $color-tertiary-light-4;
+        height: calc(100% - 6rem);
+        width: 80%;
+        border-radius: 1rem;
+        gap: 2rem;
+
+        box-shadow: 0 0 0.5rem rgba($color-tertiary-dark-3, 0.3) inset;
+        flex-direction: column;
+        align-items: center;
+
+        @include scroll($color-tertiary-light-2, $color-tertiary, $color-tertiary-dark-1);
+
+        &::-webkit-scrollbar-track {
+            border-radius: 1rem;
+        }
+    }
+
+    &__item {
+        max-width: 100%;
+        max-height: 20rem;
+        padding: 2rem;
+        flex-grow: 1;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-around;
+        gap: 2rem;
+        align-items: center;
+        background-color: $color-tertiary-light-4;
+        border-radius: 1rem;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.2);
+        position: relative;
+
+        svg {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            color: $color-tertiary-dark-2;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.1s;
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+
+        &--empty {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 4rem;
+            min-height: 45vh;
+
+            p {
+                text-align: center;
+                font-size: 2.5rem;
+                color: $color-tertiary-dark-1;
+            }
+        }
+
+        &--image {
+            cursor: pointer;
+            display: inline-block;
+            width: 15rem;
+            height: 15rem;
+            box-shadow: 0 0 0.5rem rgba($color-tertiary-dark-3, 0.3);
+            border-radius: 1rem;
+        }
+
+        &--info-box {
+            height: 100%;
+            width: 40rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            flex-direction: column;
+
+            h3 {
+                display: inline-block;
+                color: $color-tertiary-dark-3;
+                font-size: 1.6rem;
+                text-align: center;
+            }
+
+            .info-box--text {
+                font-size: 1.5rem;
+                color: $color-tertiary-dark-3;
+            }
+            button {
+                width: 12rem;
+                height: 3rem;
+                span {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 52.5em) {
+        &__item {
+            max-height: 40rem;
+            gap: 1rem;
+        }
+    }
+
+    @media (max-width: 52.5em) {
+        height: auto;
+
+        &__list {
+            width: 90%;
+            height: auto;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &__item {
+            flex-direction: column;
+            h3 {
+                display: inline-block;
+                width: 20rem;
+                color: $color-tertiary-dark-3;
+                font-size: 1.6rem;
+            }
+        }
+    }
+}

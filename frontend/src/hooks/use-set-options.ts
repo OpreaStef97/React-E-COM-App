@@ -8,13 +8,13 @@ const useSetOptions = (category: string) => {
     const [options, setOptions] = useState<SelectState>({});
 
     useEffect(() => {
-        sendRequest(
-            `${
+        sendRequest({
+            url: `${
                 process.env.REACT_APP_API_URL
             }/products/values?fields=${'brand,default.RAM,default.storage,type'}${
                 category === 'All' ? '' : `&category=${category}`
-            }`
-        )
+            }`,
+        })
             .then(data => {
                 setValues(data[category]);
             })

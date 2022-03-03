@@ -1,17 +1,17 @@
 import { useCallback, useReducer } from 'react';
 
-type InputType = {
+export type InputType<T> = {
     [key: string]:
         | {
-              value: string | File | null;
+              value: T;
               isValid: boolean;
           }
         | undefined;
 };
 
-type State = {
+type State<T> = {
     isValid: boolean;
-    inputs: InputType;
+    inputs: InputType<T>;
 };
 
 type Action = {
@@ -19,12 +19,12 @@ type Action = {
     [key: string]: any;
 };
 
-const initialState: State = {
+const initialState: State<{}> = {
     isValid: false,
     inputs: {},
 };
 
-const formReducer = (state: State, action: Action) => {
+const formReducer = <T>(state: State<T>, action: Action) => {
     switch (action.type) {
         case 'INPUT_CHANGE':
             let formIsValid = true;
@@ -62,13 +62,16 @@ const formReducer = (state: State, action: Action) => {
     }
 };
 
-type ReturnType = [
-    State,
+type ReturnType<T> = [
+    State<T>,
     (id: any, value: any, isValid: any) => void,
-    (inputData: InputType, formValidity: boolean) => void
+    (inputData: InputType<T>, formValidity: boolean) => void
 ];
 
-export const useForm = (initialInputs: InputType, initialFormValidity: boolean): ReturnType => {
+export const useForm = <T>(
+    initialInputs: InputType<T>,
+    initialFormValidity: boolean
+): ReturnType<T> => {
     const [formState, dispatch] = useReducer(formReducer, {
         inputs: initialInputs,
         isValid: initialFormValidity,
@@ -83,7 +86,7 @@ export const useForm = (initialInputs: InputType, initialFormValidity: boolean):
         });
     }, []);
 
-    const setFormData = useCallback((inputData: InputType, formValidity: boolean) => {
+    const setFormData = useCallback((inputData: InputType<T>, formValidity: boolean) => {
         dispatch({
             type: 'SET_DATA',
             inputs: inputData,

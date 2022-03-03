@@ -1,0 +1,48 @@
+@import '../../sass/variables.scss';
+
+.modal-review__content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.modal-review__header {
+    background-color: $color-tertiary-dark-1;
+    color: $color-tertiary-light-3;
+}
+
+.modal-review__menu {
+    width: 20rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.2);
+}
+
+.modal-review__footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.load {
+    width: 3rem;
+    height: 3rem;
+    color: $color-primary-light-1;
+    animation: lds-dual-ring 0.4s infinite;
+}
+
+.modal-review__btn {
+    box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.3);
+
+    &--submit {
+        background-image: linear-gradient(
+            130deg,
+            $color-secondary-dark-2 0%,
+            $color-secondary-dark-2 50%,
+            $color-primary-light-1 0%
+        );
+    }
+
+    &:hover .load {
+        color: $color-primary-dark-3;
+    }
+}

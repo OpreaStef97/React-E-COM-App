@@ -2,6 +2,7 @@ import { SignIn } from 'phosphor-react';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import useWindow from '../../hooks/use-window';
 import CartButton from '../cart/CartButton';
 import LogoutButton from '../ui-components/LogoutButton';
 import Avatar from './Avatar';
@@ -10,6 +11,7 @@ import './NavLinks.scss';
 
 const NavLinks: FC<{ onClick?: () => void; drawer?: boolean }> = props => {
     const { auth } = useSelector((state: any) => state);
+    const [width] = useWindow();
 
     const { isLoggedIn, user } = auth;
     return (
@@ -37,14 +39,17 @@ const NavLinks: FC<{ onClick?: () => void; drawer?: boolean }> = props => {
                     </Link>
                 )}
             </li>
-            {isLoggedIn && (
-                <li className="nav-links__list-item">
-                    <Favorites />
-                </li>
-            )}
+            <li className="nav-links__list-item">
+                <Favorites onClick={props.onClick} />
+            </li>
             {!props.drawer && (
                 <li className="nav-links__list-item">
                     <CartButton />
+                </li>
+            )}
+            {width > 840 && width <= 1100 && isLoggedIn && (
+                <li>
+                    <LogoutButton />
                 </li>
             )}
         </ul>

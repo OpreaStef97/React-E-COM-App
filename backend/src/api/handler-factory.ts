@@ -9,14 +9,25 @@ export default class HandlerFactory<T> {
         this.model = Model;
     }
 
-    public getAll(select?: string) {
+    public getAll({
+        select,
+        populate,
+        selectPop,
+    }: {
+        select?: string;
+        populate?: string;
+        selectPop?: string;
+    }) {
         return catchAsync(async (req, res) => {
             // To allow for nested GET reviews on product
             let filter = {};
             if (req.params.pid) filter = { product: req.params.pid };
             if (req.params.uid) filter = { user: req.params.uid };
             // EXECUTE QUERY
-            const features = new APIFeatures(this.model.find(filter).select(select), req.query)
+            const features = new APIFeatures(
+                this.model.find(filter).populate(populate, selectPop).select(select),
+                req.query
+            )
                 .filter()
                 .sort()
                 .limitFields()

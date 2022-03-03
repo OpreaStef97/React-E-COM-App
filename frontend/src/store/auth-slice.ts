@@ -9,6 +9,7 @@ type Auth = {
               photo: string;
               role: string;
               favorites: any[];
+              phone: string;
           }
         | {};
     isLoggedIn: boolean;

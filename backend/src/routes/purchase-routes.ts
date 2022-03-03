@@ -8,12 +8,17 @@ import {
     getOnePurchaseRecord,
     updatePurchaseRecord,
 } from '../controllers/purchase-controller';
+import { compareUserIds } from '../middlewares/compare-user-ids';
 
 const router = express.Router();
 
 router.post('/create-payment-intent', protect, createPaymentIntent);
 
-router.use(protect, restrictTo('admin'));
+router.use(protect);
+
+router.route('/:uid').get(compareUserIds, getAllPurchaseRecords);
+
+router.use(restrictTo('admin'));
 
 router.route('/').get(getAllPurchaseRecords).post(createPurchaseRecord);
 router

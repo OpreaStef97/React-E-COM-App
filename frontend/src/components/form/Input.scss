@@ -4,20 +4,20 @@
     margin: 1rem 0;
     position: relative;
 
-    & label,
-    & input,
-    & textarea {
+    &-label,
+    &-input,
+    &-textarea {
         display: block;
     }
 
-    & label {
+    &-label {
         margin-left: 2rem;
         font-weight: bold;
         font-size: 1.6rem;
         margin-bottom: 0.5rem;
     }
-    & input,
-    & textarea {
+    &-input,
+    &-textarea {
         font: inherit;
         font-size: 1.8rem;
         border: 2px solid $color-primary-dark-2;
@@ -27,13 +27,13 @@
         padding: 1rem 1rem;
         border-radius: 0.5rem;
     }
-    & textarea {
+    &-textarea {
         min-width: clamp(30vw, 50rem, 50vw);
         height: 10rem;
     }
 
-    & input:focus,
-    & textarea:focus {
+    &-input:focus,
+    &-textarea:focus {
         outline: none;
         background: $color-primary-light-4;
         border-color: $color-primary-dark-3;

@@ -42,6 +42,8 @@
 
         @media (max-width: 68.75em) { 
             flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
         }
     }
     

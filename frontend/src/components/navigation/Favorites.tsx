@@ -6,6 +6,7 @@ import useImageLoad from '../../hooks/use-image-load';
 import useWindow from '../../hooks/use-window';
 import { cartActions } from '../../store/cart-slice';
 import { favActions } from '../../store/fav-slice';
+import { uiActions } from '../../store/ui-slice';
 import Button from '../ui-components/Button';
 import Dropdown from '../ui-components/Dropdown';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
@@ -47,7 +48,9 @@ const FavoritesItem = (props: { favorite: any; onClick?: () => void; onClose?: (
 const Favorites: FC<{ onClick?: () => void }> = props => {
     const [showDropdown, setShowDropdown] = useState(false);
     const navigate = useNavigate();
-    const { items } = useSelector((state: any) => state.favorites);
+    const { favorites, auth } = useSelector((state: any) => state);
+
+    const { items } = favorites;
     const dispatch = useDispatch();
     const [width] = useWindow();
 
@@ -67,10 +70,21 @@ const Favorites: FC<{ onClick?: () => void }> = props => {
             onMouseEnter={() => setShowDropdown(true)}
         >
             <Link
+                state={{ from: '/me/favorites' }}
                 className="favorites__main-link nav-links__list-link"
-                to="/"
+                to={auth.isLoggedIn ? '/me/favorites' : '/auth'}
                 aria-label="nav-links-favorites"
-                onClick={props.onClick}
+                onClick={() => {
+                    props.onClick && props.onClick();
+                    setShowDropdown(false);
+                    if (!auth.isLoggedIn) {
+                        dispatch(
+                            uiActions.showNotification({
+                                message: 'Please authenticate to see your favorites',
+                            })
+                        );
+                    }
+                }}
             >
                 <span>FAVORITES</span>
                 <Heart />

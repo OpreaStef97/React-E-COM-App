@@ -7,6 +7,7 @@ const Button: FC<{
     link?: boolean;
     disabled?: boolean;
     to?: string;
+    state?: { [k: string]: string };
     className?: string;
     inverse?: boolean;
     light?: boolean;
@@ -43,6 +44,7 @@ const Button: FC<{
             )}
             {props.link && props.to && (
                 <Link
+                    state={props.state}
                     id={props.id}
                     to={props.to}
                     className={`${

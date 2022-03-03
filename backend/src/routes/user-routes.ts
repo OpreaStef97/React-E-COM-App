@@ -20,6 +20,7 @@ import {
 } from '../controllers/user-controller';
 import fileUpload from '../middlewares/file-upload';
 import { resizePhoto } from '../middlewares/resize-photo';
+import reviewRouter from './review-routes';
 
 const router = express.Router();
 
@@ -33,6 +34,8 @@ router.get('/logout', logout);
 
 router.use(protect);
 
+router.use('/:uid/reviews', reviewRouter);
+
 router.put('/favorites', putFavorite);
 router.patch('/update-password', updatePassword);
 router.patch('/update-me', fileUpload.single('photo'), resizePhoto, updateMe);
@@ -44,3 +47,5 @@ router.route('/').post(createUser);
 router.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
 
 export default router;
+
+

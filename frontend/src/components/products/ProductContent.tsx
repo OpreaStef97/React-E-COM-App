@@ -73,6 +73,7 @@ const ProductContent: FC<{ product: any }> = props => {
                                 image: product.images[0],
                                 name: product.name,
                             })}
+                            aria-label='fav-button'
                         >
                             <Heart
                                 weight={

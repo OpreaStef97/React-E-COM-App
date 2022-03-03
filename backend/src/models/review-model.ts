@@ -7,11 +7,13 @@ const reviewSchema = new mongoose.Schema(
         review: {
             type: String,
             required: [true, "Review can't be empty!"],
+            maxlength: 500,
         },
         rating: {
             type: Number,
             min: 1,
             max: 5,
+            required: true
         },
         createdAt: {
             type: Date,
@@ -71,7 +73,7 @@ reviewSchema.post('save', function () {
 });
 
 reviewSchema.pre(/^findOneAnd/, async function (next) {
-    this.r = await this.findOne().clone();
+    this.r = await this.findOne().clone(); // mongoose > 6.0.0 does not allow querie query re-execution, so .clone() is used to clone the query
     next();
 });
 

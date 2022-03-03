@@ -13,7 +13,15 @@ export const setProductUserIds = (req: Request, res: Response, next: NextFunctio
     next();
 };
 
-export const getAllReviews = factory.getAll();
+export const getAllReviews = (req: Request, res: Response, next: NextFunction) => {
+    if (req.params.uid)
+        return factory.getAll({ populate: 'product', selectPop: 'images slug name' })(
+            req,
+            res,
+            next
+        );
+    factory.getAll({})(req, res, next);
+};
 export const getReview = factory.getOne('product', '-status');
 export const createReview = factory.createOne();
 export const updateReview = factory.updateOne();

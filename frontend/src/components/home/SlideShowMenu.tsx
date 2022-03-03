@@ -4,6 +4,7 @@ import Menu from './Menu';
 import SlideImage from '../ui-components/SlideImage';
 import './SlideShowMenu.scss';
 import TransitionSlider from '../ui-components/TransitionSlider';
+import { Storefront } from 'phosphor-react';
 
 const promoImages = [
     '../../../images/laptop-promo-photo.jpeg',
@@ -12,7 +13,6 @@ const promoImages = [
 ];
 
 const SlideShowMenu = React.forwardRef((props, ref) => {
-
     return (
         <section className="slideshow-menu" ref={ref as React.LegacyRef<HTMLDivElement>}>
             <Menu />
@@ -20,11 +20,11 @@ const SlideShowMenu = React.forwardRef((props, ref) => {
                 <p>Get amazing products faster than ever</p>
             </div>
             <div className="slideshow-menu-button">
-                <Button link to={'/products'} inverse>
-                    All Products
+                <Button link to={'/products'} inverse icon={<Storefront />} iconAfter>
+                    SEE ALL
                 </Button>
             </div>
-            <div className='slideshow-menu__container'>
+            <div className="slideshow-menu__container">
                 <TransitionSlider autoFlow dots flowTo="right" delay={5000} transitionMs={300}>
                     {promoImages.map((src, idx) => (
                         <SlideImage key={idx} src={src} />

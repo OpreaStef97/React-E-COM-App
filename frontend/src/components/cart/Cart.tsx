@@ -2,7 +2,7 @@ import { MinusCircle, PlusCircle, ShoppingCart, SignIn, XCircle } from 'phosphor
 import React from 'react';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { cartActions } from '../../store/cart-slice';
 import Button from '../ui-components/Button';
 import './Cart.scss';
@@ -12,6 +12,7 @@ const Cart: FC = () => {
     const { items, totalQuantity, totalAmount } = cart;
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { pathname } = useLocation();
 
     const addItemHandler = (item: any) => {
         dispatch(cartActions.addItemToCart(item));
@@ -87,6 +88,7 @@ const Cart: FC = () => {
                                 link
                                 to={auth.isLoggedIn ? '/payment' : '/auth'}
                                 inverse
+                                state={{ from: pathname }}
                             >
                                 Checkout
                             </Button>

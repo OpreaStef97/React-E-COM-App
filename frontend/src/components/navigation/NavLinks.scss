@@ -10,6 +10,7 @@
         font-weight: 500;
         letter-spacing: 0.5px;
         color: $color-primary-dark-3;
+        align-items: center;
 
         @media (max-width: 52.5em) {
             flex-direction: column;

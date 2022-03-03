@@ -20,8 +20,9 @@ const userSchema = new mongoose.Schema(
         },
         phone: {
             type: String,
-            maxlength: 12,
+            maxlength: 15,
             default: '0777.777.777',
+            validate: [validator.isMobilePhone, 'Please provide a valid phone number']
         },
         photo: {
             type: String,

@@ -24,7 +24,7 @@
     &--load {
         width: 3rem;
         height: 3rem;
-        color: $color-primary-light-1;
+        color: $color-primary-dark-3;
         animation: lds-dual-ring 0.2s infinite;
     }
 
@@ -42,6 +42,10 @@
     &:active {
         box-shadow: 0 0rem 1.5rem rgba($color-tertiary-dark-1, 30%);
         background-color: $color-tertiary;
+
+        .list__btn--load {
+            color: $color-primary-light-1;
+        }
     }
     &:hover &--icon {
         color: $color-primary-light-1;

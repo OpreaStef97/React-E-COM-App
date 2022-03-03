@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useState } from 'react';
 
-const useClickOutside = (wrapperRef: any) => {
+const useClickOutside = <T>(wrapperRef: RefObject<T>) => {
     const [clicked, setClicked] = useState(false);
 
     useEffect(() => {
         const handleClickOutside = (event: Event) => {
             if (
                 wrapperRef.current &&
-                !wrapperRef.current.contains(event.target as Element)
+                !(wrapperRef.current as unknown as Element).contains(event.target as Element)
             ) {
                 setClicked(true);
             }

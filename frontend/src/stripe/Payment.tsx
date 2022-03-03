@@ -30,22 +30,22 @@ const Payment: FC = () => {
         }
 
         // dispatch(sendCartData(cart, csrfToken, user.id));
-        sendRequest(
-            `${process.env.REACT_APP_API_URL}/payments/create-payment-intent`,
-            'POST',
-            {
+        sendRequest({
+            url: `${process.env.REACT_APP_API_URL}/payments/create-payment-intent`,
+            method: 'POST',
+            headers: {
                 'x-csrf-token': csrfToken,
                 'Content-Type': 'application/json',
             },
-            JSON.stringify({
+            body: {
                 products: [
                     ...items.map((item: any) => {
                         return { product: item.id as string, quantity: item.quantity as number };
                     }),
                 ],
-            }),
-            'include'
-        )
+            },
+            credentials: 'include',
+        })
             .then(data => {
                 setClientSecret(data.clientSecret);
             })

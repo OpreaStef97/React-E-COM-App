@@ -42,11 +42,11 @@ const Products: FC<{ category?: string }> = props => {
     useEffect(() => {
         if (!limit) return;
 
-        sendRequest(
-            `${process.env.REACT_APP_API_URL}/products?&sort=${sorting}${
+        sendRequest({
+            url: `${process.env.REACT_APP_API_URL}/products?&sort=${sorting}${
                 category !== 'All' ? `&category=${category}` : ''
-            }${filter}&page=${pageNumber}&limit=${limit}`
-        )
+            }${filter}&page=${pageNumber}&limit=${limit}`,
+        })
             .then(data => {
                 setTotalSize(data.totalLength);
                 setItems(convertData([...data.docs]));

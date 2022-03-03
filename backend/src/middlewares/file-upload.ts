@@ -8,7 +8,7 @@ const MIME_TYPE_MAP: { [s: string]: string } = {
 
 const fileUpload = multer({
     limits: {
-        fileSize: 100000,
+        fileSize: 1000000,
     },
     storage: multer.memoryStorage(),
     fileFilter: (req, file, cb) => {
