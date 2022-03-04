@@ -11,6 +11,7 @@ import Button from '../../components/ui-components/Button';
 import Modal from '../../components/ui-components/Modal';
 import useFetch from '../../hooks/use-fetch';
 import useImageLoad from '../../hooks/use-image-load';
+import { useTitle } from '../../hooks/use-title';
 import { delayedNotification, uiActions } from '../../store/ui-slice';
 import './MePage.scss';
 
@@ -22,8 +23,10 @@ const MePage: FC = props => {
     const { sendRequest } = useFetch();
     const dispatch = useDispatch();
 
+    useTitle(`ReactECOM | Account`);
+
     const srcLoaded = useImageLoad(
-        user.photo ? `${process.env.REACT_APP_RESOURCES_URL}/images/users/${user?.photo}` : ''
+        user.photo ? `${process.env.REACT_APP_RESOURCES_URL}/users/${user?.photo}` : ''
     );
     const showModalHandler = () => {
         setShowModal(prev => !prev);
@@ -103,7 +106,7 @@ const MePage: FC = props => {
                             src={
                                 selectedImage
                                     ? URL.createObjectURL(selectedImage)
-                                    : `${process.env.REACT_APP_RESOURCES_URL}/images/users/${user.photo}`
+                                    : `${process.env.REACT_APP_RESOURCES_URL}/users/${user.photo}`
                             }
                         />
                         <div className="image-upload__box">

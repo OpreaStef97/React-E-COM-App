@@ -14,7 +14,7 @@ A SPA web application for a fictional electronics e-commerce store that uses the
     - Express
     - MongoDB
 
-# Features
+## Features
 
 * Includes features like:
     - server-side filtering, sorting
@@ -28,8 +28,8 @@ A SPA web application for a fictional electronics e-commerce store that uses the
     - a complete email system
     - a subscription system for premium users
 
-* The app is optimized for Desktop support, but it is also mobile friendly
+* The app is optimized for Desktop support
 
-# Live at:
+## Live at:
 
 - url:

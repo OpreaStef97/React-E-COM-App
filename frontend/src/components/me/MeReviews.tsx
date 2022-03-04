@@ -15,7 +15,7 @@ const ReviewItem = (props: { review: any; onClick: () => void }) => {
     const navigate = useNavigate();
 
     const src = useImageLoad(
-        `${process.env.REACT_APP_RESOURCES_URL}/images/products/${props.review.product?.images[0]}` ||
+        `${process.env.REACT_APP_RESOURCES_URL}/products/${props.review.product?.images[0]}` ||
             ''
     );
 

@@ -13,8 +13,8 @@ import ReviewStats from './ReviewStats';
 import './Reviews.scss';
 import ReviewModal from './ReviewModal';
 
-const Reviews: FC<{ rating?: number; id?: string }> = props => {
-    const { id } = props;
+const Reviews: FC<{ rating?: number; productId?: string }> = props => {
+    const { productId } = props;
     const [reviews, setReviews] = useState([]);
     const [addReview, setAddReview] = useState(false);
     const [selectTouched, setSelectTouched] = useState(false);
@@ -46,7 +46,7 @@ const Reviews: FC<{ rating?: number; id?: string }> = props => {
 
     useEffect(() => {
         sendRequest({
-            url: `${process.env.REACT_APP_API_URL}/products/${id}/reviews?sort=${
+            url: `${process.env.REACT_APP_API_URL}/products/${productId}/reviews?sort=${
                 sortingR || sortingD
             }`,
         })
@@ -65,7 +65,7 @@ const Reviews: FC<{ rating?: number; id?: string }> = props => {
             })
             .catch(console.error);
         return () => setReviews([]);
-    }, [sendRequest, id, sortingD, sortingR, auth.user.id]);
+    }, [sendRequest, productId, sortingD, sortingR, auth.user.id]);
 
     useEffect(() => {
         if (!selectState || !selectState.rating) {
@@ -107,7 +107,7 @@ const Reviews: FC<{ rating?: number; id?: string }> = props => {
                 value={ratingValue}
                 selectState={selectState}
                 checkReview={checkReview}
-                productId={id || ''}
+                productId={productId || ''}
                 addReview={addReview}
                 selectTouched={selectTouched}
                 onReview={addReviewHandler}

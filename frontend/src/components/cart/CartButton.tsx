@@ -14,7 +14,7 @@ const CartItem = (props: { favorite: any; onClick?: () => void; onClose?: () => 
     const { favorite } = props;
     const navigate = useNavigate();
     const srcLoaded = useImageLoad(
-        `${process.env.REACT_APP_RESOURCES_URL}/images/products/${favorite.image}`
+        `${process.env.REACT_APP_RESOURCES_URL}/products/${favorite.image}`
     );
     const dispatch = useDispatch();
 

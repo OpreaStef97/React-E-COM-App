@@ -17,7 +17,7 @@ const ReviewList: FC<{ reviews: any[]; onClick?: () => void; isLoading?: boolean
                             userName={review.user.name}
                             rating={review.rating}
                             review={review.review}
-                            imgSrc={`${process.env.REACT_APP_RESOURCES_URL}/images/users/${review.user.photo}`}
+                            imgSrc={`${process.env.REACT_APP_RESOURCES_URL}/users/${review.user.photo}`}
                             datePosted={review.createdAt}
                         />
                     </li>

@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '../ui-components/Button';
 import Offer from '../promoting/Offer';
 import './ProductsSideBar.scss';
@@ -8,6 +8,7 @@ import { DeviceMobile, DeviceTablet, Laptop, ShoppingBagOpen } from 'phosphor-re
 
 const ProductsSideBar = (props: { className?: string }) => {
     const { pathname } = useLocation();
+    const navigate = useNavigate();
 
     const [width] = useWindow();
 
@@ -58,6 +59,11 @@ const ProductsSideBar = (props: { className?: string }) => {
             {width > 1100 && (
                 <>
                     <Offer
+                        onClick={() =>
+                            navigate(
+                                `/product/samsung-galaxy-s21-ultra-5g-12gb-ram/620a659fb40c21b6c1ec071a`
+                            )
+                        }
                         style={{ width: '40rem' }}
                         src={'../../images/S21-Ultra-promo-image.jpeg'}
                         content={'S21 Ultra for just:'}
@@ -66,9 +72,14 @@ const ProductsSideBar = (props: { className?: string }) => {
                     />
                     <div className="separator"></div>
                     <Offer
+                        onClick={() =>
+                            navigate(
+                                `/product/iphone-13-pro-max-5g-6gb-ram/620a659fb40c21b6c1ec0721`
+                            )
+                        }
                         style={{ width: '40rem' }}
                         src={'../../images/iPhone13Pro-promo-image.jpeg'}
-                        content={'iPhone 13 Pro for just:'}
+                        content={'iPhone 13 Pro Max for just:'}
                         price={1099}
                     />
                 </>
@@ -76,6 +87,11 @@ const ProductsSideBar = (props: { className?: string }) => {
             {width <= 1100 && (
                 <TransitionSlider className="bg-color-1" transitionMs={150}>
                     <Offer
+                        onClick={() =>
+                            navigate(
+                                `/product/samsung-galaxy-s21-ultra-5g-12gb-ram/620a659fb40c21b6c1ec071a`
+                            )
+                        }
                         style={{ width: '60rem' }}
                         src={'../../images/S21-Ultra-promo-image.jpeg'}
                         content={'S21 Ultra for just:'}
@@ -83,6 +99,11 @@ const ProductsSideBar = (props: { className?: string }) => {
                         light
                     />
                     <Offer
+                        onClick={() =>
+                            navigate(
+                                `/product/iphone-13-pro-max-5g-6gb-ram/620a659fb40c21b6c1ec0721`
+                            )
+                        }
                         style={{ width: '60rem' }}
                         src={'../../images/iPhone13Pro-promo-image.jpeg'}
                         content={'iPhone 13 Pro for just:'}

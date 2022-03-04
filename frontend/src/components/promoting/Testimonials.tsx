@@ -28,7 +28,7 @@ const Testimonials = () => {
                                     key={idx}
                                     idx={idx}
                                     className={`testimonials__card--${idx + 1}`}
-                                    imgSrc={`${process.env.REACT_APP_RESOURCES_URL}/images/users/${user.photo}`}
+                                    imgSrc={`${process.env.REACT_APP_RESOURCES_URL}/users/${user.photo}`}
                                     userName={`${user.name}`}
                                 />
                             );

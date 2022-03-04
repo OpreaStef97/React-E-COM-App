@@ -4,7 +4,7 @@ import Offer from '../promoting/Offer';
 import Dropdown from '../ui-components/Dropdown';
 import './Menu.scss';
 import TransitionSlider from '../ui-components/TransitionSlider';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useClickOutside from '../../hooks/use-clicks-outside';
 import useWindow from '../../hooks/use-window';
 import { DeviceMobile, DeviceTablet, Laptop, ShoppingBag } from 'phosphor-react';
@@ -54,6 +54,7 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
     });
     const [menuClick, setMenuClick] = useState(true);
     const [allFalse, setAllFalse] = useState(true);
+    const navigate = useNavigate();
 
     const ref = useRef<HTMLDivElement>(null);
 
@@ -157,11 +158,21 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                 >
                     <TransitionSlider transitionMs={150}>
                         <Offer
+                            onClick={() =>
+                                navigate(
+                                    `/product/iphone-13-pro-max-5g-6gb-ram/620a659fb40c21b6c1ec0721`
+                                )
+                            }
                             src={'../../images/iphone13Pro-promo-image.jpeg'}
-                            content={'iPhone 13 Pro for just:'}
+                            content={'iPhone 13 Pro Max for just:'}
                             price={1099}
                         />
                         <Offer
+                            onClick={() =>
+                                navigate(
+                                    `/product/samsung-galaxy-s21-ultra-5g-12gb-ram/620a659fb40c21b6c1ec071a`
+                                )
+                            }
                             src={'../../images/S21-Ultra-promo-image.jpeg'}
                             content={'S21 Ultra for just:'}
                             price={899}

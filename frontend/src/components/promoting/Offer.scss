@@ -30,19 +30,6 @@
         align-items: center;
         overflow: hidden;
 
-        &__title-1 {
-            position: absolute;
-            top: 20%;
-            color: $color-tertiary-light-3;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2rem;
-            background-color: rgba($color-tertiary-dark-1, 0.9);
-            height: 5rem;
-            width: 110%;
-            transform: rotate(-10deg);
-        }
         &__title-2 {
             position: absolute;
             top: 20%;

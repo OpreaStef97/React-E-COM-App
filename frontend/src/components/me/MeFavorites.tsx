@@ -32,7 +32,7 @@ const MeFavorites: FC = props => {
                             <img
                                 onClick={() => navigate(`/product/${item.slug}/${item.id}`)}
                                 className="me-favorites__item--image"
-                                src={`${process.env.REACT_APP_RESOURCES_URL}/images/products//${item.image}`}
+                                src={`${process.env.REACT_APP_RESOURCES_URL}/products//${item.image}`}
                                 alt={item.name}
                             ></img>
                             <div className="me-favorites__item--info-box">

@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "start": "node ./build/app.js",
         "start:dev": "nodemon",
         "start:prod": "SET NODE_ENV=production&&nodemon",
         "build": "rimraf ./build && tsc"

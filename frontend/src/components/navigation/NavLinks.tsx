@@ -21,7 +21,7 @@ const NavLinks: FC<{ onClick?: () => void; drawer?: boolean }> = props => {
                     <Avatar
                         drawer={props.drawer}
                         name={user.name.split(' ')[0]}
-                        photo={`${process.env.REACT_APP_RESOURCES_URL}/images/users/${user.photo}`}
+                        photo={`${process.env.REACT_APP_RESOURCES_URL}/users/${user.photo}`}
                         onClick={props.onClick}
                     >
                         <LogoutButton onClick={props.onClick} />

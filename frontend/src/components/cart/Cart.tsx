@@ -3,6 +3,7 @@ import React from 'react';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTitle } from '../../hooks/use-title';
 import { cartActions } from '../../store/cart-slice';
 import Button from '../ui-components/Button';
 import './Cart.scss';
@@ -13,6 +14,7 @@ const Cart: FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    useTitle(`ReactECOM | Cart`);
 
     const addItemHandler = (item: any) => {
         dispatch(cartActions.addItemToCart(item));
@@ -43,7 +45,7 @@ const Cart: FC = () => {
                                 <img
                                     onClick={() => navigate(`/product/${item.slug}/${item.id}`)}
                                     className="cart__item--image"
-                                    src={`${process.env.REACT_APP_RESOURCES_URL}/images/products//${item.image}`}
+                                    src={`${process.env.REACT_APP_RESOURCES_URL}/products//${item.image}`}
                                     alt={item.name}
                                 ></img>
                                 <div className="cart__item--info-box">

@@ -20,7 +20,7 @@ const PurchaseItem = (props: { purchase: any }) => {
                                 onClick={() =>
                                     navigate(`/product/${item.product.slug}/${item.product.id}`)
                                 }
-                                src={`${process.env.REACT_APP_RESOURCES_URL}/images/products/${item.product?.images[0]}`}
+                                src={`${process.env.REACT_APP_RESOURCES_URL}/products/${item.product?.images[0]}`}
                                 alt={item.product.name}
                             />
                             <div className="me-purchases__product--info-box">

@@ -95,8 +95,7 @@ process.on('uncaughtException', err => {
         })
     );
 
-    app.post('/webhook', express.raw({ type: 'application/json' }), webHookEventListener);
-    // app.post('/api/carts', createCarts);
+    app.post('/api/webhook', express.raw({ type: 'application/json' }), webHookEventListener);
 
     const csrfProtection = csrf({
         cookie: true,
@@ -112,8 +111,7 @@ process.on('uncaughtException', err => {
     });
 
     // Serving static files
-    app.use('/images', express.static(path.join(__dirname, 'public/images')));
-    // app.use(express.static(path.join('public/build')));
+    app.use(express.static(path.join('public')));
 
     // ROUTES
     ////////////////////////////////////
@@ -124,7 +122,7 @@ process.on('uncaughtException', err => {
     app.use('/api/payments', purchasesRouter);
 
     // app.use((req, res) => {
-    //     res.sendFile(path.resolve(__dirname, 'public/build', 'index.html'));
+    //     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
     // });
 
     app.all('*', (req, res, next) => {

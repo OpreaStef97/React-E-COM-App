@@ -9,13 +9,14 @@ const Offer = (props: {
     src: string;
     light?: boolean;
     style?: { [key: string]: string };
+    onClick?: () => void;
 }) => {
     const { src } = props;
 
     const imageLoaded = useImageLoad(src);
 
     return (
-        <div className={`offer`}>
+        <div className={`offer`} onClick={props.onClick}>
             <div className="offer--overlay">
                 <Logo light={props.light} className="offer--overlay__logo" />
                 <h2 className="offer--overlay__title-1">&nbsp;</h2>

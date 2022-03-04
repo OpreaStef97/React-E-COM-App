@@ -4,6 +4,7 @@ import Logo from '../ui-components/Logo';
 import './Footer.scss';
 
 const Footer: FC<{ isLoading: boolean }> = props => {
+
     return (
         <footer className="footer" style={props.isLoading ? { marginTop: '100vh' } : {}}>
             <Logo big light />

@@ -25,7 +25,7 @@ const ProductItem: FC<{
     const { product } = props;
 
     const srcLoaded = useImageLoad(
-        `${process.env.REACT_APP_RESOURCES_URL}/images/products/${product.images[0]}`
+        `${process.env.REACT_APP_RESOURCES_URL}/products/${product.images[0]}`
     );
     const dispatch = useDispatch();
     const navigate = useNavigate();

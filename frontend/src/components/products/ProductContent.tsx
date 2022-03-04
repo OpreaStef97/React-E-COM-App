@@ -52,7 +52,7 @@ const ProductContent: FC<{ product: any }> = props => {
                                         display: `${imageLoaded ? 'block' : 'none'}`,
                                     }}
                                     onLoad={() => setImageLoaded(true)}
-                                    src={`${process.env.REACT_APP_RESOURCES_URL}/images/products//${src}`}
+                                    src={`${process.env.REACT_APP_RESOURCES_URL}/products//${src}`}
                                     alt={src}
                                 />
                             </Fragment>

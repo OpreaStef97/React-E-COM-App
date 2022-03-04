@@ -1,10 +1,8 @@
 import { FC, Fragment, useEffect, useState } from 'react';
 import MenuSelect from '../../components/form/MenuSelect';
-import ProductList from '../../components/products/ProductList';
 import ProductsGrid from '../../components/products/ProductsGrid';
 import ProductsSideBar from '../../components/products/ProductsSideBar';
 import Pagination from '../../components/ui-components/Pagination';
-import SectionTitle from '../../components/ui-components/SectionTitle';
 import useConvertData from '../../hooks/use-convert-data';
 import useFetch from '../../hooks/use-fetch';
 import useLimit from '../../hooks/use-limit';
@@ -119,8 +117,6 @@ const Products: FC<{ category?: string }> = props => {
                         />
                     </div>
                 </div>
-                <SectionTitle>Others are interested in these..</SectionTitle>
-                <ProductList category="Laptop" />
             </section>
         </>
     );
