@@ -78,8 +78,8 @@ const ProductsSideBar = (props: { className?: string }) => {
                             )
                         }
                         style={{ width: '40rem' }}
-                        src={'../../images/iPhone13Pro-promo-image.jpeg'}
-                        content={'iPhone 13 Pro Max for just:'}
+                        src={'../../images/iphone13Pro-promo-image.jpeg'}
+                        content={'iPhone 13 Pro for just:'}
                         price={1099}
                     />
                 </>
@@ -105,7 +105,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                             )
                         }
                         style={{ width: '60rem' }}
-                        src={'../../images/iPhone13Pro-promo-image.jpeg'}
+                        src={'../../images/iphone13Pro-promo-image.jpeg'}
                         content={'iPhone 13 Pro for just:'}
                         price={1099}
                     />

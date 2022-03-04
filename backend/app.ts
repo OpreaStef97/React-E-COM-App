@@ -54,7 +54,7 @@ process.on('uncaughtException', err => {
     app.use(
         cors({
             credentials: true,
-            origin: ['http://localhost:3000', 'http://192.168.100.32:3000'],
+            origin: ['https://reactecom-stef.web.app'],
             allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'stripe-signature'],
         })
     );
@@ -98,7 +98,10 @@ process.on('uncaughtException', err => {
     app.post('/api/webhook', express.raw({ type: 'application/json' }), webHookEventListener);
 
     const csrfProtection = csrf({
-        cookie: true,
+        cookie: {
+            sameSite: 'none',
+            secure: true,
+        },
     });
 
     app.use(csrfProtection);
