@@ -2,7 +2,7 @@
 @import '../sass/utilities.scss';
 
 .payment {
-    height: 90vh;
+    height: auto;
     padding: 0 1rem;
     margin: 10rem auto;
     display: flex;
@@ -15,7 +15,7 @@
     &__container {
         background-color: $color-primary-light-1;
         box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.2);
-        height: 80vh;
+        height: auto;
         min-width: 70vw;
         border-radius: 1rem;
         overflow: hidden;
@@ -73,6 +73,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 1rem;
 
         svg {
             height: 1.6rem;
@@ -80,16 +81,29 @@
         }
 
         p {
-            font-size: 3rem;
+            text-align: end;
+            display: inline-flex;
+            font-size: 2.5rem;
             color: $color-tertiary-dark-3;
+        }
+        a {
+            &:link,
+            &:visited {
+                width: 15rem;
+                font-size: 1.2rem;
+            }
         }
     }
 
     &__checkout {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding: 2rem 20%;
         width: 100%;
+        // height: auto;
 
-        @include scroll($color-primary-light-3, $color-primary-dark-1, $color-primary-dark-3);
+        // @include scroll($color-primary-light-3, $color-primary-dark-1, $color-primary-dark-3);
 
         @media (max-width: 68.75em) {
             padding: 1rem 10rem;

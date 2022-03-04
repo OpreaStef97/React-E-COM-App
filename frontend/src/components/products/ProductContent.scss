@@ -38,7 +38,7 @@
     @media (max-width: 52.5em) {
         height: auto;
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 3fr 2fr 10rem;
+        grid-template-rows: 0.5fr 3fr 2fr 10rem;
 
         &__gallery {
             grid-column: 1 / 2;

@@ -88,6 +88,7 @@ const Auth: FC = props => {
                           password: formState.inputs.password?.value,
                       }
                     : {
+                          name: formState.inputs.name?.value,
                           email: formState.inputs.email?.value,
                           password: formState.inputs.password?.value,
                           passwordConfirm: formState.inputs.passwordConfirm?.value,

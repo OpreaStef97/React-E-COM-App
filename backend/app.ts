@@ -54,13 +54,17 @@ process.on('uncaughtException', err => {
     app.use(
         cors({
             credentials: true,
-            origin: ['https://reactecom-stef.web.app'],
+            origin: [
+                'http://localhost:3000',
+                'https://reactecom-stef.web.app',
+                'https://*.stripe.com',
+            ],
             allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'stripe-signature'],
         })
     );
 
     app.use((req, res, next) => {
-        if (req.originalUrl === '/webhook') {
+        if (req.originalUrl === '/api/webhook') {
             return next();
         }
         express.json({ limit: '10kb' })(req, res, next);

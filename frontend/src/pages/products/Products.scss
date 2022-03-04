@@ -106,6 +106,20 @@
             grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
             grid-auto-flow: row;
         }
+
+        @media (max-width: 52.5em) {
+            padding: 2rem 4rem;
+
+            &--title {
+                margin-left: 0;
+            }
+            &--results {
+                padding: 0;
+            }
+            &--select {
+                width: 80%;
+            }
+        }
     }
 
     &__input {

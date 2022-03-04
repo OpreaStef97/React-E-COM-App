@@ -4,6 +4,12 @@
     display: flex;
     flex-direction: column;
     position: relative;
+
+    @media (max-width: 52.5em) {
+        #review {
+            min-height: 25vh;
+        }
+    }
 }
 
 .modal-review__header {

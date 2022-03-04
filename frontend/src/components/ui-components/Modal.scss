@@ -69,6 +69,17 @@
         justify-content: center;
         padding: 1rem 0.5rem;
     }
+
+    @media (max-width: 52.5em) {
+        &__content {
+            min-height: 30vh;
+        }
+
+        &__close {
+            height: 4rem;
+            width: 4rem;
+        }
+    }
 }
 .modal-enter {
     transform: scale(0);
