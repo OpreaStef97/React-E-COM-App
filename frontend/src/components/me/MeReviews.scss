@@ -11,23 +11,13 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 2rem;
-
-    &__title {
-        align-self: flex-start;
-        display: inline-flex;
-        font-size: 2.6rem;
-        color: $color-secondary-dark-3;
-        align-items: center;
-        height: 6rem;
-        padding-left: 3rem;
-    }
+    padding: 2rem;
 
     &__content {
         padding: 1rem;
         display: flex;
         background-color: $color-secondary-light-1;
-        height: calc(100% - 6rem);
+        height: 100%;
         width: 80%;
         border-radius: 1rem;
         gap: 2rem;
@@ -102,7 +92,7 @@
             align-items: center;
             flex-direction: column;
             gap: 4rem;
-            min-height: 45vh;
+            height: 100%;
 
             p {
                 text-align: center;
@@ -137,8 +127,10 @@
     @media (max-width: 52.5em) {
         height: auto;
         &__content {
-            width: 90%;
-            height: auto;
+            width: 100%;
+            min-height: 50vh;
+            justify-content: center;
+            align-items: center;
         }
 
         &__item {

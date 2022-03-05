@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 import MeFavorites from '../../components/me/MeFavorites';
 import MeInfo from '../../components/me/MeInfo';
 import MeMenu from '../../components/me/MeMenu';
@@ -11,9 +12,19 @@ import Button from '../../components/ui-components/Button';
 import Modal from '../../components/ui-components/Modal';
 import useFetch from '../../hooks/use-fetch';
 import useImageLoad from '../../hooks/use-image-load';
+import usePrevious from '../../hooks/use-previos';
 import { useTitle } from '../../hooks/use-title';
 import { delayedNotification, uiActions } from '../../store/ui-slice';
 import './MePage.scss';
+
+const routes = ['/me', '/me/favorites', '/me/reviews', '/me/purchases'];
+
+const routeMap = new Map<string, number>();
+
+routeMap.set('/me', 0);
+routeMap.set('/me/favorites', 1);
+routeMap.set('/me/reviews', 2);
+routeMap.set('/me/purchases', 3);
 
 const MePage: FC = props => {
     const { user, csrfToken } = useSelector((state: any) => state.auth);
@@ -22,6 +33,7 @@ const MePage: FC = props => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const { sendRequest } = useFetch();
     const dispatch = useDispatch();
+    const [index, setIndex] = useState<number>(0);
 
     useTitle(`ReactECOM | Account`);
 
@@ -68,6 +80,27 @@ const MePage: FC = props => {
             })
             .finally(() => setShowModal(false));
     };
+
+    const navigate = useNavigate();
+
+    const prevIdx = usePrevious(index);
+    const prevPathName = usePrevious(pathname);
+
+    useEffect(() => {
+        if (prevPathName !== pathname) {
+            setIndex(routeMap.get(pathname) || 0);
+        }
+    }, [pathname, prevPathName]);
+
+    useEffect(() => {
+        if (prevIdx !== index) navigate(routes[index]);
+    }, [index, navigate, prevIdx]);
+
+    const handlers = useSwipeable({
+        preventDefaultTouchmoveEvent: true,
+        onSwipedLeft: () => setIndex(prevIdx => (prevIdx || routes.length) - 1),
+        onSwipedRight: () => setIndex(prevIdx => (prevIdx + 1) % routes.length),
+    });
 
     return (
         <>
@@ -128,10 +161,6 @@ const MePage: FC = props => {
             <section className="me">
                 <div className="me-container">
                     <header className="me-header">
-                        <h2>
-                            Hi {`${user && user.name && user.name.split(' ')[0]}`}, here you can
-                            manage your account.
-                        </h2>
                         {srcLoaded && (
                             <img
                                 onClick={showModalHandler}
@@ -140,9 +169,13 @@ const MePage: FC = props => {
                                 alt={`${user.name}' pic`}
                             />
                         )}
+                        <h2>
+                            Hi {`${user && user.name && user.name.split(' ')[0]}`}, here you can
+                            manage your account.
+                        </h2>
                     </header>
                     <MeMenu pathname={pathname} />
-                    <div className="me-content">
+                    <div className="me-content" {...handlers}>
                         <Routes>
                             <Route path="/" element={<MeInfo />} />
                             <Route path="/favorites" element={<MeFavorites />} />

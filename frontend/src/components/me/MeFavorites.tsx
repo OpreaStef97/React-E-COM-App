@@ -24,7 +24,6 @@ const MeFavorites: FC = props => {
 
     return (
         <div className="me-favorites">
-            <h2 className="me-favorites__title">Your favorites</h2>
             <ul className="me-favorites__list">
                 {items.map((item: Favorites['items'][0], i: number) => {
                     return (
@@ -51,9 +50,6 @@ const MeFavorites: FC = props => {
                 {items.length === 0 && (
                     <li key={Math.random()} className="me-favorites__item--empty">
                         <p>Your favorites box is empty</p>
-                        <Button link to="/products">
-                            back to store
-                        </Button>
                     </li>
                 )}
             </ul>

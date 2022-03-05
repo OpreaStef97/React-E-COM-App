@@ -56,69 +56,66 @@ const Products: FC<{ category?: string }> = props => {
     const smoothScroll = useSmoothScroll();
 
     return (
-        <>
-            <section className="products">
-                <div className="products__container">
-                    <div className="products__filter-bar">
-                        <div className="products__filter-bar--info">
-                            <h2 className="products__filter-bar--title">
-                                {props.category === 'All' ? 'All Products' : `${props.category}s`}
-                            </h2>
-                            <p className="products__filter-bar--results">{`${totalSize} results`}</p>
-                        </div>
-                        <div className="separator"></div>
-                        <div className="products__filter-bar--select">
-                            {Object.keys(selectState).length > 0 &&
-                                Object.keys(selectState).map(key => {
-                                    if (selectState[key].options.length > 0)
-                                        return (
-                                            <MenuSelect
-                                                id={key}
-                                                key={key}
-                                                onlySelect={key === 'show'}
-                                                uniqueSelect={key === 'sort'}
-                                                onSelect={selectHandler}
-                                                onDelete={deleteHandler}
-                                                options={selectState[key]}
-                                                placeholder={`${key}..`}
-                                                label={
-                                                    key === 'show'
-                                                        ? 'No. of items/page:'
-                                                        : `Select ${
-                                                              key.charAt(0).toUpperCase() +
-                                                              key.slice(1)
-                                                          }: `
-                                                }
-                                            />
-                                        );
-                                    return <Fragment key={key}></Fragment>;
-                                })}
-                        </div>
+        <section className="products">
+            <div className="products__container">
+                <div className="products__filter-bar">
+                    <div className="products__filter-bar--info">
+                        <h2 className="products__filter-bar--title">
+                            {props.category === 'All' ? 'All Products' : `${props.category}s`}
+                        </h2>
+                        <p className="products__filter-bar--results">{`${totalSize} results`}</p>
                     </div>
-                    <ProductsSideBar className="products__container--side-bar" />
-                    <div className="products__container-page">
-                        <Pagination
-                            onPageChange={page => setPageNumber(page)}
-                            totalSize={totalSize}
-                            pageNumber={pageNumber}
-                            pageSize={+limit}
-                        />
-                        {isLoading && <div className="products__container--loader"></div>}
-                        {!isLoading && <ProductsGrid key={props.category} items={items} />}
-                        <Pagination
-                            className="margin-top"
-                            onPageChange={async page => {
-                                await smoothScroll();
-                                setPageNumber(page);
-                            }}
-                            totalSize={totalSize}
-                            pageNumber={pageNumber}
-                            pageSize={+limit}
-                        />
+                    <div className="separator"></div>
+                    <div className="products__filter-bar--select">
+                        {Object.keys(selectState).length > 0 &&
+                            Object.keys(selectState).map(key => {
+                                if (selectState[key].options.length > 0)
+                                    return (
+                                        <MenuSelect
+                                            id={key}
+                                            key={key}
+                                            onlySelect={key === 'show'}
+                                            uniqueSelect={key === 'sort'}
+                                            onSelect={selectHandler}
+                                            onDelete={deleteHandler}
+                                            options={selectState[key]}
+                                            placeholder={`${key}..`}
+                                            label={
+                                                key === 'show'
+                                                    ? 'No. of items/page:'
+                                                    : `Select ${
+                                                          key.charAt(0).toUpperCase() + key.slice(1)
+                                                      }: `
+                                            }
+                                        />
+                                    );
+                                return <Fragment key={key}></Fragment>;
+                            })}
                     </div>
                 </div>
-            </section>
-        </>
+                <ProductsSideBar className="products__container--side-bar" />
+                <div className="products__container-page">
+                    <Pagination
+                        onPageChange={page => setPageNumber(page)}
+                        totalSize={totalSize}
+                        pageNumber={pageNumber}
+                        pageSize={+limit}
+                    />
+                    {isLoading && <div className="products__container--loader"></div>}
+                    {!isLoading && <ProductsGrid key={props.category} items={items} />}
+                    <Pagination
+                        className="margin-top"
+                        onPageChange={async page => {
+                            await smoothScroll();
+                            setPageNumber(page);
+                        }}
+                        totalSize={totalSize}
+                        pageNumber={pageNumber}
+                        pageSize={+limit}
+                    />
+                </div>
+            </div>
+        </section>
     );
 };
 

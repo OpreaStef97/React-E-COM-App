@@ -22,6 +22,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "react-stripe-checkout": "^2.6.3",
+    "react-swipeable": "^6.2.0",
     "react-transition-group": "^4.4.2",
     "sass": "^1.48.0",
     "styled-components": "^5.3.3",

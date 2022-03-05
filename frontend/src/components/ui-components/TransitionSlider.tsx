@@ -3,6 +3,8 @@ import React, { useEffect, useState, useCallback, FC, ReactElement } from 'react
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { CaretLeft, CaretRight } from 'phosphor-react';
 import useWindow from '../../hooks/use-window';
+import { useSwipeable } from 'react-swipeable';
+import useAutoFlow from '../../hooks/use-auto-flow';
 
 const TransitionSlider: FC<{
     flowTo?: string;
@@ -20,7 +22,6 @@ const TransitionSlider: FC<{
     const [forward, setFoward] = useState(true);
     const [clicked, setClicked] = useState(false);
     const [width] = useWindow();
-
     const { idx, flowTo, autoFlow, delay, transitionMs, children: childrenElements } = props;
 
     const length = React.Children.count(props.children);
@@ -43,57 +44,34 @@ const TransitionSlider: FC<{
         setIndex(prevIdx => (prevIdx || length) - 1);
     }, [length]);
 
-    useEffect(() => {
-        if (!autoFlow) {
-            return;
-        }
-        let interval: NodeJS.Timer;
-        let timeout: NodeJS.Timeout;
-        // sleep
-        if (!clicked) {
-            interval = setInterval(() => {
-                if (flowTo === 'right') {
-                    nextSlideHandler();
-                }
-                if (flowTo === 'left') {
-                    prevSlideHandler();
-                }
-            }, delay || 2000);
-        } else {
-            timeout = setTimeout(() => {
-                setClicked(false);
-            }, 20000);
-        }
-        return () => {
-            clearInterval(interval);
-            clearTimeout(timeout);
-        };
-    }, [autoFlow, flowTo, delay, nextSlideHandler, prevSlideHandler, clicked]);
+    useAutoFlow({
+        autoFlow: !!autoFlow,
+        clicked: clicked,
+        flowTo: flowTo || 'right',
+        delay: delay || 0,
+        nextHandler: nextSlideHandler,
+        prevHandler: prevSlideHandler,
+        clickHandler: setClicked,
+    });
 
-    const [touchStart, setTouchStart] = useState(0);
-    const [touchEnd, setTouchEnd] = useState(0);
-
-    const handleTouchStart = (e: React.TouchEvent) => {
-        setTouchStart(e.targetTouches[0].clientX);
-    };
-
-    const handleTouchMove = (e: React.TouchEvent) => {
-        setTouchEnd(e.targetTouches[0].clientX);
-    };
-
-    const handleTouchEnd = (e: React.TouchEvent) => {
-        if (touchStart - touchEnd > 50) {
+    const handlers = useSwipeable({
+        delta: 0,
+        preventDefaultTouchmoveEvent: true,
+        onSwipedLeft: () => {
             prevSlideHandler();
             setClicked(true);
-        }
-        if (touchStart - touchEnd < -50) {
+        },
+        onSwipedRight: () => {
             nextSlideHandler();
             setClicked(true);
-        }
-    };
+        },
+    });
 
     return (
-        <section className={`slideshow ${forward ? 'forwards' : 'backwards'}`}>
+        <section
+            className={`slideshow ${forward ? 'forwards' : 'backwards'}`}
+            {...handlers}
+        >
             <div
                 className="next"
                 onClick={() => {
@@ -115,11 +93,10 @@ const TransitionSlider: FC<{
                         key={index}
                         className={`slide ${props.className}`}
                         style={{
-                            transition: `transform ${transitionMs || 300}ms ease-in-out`,
+                            transition: `transform ${
+                                width <= 840 ? 200 : transitionMs || 300
+                            }ms ease-in-out`,
                         }}
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
-                        onTouchEnd={handleTouchEnd}
                     >
                         {children[index]}
                     </div>

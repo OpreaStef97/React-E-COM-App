@@ -130,7 +130,6 @@ const MeReviews: FC = props => {
                 value={ratingValue}
             />
             <div className="me-reviews">
-                <h2 className="me-reviews__title">Your reviews</h2>
                 <ul className="me-reviews__content">
                     {reviews.length > 0 &&
                         reviews.map((item: any, i: number) => (

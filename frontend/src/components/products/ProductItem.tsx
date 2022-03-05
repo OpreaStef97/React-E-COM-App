@@ -18,9 +18,6 @@ const ProductItem: FC<{
         [key: string]: any;
     };
     className?: string;
-    onTouchStart?: (e: React.TouchEvent) => void;
-    onTouchMove?: (e: React.TouchEvent) => void;
-    onTouchEnd?: (e: React.TouchEvent) => void;
 }> = props => {
     const { product } = props;
 
@@ -47,9 +44,6 @@ const ProductItem: FC<{
 
     return (
         <li
-            onTouchStart={props.onTouchStart}
-            onTouchMove={props.onTouchMove}
-            onTouchEnd={props.onTouchEnd}
             className={`product__item ${props.className}`}
             style={{
                 width: `calc(100% / ${props.numberOfShownCards || 1})`,

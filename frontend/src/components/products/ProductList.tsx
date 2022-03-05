@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import useFetch from '../../hooks/use-fetch';
 import usePrevious from '../../hooks/use-previos';
 import useShowCards from '../../hooks/use-show-cards';
@@ -92,25 +93,16 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
         if (index > 0) setIndex(prevIdx => --prevIdx);
     };
 
-    const [touchStart, setTouchStart] = useState(0);
-    const [touchEnd, setTouchEnd] = useState(0);
-
-    const touchStartHandler = (e: React.TouchEvent) => {
-        setTouchStart(e.targetTouches[0].clientX);
-    };
-
-    const touchMoveHandler = (e: React.TouchEvent) => {
-        setTouchEnd(e.targetTouches[0].clientX);
-    };
-
-    const touchEndHandler = () => {
-        if (touchStart - touchEnd > 75) {
+    const handlers = useSwipeable({
+        delta: 0,
+        preventDefaultTouchmoveEvent: true,
+        onSwipedLeft: () => {
             moveRightHandler();
-        }
-        if (touchStart - touchEnd < -75) {
+        },
+        onSwipedRight: () => {
             moveLeftHandler();
-        }
-    };
+        },
+    });
 
     return (
         <div className="product-list">
@@ -125,14 +117,12 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
                     style={{
                         transform: `translateX(${-index * 100}%)`,
                     }}
+                    {...handlers}
                 >
                     {products.length > 0 &&
                         products.map((product: any, idx: number) => {
                             return (
                                 <ProductItem
-                                    onTouchStart={touchStartHandler}
-                                    onTouchMove={touchMoveHandler}
-                                    onTouchEnd={touchEndHandler}
                                     product={product}
                                     key={idx}
                                     numberOfShownCards={numberOfShownCards}

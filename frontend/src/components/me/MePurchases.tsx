@@ -31,7 +31,7 @@ const PurchaseItem = (props: { purchase: any }) => {
                         </li>
                     );
                 })}
-                <li className="me-purchases__product--item">
+                <li className="me-purchases__product--item me-purchases__product--price">
                     <div className="me-purchases__product--info-box">
                         <span>Paid at: {new Date(purchase.paidAt).toLocaleString()}</span>
                         <span>
@@ -65,7 +65,6 @@ const MePurchases: FC = () => {
 
     return (
         <div className="me-purchases">
-            <h2 className="me-purchases__title">Your purchases</h2>
             <ul className="me-purchases__list">
                 {purchases.map((item: any, i: number) => {
                     return <PurchaseItem purchase={item} key={i} />;

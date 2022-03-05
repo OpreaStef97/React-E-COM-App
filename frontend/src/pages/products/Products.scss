@@ -3,8 +3,7 @@
 .products {
     margin-bottom: 10rem;
     &__container {
-        margin: 0 2rem 0 2rem;
-        margin-top: 10rem;
+        margin: 10rem 2rem 0 2rem;
         min-height: 80vh;
         display: grid;
         margin-bottom: 10rem;
@@ -34,6 +33,7 @@
         }
 
         @media (max-width: 52.5em) {
+            margin: 10rem 0rem 0 0rem;
             &--side-bar {
                 padding-left: 5%;
                 padding-right: 5%;

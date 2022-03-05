@@ -108,5 +108,9 @@
 
     @media (max-width: 52.5em) {
         grid: 'left center right' / 0.5fr 2fr 0.5fr;
+        .next,
+        .prev {
+            display: none;
+        }
     }
 }

@@ -1,10 +1,11 @@
-import { Fragment } from 'react';
+import { FC, Fragment } from 'react';
 import useImageLoad from '../../hooks/use-image-load';
 import LoadingSpinner from './LoadingSpinner';
+import './SlideImage.scss';
 
 const linearGrd = 'linear-gradient(to right bottom, rgba(6, 62, 70, 0.9), rgba(230, 73, 128, 0.2))';
 
-const SlideImage = (props: { src: string }) => {
+const SlideImage: FC<{ src: string; onClick?: () => void }> = props => {
     const { src } = props;
     const sourceLoaded = useImageLoad(src);
     return (
@@ -12,6 +13,8 @@ const SlideImage = (props: { src: string }) => {
             {!sourceLoaded && <LoadingSpinner />}
             {sourceLoaded && (
                 <div
+                    className="slide-image"
+                    onClick={props.onClick}
                     style={{
                         backgroundImage: `${linearGrd},url(${props.src})`,
                         backgroundSize: 'cover',
@@ -19,7 +22,9 @@ const SlideImage = (props: { src: string }) => {
                         height: '100%',
                         width: '100%',
                     }}
-                ></div>
+                >
+                    {props.children}
+                </div>
             )}
         </Fragment>
     );

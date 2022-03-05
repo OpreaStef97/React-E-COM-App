@@ -11,23 +11,13 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 2rem;
-
-    &__title {
-        align-self: flex-start;
-        display: inline-flex;
-        font-size: 2.6rem;
-        color: $color-tertiary-dark-2;
-        align-items: center;
-        height: 6rem;
-        padding-left: 3rem;
-    }
+    padding: 2rem;
 
     &__list {
         padding: 1rem;
         display: flex;
         background-color: $color-tertiary-light-4;
-        height: calc(100% - 6rem);
+        height: 100%;
         width: 80%;
         border-radius: 1rem;
         gap: 2rem;
@@ -77,8 +67,8 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            gap: 4rem;
-            min-height: 45vh;
+            gap: 3rem;
+            height: 100%;
 
             p {
                 text-align: center;
@@ -143,8 +133,8 @@
         height: auto;
 
         &__list {
-            width: 90%;
-            height: auto;
+            width: 100%;
+            min-height: 50vh;
             justify-content: center;
             align-items: center;
         }

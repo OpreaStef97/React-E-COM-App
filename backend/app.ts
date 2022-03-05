@@ -56,6 +56,7 @@ process.on('uncaughtException', err => {
             credentials: true,
             origin: [
                 'http://localhost:3000',
+                'http://192.168.100.32:3000',
                 'https://reactecom-stef.web.app',
                 'https://*.stripe.com',
             ],

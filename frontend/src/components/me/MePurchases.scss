@@ -11,24 +11,14 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 2rem;
-
-    &__title {
-        align-self: flex-start;
-        display: inline-flex;
-        font-size: 2.6rem;
-        color: $color-fourth-dark-2;
-        align-items: center;
-        height: 6rem;
-        padding-left: 3rem;
-    }
+    padding: 2rem;
 
     &__list {
         padding: 1rem;
         display: flex;
         list-style: none;
         background-color: $color-fourth-light-4;
-        height: calc(100% - 6rem);
+        height: 100%;
         width: 80%;
         border-radius: 1rem;
         gap: 2rem;
@@ -50,14 +40,14 @@
         min-width: 40vw;
         padding: 2rem;
         display: flex;
+        gap: 2rem;
         align-items: center;
         justify-content: space-around;
-        gap: 2rem;
         flex-direction: column;
 
         background-color: $color-fourth-light-2;
         border-radius: 1rem;
-        box-shadow: 0 0 1rem rgba($color-fourth-dark-2, 0.2);
+        box-shadow: 0 0 1rem rgba($color-fourth-dark-3, 0.4);
         position: relative;
 
         &--empty {
@@ -67,7 +57,7 @@
             align-items: center;
             flex-direction: column;
             gap: 4rem;
-            min-height: 45vh;
+            height: 100%;
 
             p {
                 text-align: center;
@@ -82,7 +72,7 @@
             font-size: 1.6rem;
         }
 
-        @media (max-width:52.5em) {
+        @media (max-width: 52.5em) {
             min-width: 100%;
         }
     }
@@ -102,21 +92,24 @@
         flex-shrink: 0;
         flex-grow: 1;
         display: flex;
+        justify-content: center;
+        gap: 2rem;
+        align-items: center;
         border-radius: 1rem;
         background-color: $color-fourth-light-1;
         overflow: hidden;
-        
+
         img {
             cursor: pointer;
             border-radius: 1rem;
-            height: 12rem;
-            width: 12rem;
+            height: 14rem;
+            width: 14rem;
         }
-        
+
         @media (max-width: 52.5em) {
             gap: 2rem;
             flex-direction: column;
-            
+
             img {
                 align-self: center;
             }
@@ -126,19 +119,28 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        max-width: 30rem;
         flex-grow: 1;
         flex-direction: column;
         gap: 2rem;
 
         h4 {
-            font-size: 1.4rem;
             text-align: center;
+            font-size: 1.5rem;
         }
 
         span {
-            font-size: 1.4rem;
             text-align: center;
+            font-size: 1.4rem;
         }
+
+        strong {
+            font-size: 1.8rem;
+        }
+    }
+
+    &__product--price {
+        background-color: $color-fourth-light-2;
     }
 
     @media (max-width: 52.5em) {
@@ -151,8 +153,8 @@
         height: auto;
 
         &__list {
-            width: 90%;
-            height: auto;
+            width: 100%;
+            min-height: 50vh;
             justify-content: center;
             align-items: center;
         }

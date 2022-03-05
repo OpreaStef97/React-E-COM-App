@@ -54,7 +54,10 @@ const ReviewStats: FC<{ length: number; rating?: number }> = props => {
                                 <span>{5 - idx}</span> <Star weight="fill" />
                             </div>
                             <FillBar fill={fill} id={idx + 1} scrollKey={scrollKey + idx} />
-                            <span className="review-stats--percentage">{fill.toFixed(2)}%</span>
+                            <span className="review-stats--percentage">
+                                {`${fill < 10 ? '0' : ''}`}
+                                {fill.toFixed(2)}%
+                            </span>
                         </Fragment>
                     );
                 })}
