@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .product__item {
     height: 100%;
@@ -105,9 +106,11 @@
             transition: all 0.2s;
         }
 
-        &:hover {
-            svg {
-                transform: scale(1.15);
+        @include hover-supported() {
+            &:hover {
+                svg {
+                    transform: scale(1.15);
+                }
             }
         }
     }

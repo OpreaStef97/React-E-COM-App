@@ -7,6 +7,7 @@
     margin: 10rem auto;
     display: flex;
     justify-content: center;
+    min-height: 70vh;
 
     @media (max-width: 52.5em) {
         height: auto;
@@ -65,15 +66,14 @@
     }
 
     &__footer {
-        padding: 0 4rem;
+        padding: 0 1rem;
         width: 100%;
-        background-image: linear-gradient(to right, $color-tertiary, $color-tertiary-light-1);
+        background-image: linear-gradient(to right, $color-tertiary-light-1, $color-tertiary);
         height: 10rem;
         flex-shrink: 0;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
-        gap: 1rem;
 
         svg {
             height: 1.6rem;
@@ -84,7 +84,12 @@
             text-align: end;
             display: inline-flex;
             font-size: 2.5rem;
-            color: $color-tertiary-dark-3;
+            color: $color-tertiary-light-3;
+
+            @media (max-width: 52.5em) {
+                max-width: 20rem;
+                font-size: 2rem;
+            }
         }
         a {
             &:link,
@@ -100,10 +105,7 @@
         justify-content: center;
         align-items: center;
         padding: 2rem 20%;
-        width: 100%;
-        // height: auto;
-
-        // @include scroll($color-primary-light-3, $color-primary-dark-1, $color-primary-dark-3);
+        max-width: 100vw;
 
         @media (max-width: 68.75em) {
             padding: 1rem 10rem;

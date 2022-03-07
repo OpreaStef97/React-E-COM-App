@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .cart-button-cotainer {
     position: relative;
@@ -46,25 +47,26 @@
     }
 }
 
-.cart-button-cotainer:hover {
-    .cart-counter {
-        background-color: $color-tertiary-dark-1;
-        color: $color-tertiary-light-3;
-    }
-    .cart-button {
-        background-position: 100%;
-        color: $color-primary-dark-3;
-    }
-    .cart-button__dropdown__component {
-        overflow: overlay;
-        z-index: 1600;
-        @supports not (overflow: overlay) {
-            overflow: auto;
+@include hover-supported() {
+    .cart-button-cotainer:hover {
+        .cart-counter {
+            background-color: $color-tertiary-dark-1;
+            color: $color-tertiary-light-3;
         }
-        animation: hide-scroll 0.5s;
+        .cart-button {
+            background-position: 100%;
+            color: $color-primary-dark-3;
+        }
+        .cart-button__dropdown__component {
+            overflow: overlay;
+            z-index: 1600;
+            @supports not (overflow: overlay) {
+                overflow: auto;
+            }
+            animation: hide-scroll 0.5s;
+        }
     }
 }
-
 .cart-button {
     &__dropdown__component {
         transform: translate(-50%);

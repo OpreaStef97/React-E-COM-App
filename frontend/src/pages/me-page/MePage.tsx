@@ -33,7 +33,7 @@ const MePage: FC = props => {
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const { sendRequest } = useFetch();
     const dispatch = useDispatch();
-    const [index, setIndex] = useState<number>(0);
+    const [index, setIndex] = useState<number>(routeMap.get(pathname)!);
 
     useTitle(`ReactECOM | Account`);
 
@@ -88,18 +88,18 @@ const MePage: FC = props => {
 
     useEffect(() => {
         if (prevPathName !== pathname) {
-            setIndex(routeMap.get(pathname) || 0);
+            if (routeMap.has(pathname)) setIndex(routeMap.get(pathname)!);
         }
     }, [pathname, prevPathName]);
 
     useEffect(() => {
-        if (prevIdx !== index) navigate(routes[index]);
+        if (prevIdx !== index) navigate(routes[index], { replace: true });
     }, [index, navigate, prevIdx]);
 
     const handlers = useSwipeable({
         preventDefaultTouchmoveEvent: true,
-        onSwipedLeft: () => setIndex(prevIdx => (prevIdx || routes.length) - 1),
-        onSwipedRight: () => setIndex(prevIdx => (prevIdx + 1) % routes.length),
+        onSwipedLeft: () => setIndex(prevIdx => (prevIdx + 1) % routes.length),
+        onSwipedRight: () => setIndex(prevIdx => (prevIdx || routes.length) - 1),
     });
 
     return (

@@ -1,12 +1,12 @@
 @import '../sass/variables.scss';
 
 .success {
-    height: 60vh;
     padding: 0 1rem;
     margin: 10rem auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 70vh;
 
     &__container {
         background-color: $color-secondary;

@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .nav-links {
     &__list {
@@ -40,50 +41,58 @@
                     height: 2rem;
                 }
             }
-
-            &:hover,
-            &:active {
-                box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
-            }
-
-            @media (max-width: 68.75em) {
-                &:link,
-                &:visited {
-                    span {
-                        display: none;
-                    }
-                    .cart-counter {
-                        right: 12%;
-                        display: inline-flex;
-                    }
-                    svg {
-                        width: 3rem;
-                        height: 3rem;
-                    }
-                    width: 5rem;
-                    height: 5rem;
-                }
-            }
-
-            @media (max-width: 52.5em) {
-                &:link,
-                &:visited {
-                    width: 15rem;
-                    height: 4rem;
-                    background-color: $color-primary-light-2;
-                    box-shadow: 0 0 0.3rem rgba($color-primary-dark-3, 0.6);
-                    svg {
-                        width: 2rem;
-                        height: 2rem;
-                    }
-                    span {
-                        display: inline-block;
-                    }
-                }
-
+            @include hover-supported() {
                 &:hover {
                     box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
                 }
+            }
+            &:active {
+                box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
+            }
+        }
+    }
+    &__list-link {
+        @media (max-width: 68.75em) {
+            &:link,
+            &:visited {
+                span {
+                    display: none;
+                }
+                .cart-counter {
+                    right: 12%;
+                    display: inline-flex;
+                }
+                svg {
+                    width: 3rem;
+                    height: 3rem;
+                }
+                width: 5rem;
+                height: 5rem;
+            }
+        }
+        @media (max-width: 840px) {
+            &:link,
+            &:visited {
+                width: 15rem;
+                height: 4rem;
+                background-color: $color-primary-light-2;
+                box-shadow: 0 0 0.3rem rgba($color-primary-dark-3, 0.6);
+                svg {
+                    width: 2rem;
+                    height: 2rem;
+                }
+                span {
+                    display: inline-block;
+                }
+            }
+
+            @include hover-supported() {
+                &:hover {
+                    box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
+                }
+            }
+            &:active {
+                box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
             }
         }
     }

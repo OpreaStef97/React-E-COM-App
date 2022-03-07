@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .btn {
     border: none;
@@ -25,9 +26,16 @@
     );
     background-size: 250%;
     box-shadow: 0 0rem 0.5rem rgba($color-tertiary-dark-3, 0.15);
-    transition: all 0.4s;
+    transition: none !important;
 
-    &:hover,
+    @include hover-supported() {
+        transition: all 0.3s !important;
+        &:hover {
+            background-position: 100%;
+            color: $color-primary-dark-3;
+        }
+    }
+
     &:active {
         background-position: 100%;
         color: $color-primary-dark-3;
@@ -43,7 +51,11 @@
         color: $color-primary-dark-3;
         box-shadow: 0 0rem 0.5rem rgba($color-primary-dark-3, 0.15);
 
-        &:hover,
+        @include hover-supported() {
+            &:hover {
+                color: $color-tertiary-light-3;
+            }
+        }
         &:active {
             color: $color-tertiary-light-3;
         }
@@ -89,13 +101,20 @@
         );
         background-size: 250%;
         box-shadow: 0 0rem 0.5rem rgba($color-tertiary-dark-3, 0.15);
-        transition: all 0.4s;
+    }
+    transition: none !important;
+
+    @include hover-supported() {
+        transition: all 0.3s !important;
+        &:hover {
+            color: $color-primary-dark-3;
+            background-position: 100%;
+        }
     }
 
-    &:hover,
     &:active {
-        background-position: 100%;
         color: $color-primary-dark-3;
+        background-position: 100%;
     }
 
     &-inverse {
@@ -111,7 +130,11 @@
             );
             box-shadow: 0 0rem 0.5rem rgba($color-primary-dark-3, 0.15);
         }
-        &:hover,
+        @include hover-supported() {
+            &:hover {
+                color: $color-tertiary-light-3;
+            }
+        }
         &:active {
             color: $color-tertiary-light-3;
         }
@@ -139,14 +162,15 @@
         transform: scale(0);
         transition: all 0.4s ease;
     }
+    @include hover-supported() {
+        &:hover {
+            color: $color-tertiary;
+        }
 
-    &:hover {
-        color: $color-tertiary;
-    }
-
-    &:hover::after {
-        transform: scale(1);
-        background-color: $color-tertiary;
+        &:hover::after {
+            transform: scale(1);
+            background-color: $color-tertiary;
+        }
     }
 
     &-active {
@@ -186,15 +210,16 @@
         transform: scale(0);
         transition: all 0.4s ease;
     }
+    @include hover-supported() {
+        &:hover,
+        &:active {
+            color: $color-tertiary;
+        }
 
-    &:hover,
-    &:active {
-        color: $color-tertiary;
-    }
-
-    &:hover::after {
-        transform: scale(1);
-        background-color: $color-tertiary;
+        &:hover::after {
+            transform: scale(1);
+            background-color: $color-tertiary;
+        }
     }
 
     &-active {

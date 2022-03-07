@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .product-options {
     display: flex;
@@ -32,12 +33,18 @@
 
             transition: all 0.1s;
 
-            &:hover {
+            @include hover-supported() {
+                &:hover {
+                    background-color: $color-tertiary-light-3;
+                    border: 1px solid $color-tertiary-dark-1;
+                    color: $color-tertiary-dark-2;
+                }
+            }
+            &:active {
                 background-color: $color-tertiary-light-3;
                 border: 1px solid $color-tertiary-dark-1;
                 color: $color-tertiary-dark-2;
             }
-
         }
         .active {
             background-color: $color-tertiary-light-3;

@@ -63,3 +63,9 @@
     justify-content: center;
     transition: opacity 0.5s;
 }
+
+@mixin hover-supported {
+    @media (hover: hover) and (pointer: fine)  {
+        @content;
+    }
+}

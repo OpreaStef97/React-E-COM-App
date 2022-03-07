@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .list__btn {
     position: absolute;
@@ -38,7 +39,16 @@
         margin-right: 2%;
     }
 
-    &:hover,
+    @include hover-supported() {
+        &:hover {
+            box-shadow: 0 0rem 1.5rem rgba($color-tertiary-dark-1, 30%);
+            background-color: $color-tertiary;
+
+            .list__btn--load {
+                color: $color-primary-light-1;
+            }
+        }
+    }
     &:active {
         box-shadow: 0 0rem 1.5rem rgba($color-tertiary-dark-1, 30%);
         background-color: $color-tertiary;
@@ -47,10 +57,15 @@
             color: $color-primary-light-1;
         }
     }
-    &:hover &--icon {
+    &:active &--icon {
         color: $color-primary-light-1;
     }
 
+    @include hover-supported() {
+        &:hover &--icon {
+            color: $color-primary-light-1;
+        }
+    }
     &-disabled {
         cursor: default;
         background: #ccc;

@@ -21,6 +21,7 @@ import Success from './stripe/Success';
 import { modifyCartData, replaceLocalCart } from './store/cart-actions';
 import { cartActions } from './store/cart-slice';
 import { modifyFavData, replaceLocalFav } from './store/fav-actions';
+
 const App = () => {
     const { pathname } = useLocation();
     const ref = useRef<HTMLDivElement>(null);

@@ -14,7 +14,7 @@
     box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
 
     @media (max-width: 68.75em) {
-        height: 150vh;
+        height: clamp(100rem, 150vh, 120rem);
     }
 
     &-container {

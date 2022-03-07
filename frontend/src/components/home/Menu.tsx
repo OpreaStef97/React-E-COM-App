@@ -153,7 +153,7 @@ const Menu: FC<{ clicked?: boolean; onClear?: () => void }> = props => {
                 <Dropdown
                     show={showState[`s${1}`]}
                     allFalse={allFalse}
-                    height={width <= 840 ? 'calc(50vh - 8rem)' : '70vh'}
+                    height={width <= 840 ? 'calc(50vh - 8rem)' : 'clamp(50rem, 70vh, 70rem)'}
                     transitionMs={700}
                 >
                     <TransitionSlider transitionMs={150}>

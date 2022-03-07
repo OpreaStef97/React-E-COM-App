@@ -73,7 +73,7 @@ const MeInfoNameForm: FC = props => {
     };
 
     return (
-        <form className="me-info__form" onSubmit={submitHandler}>
+        <form className="me-info__form me-info__form-name" onSubmit={submitHandler}>
             <h3>Change your account info</h3>
             <Input
                 element="input"

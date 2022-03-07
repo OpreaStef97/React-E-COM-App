@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .menu-select-wrapper {
     display: flex;
@@ -56,8 +57,10 @@
             position: relative;
             transition: all 0.2s;
 
-            &:hover {
-                background-color: $color-tertiary-light-1;
+            @include hover-supported() {
+                &:hover {
+                    background-color: $color-tertiary-light-1;
+                }
             }
         }
 
@@ -77,9 +80,10 @@
                 width: 2.5rem;
                 transition: all 0.1s;
             }
-
-            &:hover &-icon {
-                transform: scale(1.1);
+            @include hover-supported() {
+                &:hover &-icon {
+                    transform: scale(1.1);
+                }
             }
 
             @media (max-width: 52.5em) {
@@ -142,8 +146,10 @@
                     font-size: 1.6rem;
                 }
 
-                &:hover {
-                    background-color: $color-primary-light-3;
+                @include hover-supported() {
+                    &:hover {
+                        background-color: $color-primary-light-3;
+                    }
                 }
             }
             .active {

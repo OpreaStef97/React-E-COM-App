@@ -37,6 +37,14 @@
             margin-top: 2rem;
             margin-bottom: 2rem;
         }
+
+        &-name {
+            border-right: 1px solid $color-primary-dark-3;
+        }
+
+        &-pass {
+            border-left: 1px solid $color-primary-dark-3;
+        }
     }
 
     &--load {
@@ -70,6 +78,14 @@
 
         &__form {
             height: auto;
+            border: none;
+            &-name {
+                border-bottom: 1px solid $color-primary-dark-3;
+            }
+
+            &-pass {
+                border-top: 1px solid $color-primary-dark-3;
+            }
         }
     }
 }

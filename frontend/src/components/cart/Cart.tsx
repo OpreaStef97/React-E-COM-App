@@ -70,7 +70,7 @@ const Cart: FC = () => {
                             </li>
                         ))}
                     {totalQuantity === 0 && (
-                        <li key={Math.random()} className="cart__item cart__item--empty">
+                        <li key={Math.random()} className="cart__item--empty">
                             <p>Your cart is empty.. Go and buy something!😉</p>
                             <Button link to="/products">
                                 back to store

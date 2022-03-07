@@ -22,9 +22,10 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-
+        
         @media (max-width: 52.75em) {
             height: auto;
+            min-height: 70vh;
         }
     }
 
@@ -56,6 +57,7 @@
 
         p {
             display: inline-block;
+            text-align: center;
             width: 15rem;
             font-size: 3rem;
             font-weight: 500;
@@ -65,7 +67,7 @@
 
     &__footer {
         padding: 0 4rem;
-        background-image: linear-gradient(to right, $color-tertiary, $color-tertiary-light-1);
+        background-image: linear-gradient(to right,$color-tertiary-light-1, $color-tertiary);
         height: 10rem;
         flex-shrink: 0;
         display: flex;
@@ -89,6 +91,7 @@
             gap: 2rem;
             // flex-direction: column;
             p {
+                max-width: 20rem;
                 font-size: 2rem;
             }
         }
@@ -102,7 +105,7 @@
     }
 
     &__content {
-        padding: 2rem 2rem;
+        padding: 2rem;
         list-style: none;
         display: flex;
         flex-direction: column;
@@ -113,11 +116,9 @@
     }
 
     &__item {
-        min-width: 70%;
-        padding: 2rem;
+        padding: 3rem;
         flex-grow: 1;
         flex-shrink: 0;
-        min-height: 20rem;
         display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
@@ -130,8 +131,8 @@
 
         svg {
             position: absolute;
-            right: 1rem;
-            top: 1rem;
+            right: 0.5rem;
+            top: 0.5rem;
             color: $color-primary-dark-3;
             font-size: 3rem;
             cursor: pointer;
@@ -142,7 +143,15 @@
         }
 
         &--empty {
+            min-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+
             p {
+                text-align: center;
                 font-size: 2.5rem;
                 color: $color-tertiary-dark-1;
             }
@@ -162,6 +171,7 @@
             display: flex;
             justify-content: center;
             gap: 1.5rem;
+            min-width: 30vw;
             align-items: flex-start;
             flex-direction: column;
             h3 {

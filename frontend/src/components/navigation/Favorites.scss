@@ -87,10 +87,12 @@
         animation: hide-scroll 0.5s;
     }
 
-    &:hover &__main-link {
-        &:link,
-        &:visited {
-            box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
+    @include hover-supported() {
+        &:hover &__main-link {
+            &:link,
+            &:visited {
+                box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
+            }
         }
     }
 
@@ -176,10 +178,11 @@
                 width: 3rem;
                 transition: all 0.3s;
             }
-
-            &:hover {
-                svg {
-                    transform: scale(1.1);
+            @include hover-supported() {
+                &:hover {
+                    svg {
+                        transform: scale(1.1);
+                    }
                 }
             }
         }

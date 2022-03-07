@@ -71,7 +71,7 @@ const MeInfoPassForm: FC = props => {
     };
 
     return (
-        <form className="me-info__form" onSubmit={submitHandler}>
+        <form className="me-info__form me-info__form-pass" onSubmit={submitHandler}>
             <h3>Update your password</h3>
             <Input
                 id="passwordCurrent"
