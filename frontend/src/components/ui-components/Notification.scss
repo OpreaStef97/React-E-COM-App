@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .notification {
     position: absolute;
@@ -32,7 +33,7 @@
         color: $color-secondary-light-2;
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         &-msg {
             width: 70%;
         }
@@ -67,7 +68,7 @@
     top: 6rem;
     left: 0;
     width: 100%;
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         animation: none;
     }
     animation: moveDown 0.5s ease-in-out;

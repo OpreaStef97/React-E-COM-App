@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .modal__container {
     position: fixed;
@@ -70,7 +71,7 @@
         padding: 1rem 0.5rem;
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         &__content {
             min-height: 30vh;
         }

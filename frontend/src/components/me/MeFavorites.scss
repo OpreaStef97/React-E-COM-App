@@ -115,7 +115,7 @@
                 font-size: 1.2rem;
             }
 
-            @media (max-width: 52.5em) {
+            @include respond(mobile-medium) {
                 button {
                     align-self: center;
                 }
@@ -123,14 +123,14 @@
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         &__item {
             max-height: 40rem;
             gap: 1rem;
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         height: auto;
 
         &__list {

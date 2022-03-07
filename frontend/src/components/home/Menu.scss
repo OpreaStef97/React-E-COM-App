@@ -122,7 +122,7 @@
             }
         }
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             gap: 3rem;
             margin-left: 3rem;
             align-items: flex-start;

@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .product-content {
     height: 80vh;
@@ -28,14 +29,14 @@
             width: 50rem;
             height: 50rem;
 
-            @media (max-width: 52.5em) {
+            @include respond(mobile-medium) {
                 max-width: 40rem;
                 max-height: 40rem;
             }
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         height: auto;
         grid-template-columns: 1fr;
         grid-template-rows: 0.5fr 3fr 2fr 10rem;
@@ -121,9 +122,11 @@
                 transition: all 0.2s;
             }
 
-            &:hover {
-                svg {
-                    transform: scale(1.15);
+            @include hover-supported() {
+                &:hover {
+                    svg {
+                        transform: scale(1.15);
+                    }
                 }
             }
         }

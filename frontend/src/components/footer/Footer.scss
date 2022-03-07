@@ -21,7 +21,7 @@
         justify-content: space-between;
         align-items: center;
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             flex-grow: 1;
             flex-direction: column;
             justify-content: center;
@@ -85,5 +85,6 @@
         font-size: 1.6rem;
         color: $color-primary-light-1;
         text-align: center;
+        max-width: 40rem;
     }
 }

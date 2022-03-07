@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .slideshow-menu {
     border-radius: 1rem;
@@ -11,13 +12,13 @@
     margin-top: 10rem;
     margin-bottom: 10rem;
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         height: 50vh;
     }
 
     &__container {
         height: clamp(50rem, 70vh, 70rem);
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             height: calc(50vh - 8rem);
         }
     }
@@ -53,7 +54,7 @@
 
         transition: all 0.3s;
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             font-size: 4.5rem;
             width: 40rem;
         }

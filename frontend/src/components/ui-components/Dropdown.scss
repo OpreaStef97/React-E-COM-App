@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .dropdown {
     &__container {
@@ -15,7 +16,7 @@
         overflow: hidden;
         box-shadow: 0 1rem 2rem rgba($color-primary-dark-3, 0.15);
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             flex-direction: column;
             justify-content: flex-start;
         }
@@ -32,7 +33,7 @@
                 width: 80%;
             }
 
-            @media (max-width: 52.5em) {
+            @include respond(mobile-medium) {
                 align-self: center;
                 width: 100%;
             }

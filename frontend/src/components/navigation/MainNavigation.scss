@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .main-navigation {
     &__menu-btn {
@@ -85,7 +86,7 @@
     &__search-bar {
         margin-right: auto;
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             margin-right: 0;
             width: 40%;
         }
@@ -111,7 +112,7 @@
     
 }
 
-@media (max-width: 52.5em) {
+@include respond(mobile-medium) {
     .main-navigation {
         &__menu-btn {
             display: flex;

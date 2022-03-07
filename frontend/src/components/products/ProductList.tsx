@@ -3,6 +3,7 @@ import { useSwipeable } from 'react-swipeable';
 import useFetch from '../../hooks/use-fetch';
 import usePrevious from '../../hooks/use-previos';
 import useShowCards from '../../hooks/use-show-cards';
+import LoadingSpinner from '../ui-components/LoadingSpinner';
 import ListButton from './ListButton';
 import ProductItem from './ProductItem';
 
@@ -130,6 +131,11 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
                                 />
                             );
                         })}
+                    {isLoading && (
+                        <li>
+                            <LoadingSpinner />
+                        </li>
+                    )}
                 </ul>
             </div>
             <ListButton

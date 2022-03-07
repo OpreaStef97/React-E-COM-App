@@ -2,34 +2,38 @@
 
 A SPA web application for a fictional electronics e-commerce store that uses the following technologies:
 
-* Main Language:
-    - TypeScript
+-   Main Language:
 
-* Frontend: 
-    - React (React Router v6, React Redux)
-    - SASS
+    -   TypeScript
 
-* Backend: 
-    - NodeJS
-    - Express
-    - MongoDB
+-   Frontend:
+
+    -   React (React Router v6, React Redux)
+    -   SASS
+
+-   Backend:
+    -   NodeJS
+    -   Express
+    -   MongoDB
 
 ## Features
 
-* Includes features like:
-    - server-side filtering, sorting
-    - cart and wish list functionality (both on frontend and backend)
-    - user authentication and protection
-    - payment system with stripe
-    - user reviews + rating system
+-   Includes features like:
 
-* Features that I want to implement in the future: 
-    - auto-complete search
-    - a complete email system
-    - a subscription system for premium users
+    -   server-side filtering, sorting
+    -   cart and wish list functionality (both on frontend and backend)
+    -   user authentication and protection
+    -   payment system with stripe
+    -   user reviews + rating system
 
-* The app is optimized for Desktop support
+-   Features that I want to implement in the future:
+
+    -   auto-complete search
+    -   a complete email system
+    -   a subscription system for premium users
+
+-   The app is optimized for Desktop support
 
 ## Live at:
 
-- url:
+-   https://reactecom-stef.web.app

@@ -124,7 +124,7 @@
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         height: auto;
         &__content {
             width: 100%;

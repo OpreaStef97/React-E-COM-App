@@ -72,7 +72,7 @@
             font-size: 1.6rem;
         }
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             min-width: 100%;
         }
     }
@@ -106,7 +106,7 @@
             width: 14rem;
         }
         
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             gap: 2rem;
             flex-wrap: wrap;
         }
@@ -146,13 +146,13 @@
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         &__item {
             gap: 1rem;
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         height: auto;
 
         &__list {

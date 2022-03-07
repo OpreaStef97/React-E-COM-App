@@ -12,6 +12,25 @@
     background-color: $color-primary-light-4 !important;
 }
 
+@mixin respond($device) {
+    @if $device == mobile-small {
+        @media (max-width: 37.5em) {
+            @content;
+        }
+    }
+
+    @if $device == mobile-medium {
+        @media (max-width: 52.5em) {
+            @content;
+        }
+    }
+    @if $device == mobile-big {
+        @media (max-width: 68.75em) {
+            @content;
+        }
+    }
+}
+
 @mixin scroll($color1, $color2, $color3) {
     overflow-y: overlay;
 
@@ -44,7 +63,7 @@
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         overflow-y: visible;
     }
 }
@@ -65,7 +84,7 @@
 }
 
 @mixin hover-supported {
-    @media (hover: hover) and (pointer: fine)  {
+    @media (hover: hover) and (pointer: fine) {
         @content;
     }
 }

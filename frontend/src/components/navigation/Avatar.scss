@@ -47,7 +47,7 @@
             border-radius: 10rem;
         }
 
-        @media (max-width: 68.75em) {
+        @include respond(mobile-big) {
             &:link,
             &:visited {
                 span {
@@ -62,7 +62,7 @@
             }
         }
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             &:link,
             &:visited {
                 width: 15rem;

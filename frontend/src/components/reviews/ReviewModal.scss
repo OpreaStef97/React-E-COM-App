@@ -1,11 +1,12 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .modal-review__content {
     display: flex;
     flex-direction: column;
     position: relative;
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         #review {
             min-height: 25vh;
             width: 75vw;

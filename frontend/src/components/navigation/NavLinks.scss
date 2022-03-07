@@ -13,7 +13,7 @@
         color: $color-primary-dark-3;
         align-items: center;
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             flex-direction: column;
             gap: 3rem;
             margin-right: 0;
@@ -52,7 +52,7 @@
         }
     }
     &__list-link {
-        @media (max-width: 68.75em) {
+        @include respond(mobile-big) {
             &:link,
             &:visited {
                 span {

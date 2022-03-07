@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .section-title {
     margin: 0 auto;
@@ -27,7 +28,7 @@
         letter-spacing: 2px;
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         justify-content: center;
         text-align: center;
         &__content {

@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .slideshow {
     overflow: hidden;
@@ -106,7 +107,7 @@
         }
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         grid: 'left center right' / 0.5fr 2fr 0.5fr;
         .next,
         .prev {

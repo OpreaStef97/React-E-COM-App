@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
 
-    @media (max-width: 52.75em) {
+    @include respond(mobile-medium) {
         height: auto;
     }
 
@@ -23,7 +23,7 @@
         flex-direction: column;
         justify-content: space-between;
         
-        @media (max-width: 52.75em) {
+        @include respond(mobile-medium) {
             height: auto;
             min-height: 70vh;
         }
@@ -85,7 +85,7 @@
             color: $color-primary-light-1;
         }
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             // height: 20rem;
             padding: 0 1rem;
             gap: 2rem;

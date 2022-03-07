@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .main-header {
     position: absolute;
@@ -28,7 +29,7 @@
     }
 }
 
-@media (max-width: 52.5em) {
+@include respond(mobile-medium) {
     .main-header {
         z-index: 3000;
         transition: all 0.3s;
@@ -46,7 +47,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         animation: none;
     }
     animation: moveDown 0.5s ease-in-out;

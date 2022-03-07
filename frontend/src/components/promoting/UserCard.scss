@@ -1,4 +1,5 @@
 @import '../../sass/variables.scss';
+@import '../../sass/utilities.scss';
 
 .user__card {
     min-height: 20rem;
@@ -82,7 +83,7 @@
         justify-content: flex-end;
         align-items: center;
 
-        @media (max-width: 52.5em) {
+        @include respond(mobile-medium) {
             flex-direction: column;
             align-items: flex-end;
         }
@@ -93,7 +94,7 @@
         transform: scale(0.7);
     }
 
-    @media (max-width: 52.5em) {
+    @include respond(mobile-medium) {
         &--img-box {
             width: 100%;
         }

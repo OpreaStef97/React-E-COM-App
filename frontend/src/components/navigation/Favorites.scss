@@ -25,7 +25,7 @@
 
         animation: expand-in-and-out 0.5s;
 
-        @media (max-width: 68.75em) {
+        @include respond(mobile-big) {
             top: 10%;
             right: 12%;
         }
@@ -47,7 +47,7 @@
 
         box-shadow: 0 0 1.5rem rgba($color-primary-dark-3, 0.5);
 
-        @media (max-width: 68.75em) {
+        @include respond(mobile-big) {
             left: -160%;
         }
 
