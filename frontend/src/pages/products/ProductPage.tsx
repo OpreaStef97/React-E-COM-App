@@ -36,7 +36,7 @@ const ProductPage: FC = props => {
     }, [sendRequest, params.id]);
 
     useEffect(() => {
-        if (!auth?.user.id || params.id) {
+        if (!auth?.user.id || !params.id) {
             return;
         }
         sendRequest({

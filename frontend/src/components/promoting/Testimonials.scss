@@ -58,9 +58,11 @@
             top: 10%;
             left: 10%;
             transition: all 0.2s ease-in;
-            &:hover {
-                transform: scale(1.1);
-                z-index: 10;
+            @include hover-supported() {
+                &:hover {
+                    transform: scale(1.1);
+                    z-index: 10;
+                }
             }
         }
 
@@ -69,9 +71,11 @@
             left: 40%;
             z-index: 4;
             transition: all 0.2s ease-in;
-            &:hover {
-                transform: scale(1.1);
-                z-index: 10;
+            @include hover-supported() {
+                &:hover {
+                    transform: scale(1.1);
+                    z-index: 10;
+                }
             }
         }
 
@@ -81,9 +85,11 @@
             top: 30%;
             left: 45%;
             transition: all 0.2s ease-in;
-            &:hover {
-                transform: scale(1.1);
-                z-index: 10;
+            @include hover-supported() {
+                &:hover {
+                    transform: scale(1.1);
+                    z-index: 10;
+                }
             }
         }
 
@@ -93,9 +99,11 @@
             top: 40%;
             left: 5%;
             transition: all 0.2s ease-in;
-            &:hover {
-                transform: scale(1.1);
-                z-index: 10;
+            @include hover-supported() {
+                &:hover {
+                    transform: scale(1.1);
+                    z-index: 10;
+                }
             }
         }
 
@@ -105,9 +113,11 @@
             top: 60%;
             left: 30%;
             transition: all 0.2s ease-in;
-            &:hover {
-                transform: scale(1.1);
-                z-index: 10;
+            @include hover-supported() {
+                &:hover {
+                    transform: scale(1.1);
+                    z-index: 10;
+                }
             }
         }
     }

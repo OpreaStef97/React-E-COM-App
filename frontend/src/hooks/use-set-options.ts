@@ -24,6 +24,14 @@ const useSetOptions = (category: string) => {
     useEffect(() => {
         if (values.length > 0) {
             const options = {
+                sort: {
+                    options: ['Price: Low', 'Price: High', 'No. of Reviews', 'Best Rating'],
+                    selected: [false, false, false, false],
+                },
+                show: {
+                    options: ['5/page', '10/page', '20/page', '30/page'],
+                    selected: [false, true, false, false],
+                },
                 ...Object.fromEntries(
                     values.flatMap((val: any) => {
                         return Object.keys(val).map(key => {
@@ -63,14 +71,6 @@ const useSetOptions = (category: string) => {
                         });
                     })
                 ),
-                sort: {
-                    options: ['Price: Low', 'Price: High', 'No. of Reviews', 'Best Rating'],
-                    selected: [false, false, false, false],
-                },
-                show: {
-                    options: ['5/page', '10/page', '20/page', '30/page'],
-                    selected: [false, true, false, false],
-                },
             };
             setOptions(options);
         }

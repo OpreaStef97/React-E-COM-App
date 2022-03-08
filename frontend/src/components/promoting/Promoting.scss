@@ -10,7 +10,7 @@
     position: relative;
     box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
 
-    @media(max-width: 52.5em) {
+    @media (max-width: 52.5em) {
         height: 50vh;
     }
 
@@ -20,7 +20,7 @@
         &__over {
             top: 0;
             left: 0;
-            padding-right: 20rem;
+            padding-right: 25rem;
             padding-left: 6rem;
             position: absolute;
 
@@ -49,7 +49,8 @@
             }
 
             @include respond(mobile-medium) {
-                padding: 3rem;
+                padding: 1rem;
+                gap: 1rem;
                 justify-content: start;
                 height: 50%;
                 width: 100%;

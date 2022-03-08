@@ -13,6 +13,7 @@ const MenuSelect: FC<{
     label?: string;
     placeholder?: string;
     className?: string;
+    show?: boolean;
     uniqueSelect?: boolean;
     onlySelect?: boolean;
     errorText?: string;
@@ -20,22 +21,35 @@ const MenuSelect: FC<{
     onSelect?: (...args: any[]) => void;
     onDelete?: (id?: string) => void;
     onTouch?: () => void;
+    onClick?: React.Dispatch<React.SetStateAction<boolean>>;
 }> = props => {
     const [show, setShow] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
     const { clicked, clearClick } = useClickOutside(ref);
-    const { options, onSelect, onDelete, id, uniqueSelect } = props;
+    const { options, onSelect, onDelete, id, uniqueSelect, onClick } = props;
 
-    const showHandler = () => {
+    function showHandler(e?: React.MouseEvent) {
+        e?.preventDefault();
         setShow(prev => !prev);
-    };
+    }
+
+    useEffect(() => {
+        onClick && onClick(show);
+    }, [onClick, show]);
+
+    useEffect(() => {
+        if(props.show) {
+            setShow(false)
+        }
+    },[props.show])
 
     useEffect(() => {
         if (clicked) {
             setShow(false);
+            onClick && onClick(false);
         }
         clearClick();
-    }, [clicked, clearClick]);
+    }, [clicked, clearClick, onClick]);
 
     const placeholder =
         options.options
@@ -77,10 +91,7 @@ const MenuSelect: FC<{
                         <p>{props.error ? props.errorText : placeholder}</p>
                     </div>
                     <button
-                        onClick={e => {
-                            e.preventDefault();
-                            showHandler();
-                        }}
+                        onClick={showHandler}
                         aria-label="open-select"
                         className="menu-select__select-open"
                     >
@@ -93,9 +104,9 @@ const MenuSelect: FC<{
                             options.options.map((item: any, idx: number) => {
                                 return (
                                     <li
-                                        onClick={() => {
-                                            showHandler();
-                                            if (onSelect)
+                                        onClick={e => {
+                                            showHandler(e);
+                                            onSelect &&
                                                 onSelect(
                                                     id,
                                                     item,

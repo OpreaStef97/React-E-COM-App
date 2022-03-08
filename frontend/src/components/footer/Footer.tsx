@@ -4,7 +4,6 @@ import Logo from '../ui-components/Logo';
 import './Footer.scss';
 
 const Footer: FC<{ isLoading: boolean }> = props => {
-
     return (
         <footer className="footer" style={props.isLoading ? { marginTop: '100vh' } : {}}>
             <Logo big light />
@@ -36,7 +35,16 @@ const Footer: FC<{ isLoading: boolean }> = props => {
                 </li>
             </ul>
             <p className="footer__copyright">
-                Built by Oprea Stefan for his personal portfolio. Copyright &copy; by Oprea Stefan.
+                Built by{' '}
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-item__link--me"
+                    href="https://github.com/OpreaStf"
+                >
+                    Stefan Oprea
+                </a>{' '}
+                for his personal portfolio. Copyright &copy; by Stefan Oprea.
             </p>
         </footer>
     );

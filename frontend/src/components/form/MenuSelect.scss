@@ -12,6 +12,10 @@
     font-size: 1.4rem;
     font-weight: 500;
     margin-left: 1rem;
+
+    @include respond(mobile-small) {
+        font-size: 1.6rem;
+    }
 }
 
 .menu-select {
@@ -103,6 +107,24 @@
 
         &-button:hover &-icon {
             color: $color-tertiary-dark-3;
+        }
+
+        @include respond(mobile-small) {
+            min-width: 22rem;
+            height: 4rem;
+
+            &-open {
+                width: 3.5rem;
+            }
+            &-icon {
+                height: 2.6rem;
+                width: 2.6rem;
+            }
+            &-placeholder {
+                p {
+                    font-size: 1.8rem;
+                }
+            }
         }
     }
 

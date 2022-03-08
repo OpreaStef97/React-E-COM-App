@@ -78,11 +78,60 @@
                     background-color: $color-tertiary-light-3;
                 }
             }
+
+            &--me {
+                &:link,
+                &:visited {
+                    display: inline-block;
+                    text-decoration: none;
+                    cursor: pointer;
+                    height: 2rem;
+                    position: relative;
+                    color: $color-tertiary-light-2;
+                    background-color: inherit;
+                    font-size: 1.6rem;
+                }
+
+                &::after {
+                    z-index: inherit;
+                    content: '';
+                    left: 0%;
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    height: 1px;
+                    transform: scale(0);
+                    transition: all 0.4s ease;
+                }
+
+                @include hover-supported() {
+                    &:hover {
+                        color: $color-tertiary-light-1;
+                    }
+
+                    &:hover {
+                        &::after {
+                            font-size: 1.4rem;
+                            transform: scale(1);
+                            background-color: $color-tertiary-light-1;
+                        }
+                    }
+                }
+
+                &:active {
+                    &::after {
+                        font-size: 1.4rem;
+                        transform: scale(1);
+                        background-color: $color-tertiary-light-1;
+                    }
+                }
+            }
         }
     }
 
     &__copyright {
         font-size: 1.6rem;
+        letter-spacing: 1px;
         color: $color-primary-light-1;
         text-align: center;
         max-width: 40rem;

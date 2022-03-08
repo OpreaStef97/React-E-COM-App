@@ -135,6 +135,7 @@
         &:visited {
             display: inline-flex;
             text-decoration: none;
+            letter-spacing: 0.5px;
             cursor: pointer;
             color: $color-fourth;
             background-color: inherit;

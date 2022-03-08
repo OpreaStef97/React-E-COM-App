@@ -14,7 +14,7 @@
         background-image: linear-gradient(
             to left,
             $color-tertiary-dark-1 0%,
-            $color-tertiary-dark-1 20%,
+            $color-tertiary-dark-2 20%,
             $color-primary-dark-3 100%
         );
 
@@ -32,7 +32,7 @@
 
     &-light {
         h1 {
-            background-image: linear-gradient(to left, $color-tertiary, $color-primary);
+            background-image: linear-gradient(to left, $color-tertiary 0%, $color-primary 100%);
         }
     }
 

@@ -11,6 +11,7 @@ import './Reviews.scss';
 import ReviewModal from './ReviewModal';
 import useInfiniteScroll from '../../hooks/use-infinite-scroll';
 import UserCard from '../promoting/UserCard';
+import LoadingSpinner from '../ui-components/LoadingSpinner';
 
 const Reviews: FC<{
     rating?: number;
@@ -114,16 +115,22 @@ const Reviews: FC<{
                 <div className="reviews-content">
                     <div className="reviews-content-header">
                         <h3>Reviews</h3>
-                        {props.selectMenu}
-                        <Button
-                            onClick={addReviewHandler}
-                            className="reviews-content-header--button"
-                        >
-                            {userReview ? 'Modify review' : 'Add a review'}
-                        </Button>
+                        {(reviews.length >= 4 || isLoading) && props.selectMenu}
+                        {(reviews.length > 0 || isLoading) && (
+                            <Button
+                                onClick={addReviewHandler}
+                                className="reviews-content-header--button"
+                            >
+                                {userReview ? 'Modify review' : 'Add a review'}
+                            </Button>
+                        )}
                     </div>
                     <ReviewStats length={length || 0} rating={props.rating} />
-                    <ul className="reviews-content-list">
+                    <ul
+                        className="reviews-content-list"
+                        key={props.sorting}
+                        style={{ animation: 'fade .8s' }}
+                    >
                         {reviews.length > 0 &&
                             reviews.map((review: any, i: number) => {
                                 if (i + 1 === reviews.length) {
@@ -170,6 +177,11 @@ const Reviews: FC<{
                                 </Button>
                             </li>
                         )} */}
+                        {isLoading && (
+                            <li className="reviews-content-empty">
+                                <LoadingSpinner />
+                            </li>
+                        )}
                         {reviews.length === 0 && !isLoading && (
                             <li className="reviews-content-empty">
                                 <p>

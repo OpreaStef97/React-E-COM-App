@@ -14,6 +14,8 @@ import useSetOptions from '../../hooks/use-set-options';
 import useSmoothScroll from '../../hooks/use-smooth-scroll';
 import { useTitle } from '../../hooks/use-title';
 import './Products.scss';
+import useWindow from '../../hooks/use-window';
+import HorizontalScroll from '../../components/ui-components/HorizontalScroll';
 
 const Products: FC<{ category?: string }> = props => {
     const { category } = props;
@@ -29,6 +31,7 @@ const Products: FC<{ category?: string }> = props => {
     const sorting = useRequestSort(selectState);
     const filter = useRequestFilter(selectState);
     const limit = useLimit(selectState);
+    const [width] = useWindow();
 
     useEffect(() => {
         setPageNumber(1);
@@ -68,13 +71,34 @@ const Products: FC<{ category?: string }> = props => {
         }
     }, [pageNumber]);
 
+    const [show, setShow] = useState(false);
+
     const pageChangeHandler = useCallback((p: number) => {
         setPageNumber(p);
     }, []);
     const handlers = useSwipeable({
-        onSwipedLeft: nextHandler,
-        onSwipedRight: prevHandler,
+        onSwipedLeft: () => {
+            nextHandler();
+            if (pageNumber < Math.ceil(totalSize / +limit)) window.scrollTo(0, 0);
+        },
+        onSwipedRight: () => {
+            prevHandler();
+            if (pageNumber > 1) window.scrollTo(0, 0);
+        },
     });
+
+    const showSwipeHandler = useSwipeable({
+        onSwipedLeft: () => {
+            setShow(true);
+            setShow(false);
+        },
+        onSwipedRight: () => {
+            setShow(true);
+            setShow(false);
+        },
+    });
+
+    const [horizontal, setHorizontal] = useState(false);
 
     return (
         <section className="products">
@@ -88,30 +112,74 @@ const Products: FC<{ category?: string }> = props => {
                     </div>
                     <div className="separator"></div>
                     <div className="products__filter-bar--select">
-                        {Object.keys(selectState).length > 0 &&
-                            Object.keys(selectState).map(key => {
-                                if (selectState[key].options.length > 0)
-                                    return (
-                                        <MenuSelect
-                                            id={key}
-                                            key={key}
-                                            onlySelect={key === 'show'}
-                                            uniqueSelect={key === 'sort'}
-                                            onSelect={selectHandler}
-                                            onDelete={deleteHandler}
-                                            options={selectState[key]}
-                                            placeholder={`${key}..`}
-                                            label={
-                                                key === 'show'
-                                                    ? 'No. of items/page:'
-                                                    : `Select ${
-                                                          key.charAt(0).toUpperCase() + key.slice(1)
-                                                      }: `
-                                            }
-                                        />
-                                    );
-                                return <Fragment key={key}></Fragment>;
-                            })}
+                        {Object.keys(selectState).length > 0 && (
+                            <>
+                                {width > 600 &&
+                                    Object.keys(selectState).map(key => {
+                                        if (selectState[key].options.length > 0)
+                                            return (
+                                                <MenuSelect
+                                                    id={key}
+                                                    key={key}
+                                                    onlySelect={key === 'show'}
+                                                    uniqueSelect={key === 'sort'}
+                                                    onSelect={selectHandler}
+                                                    onDelete={deleteHandler}
+                                                    options={selectState[key]}
+                                                    placeholder={`${
+                                                        key.charAt(0).toUpperCase() + key.slice(1)
+                                                    }..`}
+                                                    label={
+                                                        key === 'show'
+                                                            ? 'No. of items/page:'
+                                                            : `Select ${
+                                                                  key.charAt(0).toUpperCase() +
+                                                                  key.slice(1)
+                                                              }: `
+                                                    }
+                                                />
+                                            );
+                                        return <Fragment key={key}></Fragment>;
+                                    })}
+                                {width <= 600 && (
+                                    <HorizontalScroll
+                                        handlers={showSwipeHandler}
+                                        overflow={horizontal}
+                                    >
+                                        {Object.keys(selectState).map(key => {
+                                            if (selectState[key].options.length > 0)
+                                                return (
+                                                    <MenuSelect
+                                                        id={key}
+                                                        key={key}
+                                                        show={show}
+                                                        onlySelect={key === 'show'}
+                                                        uniqueSelect={key === 'sort'}
+                                                        className="products__filter-bar--item"
+                                                        onSelect={selectHandler}
+                                                        onClick={setHorizontal}
+                                                        onDelete={deleteHandler}
+                                                        options={selectState[key]}
+                                                        placeholder={`${
+                                                            key.charAt(0).toUpperCase() +
+                                                            key.slice(1)
+                                                        }..`}
+                                                        label={
+                                                            key === 'show'
+                                                                ? 'No. of items/page:'
+                                                                : `Select ${
+                                                                      key.charAt(0).toUpperCase() +
+                                                                      key.slice(1)
+                                                                  }: `
+                                                        }
+                                                    />
+                                                );
+                                            return <Fragment key={key}></Fragment>;
+                                        })}
+                                    </HorizontalScroll>
+                                )}
+                            </>
+                        )}
                     </div>
                 </div>
                 <ProductsSideBar className="products__container--side-bar" />
@@ -146,6 +214,7 @@ const Products: FC<{ category?: string }> = props => {
                     />
                 </div>
             </div>
+            {/* <HorizontalScroll /> */}
         </section>
     );
 };

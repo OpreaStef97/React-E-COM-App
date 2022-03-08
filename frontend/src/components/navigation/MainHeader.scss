@@ -10,12 +10,7 @@
     height: 6rem;
     justify-content: space-between;
     align-items: center;
-    background-image: linear-gradient(
-        to right,
-        $color-primary 0%,
-        $color-primary-2 35%,
-        $color-primary-light-3 100%,
-    );
+    background-color: $color-primary-2;
     margin-bottom: 4rem;
     z-index: 2000;
 
