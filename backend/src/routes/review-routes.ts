@@ -10,15 +10,25 @@ import {
     getReviewRatingsPerProduct,
 } from '../controllers/reviews-controller';
 import { checkUserReview } from '../middlewares/check-user-review';
+import countDocs from '../middlewares/count-docs';
+import Review from '../models/review-model';
 
 const router = express.Router({ mergeParams: true });
-
-router.get('/', getAllReviews);
+router.get('/', countDocs(Review), getAllReviews);
 router.get('/stats', getReviewRatingsPerProduct);
 
 router.use(protect);
 
-router.post('/', restrictTo('user', 'admin'), setProductUserIds, createReview);
+router.post('/', restrictTo('user', 'admin'), setProductUserIds, (req, res, next) => {
+    if (process.env.NODE_ENV !== 'production') {
+        createReview(req, res, next);
+    } else {
+        res.status(403).json({
+            status: 'error',
+            message: 'Posting reviews feature is currently disabled',
+        });
+    }
+});
 
 router
     .route('/:id')

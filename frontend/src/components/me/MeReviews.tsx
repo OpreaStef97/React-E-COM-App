@@ -1,8 +1,10 @@
+import React, { RefObject } from 'react';
 import { FC, Fragment, useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/use-fetch';
 import useImageLoad from '../../hooks/use-image-load';
+import useInfiniteScroll from '../../hooks/use-infinite-scroll';
 import useSelect from '../../hooks/use-select';
 import ReviewModal from '../reviews/ReviewModal';
 import Button from '../ui-components/Button';
@@ -11,16 +13,15 @@ import Stars from '../ui-components/Stars';
 
 import './MeReviews.scss';
 
-const ReviewItem = (props: { review: any; onClick: () => void }) => {
+const ReviewItem = React.forwardRef((props: { review: any; onClick: () => void }, ref) => {
     const navigate = useNavigate();
 
     const src = useImageLoad(
-        `${process.env.REACT_APP_RESOURCES_URL}/products/${props.review.product?.images[0]}` ||
-            ''
+        `${process.env.REACT_APP_RESOURCES_URL}/products/${props.review.product?.images[0]}` || ''
     );
 
     return (
-        <li className="me-reviews__item">
+        <li className="me-reviews__item" ref={ref as unknown as RefObject<HTMLLIElement>}>
             {!src && <LoadingSpinner />}
             {src && (
                 <img
@@ -47,10 +48,10 @@ const ReviewItem = (props: { review: any; onClick: () => void }) => {
             </div>
         </li>
     );
-};
+});
 
 const MeReviews: FC = props => {
-    const [reviews, setReviews] = useState([]);
+    const [reviews, setReviews] = useState<any[]>([]);
     const { auth } = useSelector((state: any) => state);
     const { sendRequest, isLoading } = useFetch();
     const [selectTouched, setSelectTouched] = useState(false);
@@ -58,6 +59,8 @@ const MeReviews: FC = props => {
     const [ratingValue, setRatingValue] = useState<string>('');
     const [productId, setProductId] = useState('');
     const [checkReview, setCheckReview] = useState();
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
 
     const { selectState, selectHandler, deleteHandler, setHandler } = useSelect({
         rating: {
@@ -71,14 +74,15 @@ const MeReviews: FC = props => {
             return;
         }
         sendRequest({
-            url: `${process.env.REACT_APP_API_URL}/users/${auth.user.id}/reviews`,
+            url: `${process.env.REACT_APP_API_URL}/users/${auth.user.id}/reviews?page=${page}&limit=4`,
             credentials: 'include',
-        }).then(data => {
-            setReviews(data.docs);
-        });
-
-        return () => setReviews([]);
-    }, [auth.user.id, sendRequest]);
+        })
+            .then(data => {
+                setReviews(prev => [...prev, ...data.docs]);
+                setHasMore(data.docs.length === 4);
+            })
+            .catch(setHasMore.bind(null, false));
+    }, [auth.user.id, page, sendRequest]);
 
     const addReviewHandler = useCallback((checkReview?: any) => {
         setAddReview(prev => !prev);
@@ -88,6 +92,8 @@ const MeReviews: FC = props => {
             setCheckReview(checkReview);
         }
     }, []);
+
+    const lastReviewRef = useInfiniteScroll({ isLoading, hasMore, setPage });
 
     useEffect(() => {
         if (!addReview)
@@ -132,13 +138,26 @@ const MeReviews: FC = props => {
             <div className="me-reviews">
                 <ul className="me-reviews__content">
                     {reviews.length > 0 &&
-                        reviews.map((item: any, i: number) => (
-                            <ReviewItem
-                                onClick={addReviewHandler.bind(null, item)}
-                                key={i}
-                                review={item}
-                            />
-                        ))}
+                        reviews.map((item: any, i: number) => {
+                            if (i + 1 === reviews.length) {
+                                return (
+                                    <ReviewItem
+                                        ref={lastReviewRef}
+                                        onClick={addReviewHandler.bind(null, item)}
+                                        key={i}
+                                        review={item}
+                                    />
+                                );
+                            }
+
+                            return (
+                                <ReviewItem
+                                    onClick={addReviewHandler.bind(null, item)}
+                                    key={i}
+                                    review={item}
+                                />
+                            );
+                        })}
                     {!isLoading && reviews.length === 0 && (
                         <li key={Math.random()} className="me-reviews__item--empty">
                             <p>You don't have any review yet</p>

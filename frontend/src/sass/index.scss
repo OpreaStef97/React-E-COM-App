@@ -13,6 +13,9 @@
 
 html {
     font-size: 62.5%;
+    @include respond(desktop) {
+        font-size: 65%;
+    }
 
     @include respond(mobile-big) {
         font-size: 50%;

@@ -85,13 +85,10 @@ export function modifyCartData(cart: any[], csrfToken: string) {
 
 export const replaceLocalCart = () => async (dispatch: Dispatch) => {
     const localCart = localStorage.getItem('cart');
-    try {
-        if (!localCart) {
-            throw new Error('User modified the cart data');
-        }
+
+    if (localCart) {
         dispatch(cartActions.replaceCart(JSON.parse(localCart)));
-    } catch (err) {
-        console.error(err);
+    } else {
         dispatch(cartActions.reinitializeCart());
     }
 };

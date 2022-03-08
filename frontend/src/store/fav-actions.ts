@@ -72,14 +72,11 @@ export function modifyFavData(fav: any[], csrfToken: string) {
 }
 
 export const replaceLocalFav = () => async (dispatch: Dispatch) => {
-    const localCart = localStorage.getItem('favorites');
-    try {
-        if (!localCart) {
-            throw new Error('User modified the fav data');
-        }
-        dispatch(favActions.replaceFav(JSON.parse(localCart)));
-    } catch (err) {
-        console.error(err);
+    const localFav = localStorage.getItem('favorites');
+
+    if (localFav) {
+        dispatch(favActions.replaceFav(JSON.parse(localFav)));
+    } else {
         dispatch(favActions.reinitializeFav());
     }
 };

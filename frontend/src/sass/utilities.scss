@@ -29,6 +29,12 @@
             @content;
         }
     }
+
+    @if $device == desktop {
+        @media (min-width: 112.5em) {
+            @content;
+        }
+    }
 }
 
 @mixin scroll($color1, $color2, $color3) {

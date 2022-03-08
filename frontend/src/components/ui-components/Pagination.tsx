@@ -5,12 +5,14 @@ import './Pagination.scss';
 
 const Pagination: FC<{
     className?: string;
-    onPageChange: (page: number) => void;
+    onNext: () => void;
+    onPrev: () => void;
+    onChange: (p:number) => void;
     pageNumber: number;
     pageSize: number;
     totalSize: number;
 }> = props => {
-    const { pageNumber, totalSize, pageSize, onPageChange } = props;
+    const { pageNumber, totalSize, pageSize, onNext, onPrev, onChange } = props;
 
     const paginationRange = usePagination({
         totalCount: totalSize,
@@ -23,18 +25,6 @@ const Pagination: FC<{
         return <div style={{ height: '4.5rem', width: '100%' }}></div>;
     }
 
-    const nextHandler = () => {
-        onPageChange(pageNumber + 1);
-    };
-
-    const prevHandler = () => {
-        onPageChange(pageNumber - 1);
-    };
-
-    const pageChangeHandler = (p: number) => {
-        onPageChange(p);
-    };
-
     let lastPage = (paginationRange && paginationRange[paginationRange.length - 1]) || 0;
     return (
         <div className={`pagination ${props.className}`}>
@@ -42,7 +32,7 @@ const Pagination: FC<{
                 disabled={pageNumber <= 1}
                 className={`pagination-btn`}
                 type="left"
-                onClick={prevHandler}
+                onClick={onPrev}
             />
             {paginationRange &&
                 paginationRange.map((currentPage, i) => {
@@ -59,7 +49,7 @@ const Pagination: FC<{
                             className={`pagination-btn ${
                                 pageNumber === currentPage ? 'active' : ''
                             }`}
-                            onClick={pageChangeHandler.bind(null, currentPage as number)}
+                            onClick={onChange.bind(null, currentPage as number)}
                             key={i}
                         >
                             <span>{currentPage}</span>
@@ -70,7 +60,7 @@ const Pagination: FC<{
                 className={`pagination-btn`}
                 type="right"
                 disabled={pageNumber >= lastPage}
-                onClick={nextHandler}
+                onClick={onNext}
             />
         </div>
     );

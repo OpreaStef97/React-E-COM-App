@@ -8,6 +8,8 @@ type UINotification = {
         message: string | null;
     };
     reset: number;
+    compReset: number;
+    savedState: any;
 };
 
 type Action = {
@@ -33,6 +35,8 @@ const initialState: UINotification = {
         message: null,
     },
     reset: 0,
+    compReset: 0,
+    savedState: undefined,
 };
 
 const uiSlice = createSlice({
@@ -45,6 +49,9 @@ const uiSlice = createSlice({
         setUIReset(state) {
             state.reset = Math.random();
         },
+        setComponentReset(state) {
+            state.compReset = Math.random();
+        },
         showNotification(state, action) {
             state.visible = true;
             state.notification = {
@@ -52,6 +59,12 @@ const uiSlice = createSlice({
                 message: action.payload.message,
             };
         },
+        setSaveState(state, action) {
+            state.savedState = action.payload;
+        },
+        deleteSavedState(state) {
+            state.savedState = undefined
+        }
     },
     extraReducers: builder => {
         builder.addCase(delayedNotification.fulfilled, (state, action) => {

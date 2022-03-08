@@ -1,4 +1,5 @@
-import { FC, Fragment, useEffect, useState } from 'react';
+import { FC, Fragment, useCallback, useEffect, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import MenuSelect from '../../components/form/MenuSelect';
 import ProductsGrid from '../../components/products/ProductsGrid';
 import ProductsSideBar from '../../components/products/ProductsSideBar';
@@ -55,6 +56,26 @@ const Products: FC<{ category?: string }> = props => {
 
     const smoothScroll = useSmoothScroll();
 
+    const nextHandler = useCallback(() => {
+        if (pageNumber < Math.ceil(totalSize / +limit)) {
+            setPageNumber(pageNumber + 1);
+        }
+    }, [limit, pageNumber, totalSize]);
+
+    const prevHandler = useCallback(() => {
+        if (pageNumber > 1) {
+            setPageNumber(pageNumber - 1);
+        }
+    }, [pageNumber]);
+
+    const pageChangeHandler = useCallback((p: number) => {
+        setPageNumber(p);
+    }, []);
+    const handlers = useSwipeable({
+        onSwipedLeft: nextHandler,
+        onSwipedRight: prevHandler,
+    });
+
     return (
         <section className="products">
             <div className="products__container">
@@ -94,9 +115,11 @@ const Products: FC<{ category?: string }> = props => {
                     </div>
                 </div>
                 <ProductsSideBar className="products__container--side-bar" />
-                <div className="products__container-page">
+                <div className="products__container-page" {...handlers}>
                     <Pagination
-                        onPageChange={page => setPageNumber(page)}
+                        onNext={nextHandler}
+                        onPrev={prevHandler}
+                        onChange={pageChangeHandler}
                         totalSize={totalSize}
                         pageNumber={pageNumber}
                         pageSize={+limit}
@@ -105,9 +128,17 @@ const Products: FC<{ category?: string }> = props => {
                     {!isLoading && <ProductsGrid key={props.category} items={items} />}
                     <Pagination
                         className="margin-top"
-                        onPageChange={async page => {
+                        onNext={async () => {
                             await smoothScroll();
-                            setPageNumber(page);
+                            return nextHandler();
+                        }}
+                        onPrev={async () => {
+                            await smoothScroll();
+                            return prevHandler();
+                        }}
+                        onChange={async (page: number) => {
+                            await smoothScroll();
+                            return pageChangeHandler(page);
                         }}
                         totalSize={totalSize}
                         pageNumber={pageNumber}

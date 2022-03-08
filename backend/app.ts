@@ -103,10 +103,13 @@ process.on('uncaughtException', err => {
     app.post('/api/webhook', express.raw({ type: 'application/json' }), webHookEventListener);
 
     const csrfProtection = csrf({
-        cookie: {
-            sameSite: 'none',
-            secure: true,
-        },
+        cookie:
+            process.env.NODE_ENV === 'production'
+                ? {
+                      sameSite: 'none',
+                      secure: true,
+                  }
+                : true,
     });
 
     app.use(csrfProtection);

@@ -2,43 +2,30 @@ import { useState, useEffect } from 'react';
 import { SelectState } from './use-select';
 
 export default function useReviewSort(selectState: SelectState) {
-    const [sortingD, setSortingD] = useState<string>();
-    const [sortingR, setSortingR] = useState<string>();
+    const [sorting, setSorting] = useState<string>();
     useEffect(() => {
-        if (!selectState || !selectState['sortR']) {
+        if (!selectState || !selectState['sort']) {
             return;
         }
-        const { selected, options } = selectState['sortR'];
+        const { selected, options } = selectState['sort'];
         const idx = selected.findIndex((val: boolean) => val === true);
         if (idx !== -1) {
             switch (options[idx]) {
                 case 'Top rated':
-                    setSortingR('-rating');
+                    setSorting('-rating');
                     break;
                 case 'Low rated':
-                    setSortingR('rating');
+                    setSorting('rating');
                     break;
-            }
-        } else setSortingR('');
-    }, [selectState]);
-
-    useEffect(() => {
-        if (!selectState || !selectState['sortD']) {
-            return;
-        }
-        const { selected, options } = selectState['sortD'];
-        const idx = selected.findIndex((val: boolean) => val === true);
-        if (idx !== -1) {
-            switch (options[idx]) {
                 case 'Newest':
-                    setSortingD('-createdAt');
+                    setSorting('-createdAt');
                     break;
                 case 'Oldest':
-                    setSortingD('createdAt');
+                    setSorting('createdAt');
                     break;
             }
-        } else setSortingD('');
+        } else setSorting('');
     }, [selectState]);
 
-    return { sortingD, sortingR };
+    return sorting;
 }

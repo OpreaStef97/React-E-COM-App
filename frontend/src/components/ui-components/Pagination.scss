@@ -25,9 +25,11 @@
             font-weight: 500;
         }
 
-        &:hover {
-            span {
-                color: $color-primary-light-1;
+        @include hover-supported() {
+            &:hover {
+                span {
+                    color: $color-primary-light-1;
+                }
             }
         }
     }

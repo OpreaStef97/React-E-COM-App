@@ -1,16 +1,18 @@
+import React, { RefObject } from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useFetch from '../../hooks/use-fetch';
+import useInfiniteScroll from '../../hooks/use-infinite-scroll';
 import LoadingSpinner from '../ui-components/LoadingSpinner';
 import './MePurchases.scss';
 
-const PurchaseItem = (props: { purchase: any }) => {
+const PurchaseItem = React.forwardRef((props: { purchase: any }, ref) => {
     const { purchase } = props;
     const navigate = useNavigate();
 
     return (
-        <li className="me-purchases__item">
+        <li className="me-purchases__item" ref={ref as unknown as RefObject<HTMLLIElement>}>
             <h3>Products:</h3>
             <ul className="me-purchases__product--list">
                 {purchase.products.map((item: any, i: number) => {
@@ -44,29 +46,40 @@ const PurchaseItem = (props: { purchase: any }) => {
             </ul>
         </li>
     );
-};
+});
 
 const MePurchases: FC = () => {
-    const [purchases, setPurchases] = useState([]);
+    const [purchases, setPurchases] = useState<any[]>([]);
     const { auth } = useSelector((state: any) => state);
     const { isLoading, sendRequest } = useFetch();
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
 
     useEffect(() => {
-        if(!auth.isLoggedIn) {
+        if (!auth.isLoggedIn) {
             return;
         }
         sendRequest({
-            url: `${process.env.REACT_APP_API_URL}/payments/${auth.user.id}`,
+            url: `${process.env.REACT_APP_API_URL}/payments/${auth.user.id}?page=${page}&limit=4`,
             credentials: 'include',
-        }).then(data => {
-            setPurchases(data.docs);
-        });
-    }, [auth.isLoggedIn, auth.user.id, sendRequest]);
+        })
+            .then(data => {
+                setPurchases(prev => [...prev, ...data.docs]);
+                setHasMore(data.docs.length === 4);
+            })
+            .catch(setHasMore.bind(null, false));
+    }, [auth.isLoggedIn, auth.user.id, page, sendRequest]);
+
+    const lastPurchaseRef = useInfiniteScroll({ hasMore, isLoading, setPage });
 
     return (
         <div className="me-purchases">
             <ul className="me-purchases__list">
                 {purchases.map((item: any, i: number) => {
+                    if (i + 1 === purchases.length) {
+                        return <PurchaseItem ref={lastPurchaseRef} purchase={item} key={i} />;
+                    }
+
                     return <PurchaseItem purchase={item} key={i} />;
                 })}
                 {!isLoading && purchases.length === 0 && (
