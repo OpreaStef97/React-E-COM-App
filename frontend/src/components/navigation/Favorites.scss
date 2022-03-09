@@ -3,9 +3,80 @@
 
 .favorites {
     position: relative;
-
     &__main-link {
         position: relative;
+        &:link,
+        &:visited {
+            color: $color-tertiary-dark-2;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+            background-color: $color-tertiary-light-4;
+
+            gap: 0.5rem;
+            border-radius: 100px;
+            width: 15rem;
+            height: 4rem;
+            box-shadow: 0 0 0.3rem rgba($color-tertiary-dark-3, 0.6);
+
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+        @include hover-supported() {
+            &:hover {
+                box-shadow: 0px 0px 0px 1.5px $color-tertiary-dark-1 inset;
+            }
+        }
+        &:active {
+            box-shadow: 0px 0px 0px 1.5px $color-tertiary-dark-1 inset;
+        }
+        @include respond(mobile-big) {
+            &:link,
+            &:visited {
+                span {
+                    display: none;
+                }
+                .cart-counter {
+                    right: 12%;
+                    display: inline-flex;
+                }
+                svg {
+                    width: 3rem;
+                    height: 3rem;
+                }
+                width: 5rem;
+                height: 5rem;
+            }
+        }
+        @include respond(mobile-medium) {
+            &:link,
+            &:visited {
+                width: 15rem;
+                height: 4rem;
+                background-color: $color-tertiary-light-2;
+                box-shadow: 0 0 0.3rem rgba($color-tertiary-dark-3, 0.6);
+                svg {
+                    width: 2rem;
+                    height: 2rem;
+                }
+                span {
+                    display: inline-block;
+                }
+            }
+
+            @include hover-supported() {
+                &:hover {
+                    box-shadow: 0px 0px 0px 1.5px $color-tertiary-dark-2 inset;
+                }
+            }
+            &:active {
+                box-shadow: 0px 0px 0px 1.5px $color-tertiary-dark-2 inset;
+            }
+        }
     }
 
     &__counter {
@@ -17,11 +88,11 @@
         font-size: 1.1rem;
         height: 1.7rem;
         width: 1.7rem;
-        background-color: $color-primary-dark-2;
+        background-color: $color-tertiary-dark-2;
         top: 10%;
         right: 9%;
         border-radius: 50%;
-        color: $color-primary-light-1;
+        color: $color-tertiary-light-3;
 
         animation: expand-in-and-out 0.5s;
 
@@ -37,7 +108,7 @@
         top: 115%;
         width: 40rem;
         border-radius: 1rem;
-        background-color: $color-primary-light-1;
+        background-color: $color-tertiary-light-4;
         cursor: default;
 
         display: flex;
@@ -45,7 +116,7 @@
         justify-content: flex-start;
         overflow-y: hidden;
 
-        box-shadow: 0 0 1.5rem rgba($color-primary-dark-3, 0.5);
+        box-shadow: 0 0 1.5rem rgba($color-tertiary-dark-3, 0.5);
 
         @include respond(mobile-big) {
             left: -160%;
@@ -56,23 +127,23 @@
         }
 
         &::-webkit-scrollbar-track {
-            background: $color-primary-light-2;
+            background: $color-tertiary-light-2;
             border-radius: 1rem;
         }
 
         &::-webkit-scrollbar-thumb {
-            background: $color-primary-dark-1;
-            border: 0.25em solid $color-primary-light-2;
+            background: $color-tertiary;
+            border: 0.25em solid $color-tertiary-light-2;
             border-radius: 1em;
         }
 
         &::-webkit-scrollbar-thumb:hover {
-            background: $color-primary-dark-2;
+            background: $color-tertiary-dark-1;
         }
 
         @supports (scrollbar-color: red blue) {
-            * {
-                scrollbar-color: $color-primary-dark-1 $color-primary-light-3;
+            & {
+                scrollbar-color: $color-tertiary-dark-1 $color-tertiary-light-3;
                 scrollbar-width: auto;
             }
         }
@@ -91,7 +162,7 @@
         &:hover &__main-link {
             &:link,
             &:visited {
-                box-shadow: 0px 0px 0px 1.5px $color-primary-dark-2 inset;
+                box-shadow: 0px 0px 0px 1.5px $color-tertiary-dark-2 inset;
             }
         }
     }
@@ -108,6 +179,7 @@
     }
 
     &__empty {
+        color: $color-tertiary-dark-1;
         margin-top: auto;
         font-size: 1.6rem;
         text-align: center;
@@ -127,8 +199,8 @@
         position: relative;
         height: 15rem;
         border-radius: 1rem;
-        background-color: $color-primary-light-1;
-        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.25);
+        background-color: $color-tertiary-light-4;
+        box-shadow: 0 0 1rem rgba($color-tertiary-dark-3, 0.25);
         overflow: hidden;
 
         img {

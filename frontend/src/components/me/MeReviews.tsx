@@ -36,7 +36,7 @@ const ReviewItem = React.forwardRef((props: { review: any; onClick: () => void }
                 />
             )}
             <div className="me-reviews__item--info-box">
-                <h3>Product: {props.review?.product.name}</h3>
+                <h3>{props.review?.product.name}</h3>
                 <p>{props.review.review}</p>
                 <Stars className="me-reviews__item--stars" rating={props.review.rating} />
                 <div className="me-reviews__item--modify">

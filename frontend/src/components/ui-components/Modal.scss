@@ -36,8 +36,8 @@
     }
 
     &__close {
-        height: 2.5rem;
-        width: 2.5rem;
+        height: 4rem;
+        width: 4rem;
         cursor: pointer;
         transition: all 0.2s;
 
@@ -76,11 +76,10 @@
         &__content {
             min-height: 30vh;
         }
+    }
 
-        &__close {
-            height: 4rem;
-            width: 4rem;
-        }
+    @include respond(mobile-small) {
+        width: 90%;
     }
 }
 .modal-enter {

@@ -26,7 +26,7 @@ const PurchaseItem = React.forwardRef((props: { purchase: any }, ref) => {
                                 alt={item.product.name}
                             />
                             <div className="me-purchases__product--info-box">
-                                <h4>Product: {item.product.name}</h4>
+                                <h4>{item.product.name}</h4>
                                 <span>Quantity: {item.quantity}</span>
                                 <span>Price: {`$${item.product.price}`} </span>
                             </div>

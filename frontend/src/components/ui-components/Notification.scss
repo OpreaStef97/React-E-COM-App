@@ -45,18 +45,14 @@
         right: 1%;
         cursor: pointer;
         position: absolute;
-        height: 3rem;
-        width: 3rem;
-        color: $color-secondary-light-2;
+        height: 4rem;
+        width: 4rem;
+        color: $color-secondary-light-1;
     }
 
     @include respond(mobile-medium) {
         &-msg {
             width: 70%;
-        }
-        &-close {
-            height: 4rem;
-            width: 4rem;
         }
     }
 }

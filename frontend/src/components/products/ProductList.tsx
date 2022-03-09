@@ -32,20 +32,23 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
         }
     }, [prevNumberOfShownCards, numberOfShownCards]);
 
+    const [firstCall, setFirstCall] = useState(false);
     // first request
     useEffect(() => {
         if (!numberOfShownCards) {
             return;
         }
+        setFirstCall(true);
         sendRequest({
             url: `${process.env.REACT_APP_API_URL}/products?page=1&limit=${
-                numberOfShownCards < 3 ? 10 : numberOfShownCards
+                numberOfShownCards < 3 ? 20 : numberOfShownCards
             }${category ? `&category=${category}` : ''}${exclude ? `&_id[ne]=${exclude}` : ''}`,
         })
             .then(data => {
                 if (data.results > 0) setProducts([...data.docs]);
             })
-            .catch(console.error);
+            .catch(console.error)
+            .finally(() => setFirstCall(false));
 
         return () => {
             setProducts([]);
@@ -107,11 +110,13 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
 
     return (
         <div className="product-list">
-            <ListButton
-                in={index === 0}
-                type={'left'}
-                onClick={() => !isLoading && moveLeftHandler()}
-            />
+            {!firstCall && (
+                <ListButton
+                    in={index === 0}
+                    type={'left'}
+                    onClick={() => !isLoading && moveLeftHandler()}
+                />
+            )}
             <div className="product-list-container">
                 <ul
                     className="product-list-container--list"
@@ -131,23 +136,27 @@ const ProductList: FC<{ category?: string; exclude?: string }> = props => {
                                 />
                             );
                         })}
-                    {isLoading && (
+                    {firstCall && (
                         <li>
                             <LoadingSpinner />
                         </li>
                     )}
                 </ul>
             </div>
-            <ListButton
-                isLoading={isLoading}
-                in={
-                    index ===
-                    (numberOfShownCards &&
-                        (numberOfShownCards >= 3 ? max : products.length / numberOfShownCards - 1))
-                }
-                type="right"
-                onClick={() => !isLoading && moveRightHandler()}
-            />
+            {!firstCall && (
+                <ListButton
+                    isLoading={isLoading}
+                    in={
+                        index ===
+                        (numberOfShownCards &&
+                            (numberOfShownCards >= 3
+                                ? max
+                                : products.length / numberOfShownCards - 1))
+                    }
+                    type="right"
+                    onClick={() => !isLoading && moveRightHandler()}
+                />
+            )}
         </div>
     );
 };

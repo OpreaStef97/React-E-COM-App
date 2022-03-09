@@ -16,6 +16,7 @@ import { useTitle } from '../../hooks/use-title';
 import './Products.scss';
 import useWindow from '../../hooks/use-window';
 import HorizontalScroll from '../../components/ui-components/HorizontalScroll';
+import LoadingSpinner from '../../components/ui-components/LoadingSpinner';
 
 const Products: FC<{ category?: string }> = props => {
     const { category } = props;
@@ -32,6 +33,7 @@ const Products: FC<{ category?: string }> = props => {
     const filter = useRequestFilter(selectState);
     const limit = useLimit(selectState);
     const [width] = useWindow();
+    const [firstCall, setFirstCall] = useState(true);
 
     useEffect(() => {
         setPageNumber(1);
@@ -53,7 +55,8 @@ const Products: FC<{ category?: string }> = props => {
                 setTotalSize(data.totalLength);
                 setItems(convertData([...data.docs]));
             })
-            .catch(console.error);
+            .catch(console.error)
+            .finally(() => setFirstCall(false));
         return () => setItems([]);
     }, [category, sendRequest, convertData, limit, pageNumber, sorting, filter]);
 
@@ -120,7 +123,7 @@ const Products: FC<{ category?: string }> = props => {
                     <div className="products__filter-bar--select">
                         {Object.keys(selectState).length > 0 && (
                             <>
-                                {width > 600 &&
+                                {width > 643 &&
                                     Object.keys(selectState).map(key => {
                                         if (selectState[key].options.length > 0)
                                             return (
@@ -147,7 +150,7 @@ const Products: FC<{ category?: string }> = props => {
                                             );
                                         return <Fragment key={key}></Fragment>;
                                     })}
-                                {width <= 600 && (
+                                {width <= 643 && (
                                     <HorizontalScroll
                                         handlers={showSwipeHandler}
                                         overflow={horizontal}
@@ -198,8 +201,14 @@ const Products: FC<{ category?: string }> = props => {
                         pageNumber={pageNumber}
                         pageSize={+limit}
                     />
-                    {isLoading && <div className="products__container--loader"></div>}
-                    {!isLoading && <ProductsGrid key={props.category} items={items} />}
+                    {(firstCall || isLoading) && (
+                        <div className="products__container--loader">
+                            {firstCall && <LoadingSpinner />}
+                        </div>
+                    )}
+                    {!firstCall && !isLoading && (
+                        <ProductsGrid key={props.category} items={items} />
+                    )}
                     <Pagination
                         className="margin-top"
                         onNext={async () => {

@@ -52,9 +52,16 @@
         height: 10rem;
         display: flex;
         justify-content: center;
-        align-items: center; 
+        align-items: center;
 
-        button:hover {
+        @include hover-supported() {
+            button:hover {
+                .auth-form--load {
+                    color: $color-primary-dark-3;
+                }
+            }
+        }
+        button:active {
             .auth-form--load {
                 color: $color-primary-dark-3;
             }

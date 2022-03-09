@@ -97,7 +97,6 @@ const ProductItem: FC<{
                     </div>
                     <div className="product__item--footer">
                         <Button
-                            inverse
                             onClick={addItemToCartHandler.bind(null, {
                                 id: product.id,
                                 name: product.name,

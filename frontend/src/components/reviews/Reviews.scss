@@ -57,6 +57,31 @@
                     grid-row: 2 / 3;
                 }
             }
+
+            &--button {
+                span {
+                    color: $color-secondary-light-2;
+                }
+                background-image: linear-gradient(
+                    130deg,
+                    $color-secondary-dark 0%,
+                    $color-secondary-dark-2 50%,
+                    $color-secondary-light-2 0%
+                );
+
+                @include hover-supported() {
+                    &:hover {
+                        span {
+                            color: $color-secondary-dark-1;
+                        }
+                    }
+                }
+                &:active {
+                    span {
+                        color: $color-secondary-dark-1;
+                    }
+                }
+            }
         }
 
         &-list {
@@ -101,6 +126,15 @@
             grid-auto-flow: row;
             .review-stats {
                 grid-column: 1/ 3;
+            }
+        }
+
+        @include respond(mobile-small) {
+            &-empty {
+                p {
+                    font-size: 2rem;
+                    max-width: 30rem;
+                }
             }
         }
     }

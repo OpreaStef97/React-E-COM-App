@@ -71,7 +71,7 @@ const Favorites: FC<{ onClick?: () => void }> = props => {
         >
             <Link
                 state={{ from: '/me/favorites' }}
-                className="favorites__main-link nav-links__list-link"
+                className="favorites__main-link"
                 to={auth.isLoggedIn ? '/me/favorites' : '/auth'}
                 aria-label="nav-links-favorites"
                 onClick={() => {

@@ -74,7 +74,16 @@ const MenuSelect: FC<{
                 onBlur={props.onTouch}
                 ref={ref}
             >
-                <div className={`menu-select__select ${props.error ? 'error' : ''}`}>
+                <div
+                    className={`menu-select__select ${props.error ? 'error' : ''}`}
+                    style={
+                        props.onlySelect ||
+                        placeholder === 'Select Item' ||
+                        placeholder === props.placeholder
+                            ? {}
+                            : { backgroundColor: '#e3fdf4', color: '#043223', fontWeight: 500 }
+                    }
+                >
                     {!props.onlySelect && (
                         <button
                             onClick={deleteHandler.bind(null, id)}

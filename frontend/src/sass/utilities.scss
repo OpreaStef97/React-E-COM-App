@@ -63,7 +63,7 @@
     }
 
     @supports (scrollbar-color: red blue) {
-        * {
+        & {
             scrollbar-color: $color2 $color1;
             scrollbar-width: auto;
         }

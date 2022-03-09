@@ -161,6 +161,7 @@ const MePage: FC = props => {
             <section className="me">
                 <div className="me-container">
                     <header className="me-header">
+                        <h1>Manage Account</h1>
                         {srcLoaded && (
                             <img
                                 onClick={showModalHandler}
@@ -169,10 +170,6 @@ const MePage: FC = props => {
                                 alt={`${user.name}' pic`}
                             />
                         )}
-                        <h2>
-                            Hi {`${user && user.name && user.name.split(' ')[0]}`}, here you can
-                            manage your account.
-                        </h2>
                     </header>
                     <MeMenu pathname={pathname} />
                     <div className="me-content" {...handlers}>

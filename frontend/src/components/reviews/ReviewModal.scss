@@ -17,12 +17,16 @@
 .modal-review__header {
     background-color: $color-secondary-dark-2;
     color: $color-secondary-light-2;
+    font-size: 1.6rem;
 }
 
 .modal-review__menu {
     width: 20rem;
     border-radius: 1rem;
-    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.2);
+
+    @include respond(mobile-small) {
+        width: 28rem;
+    }
 }
 
 .modal-review__footer {

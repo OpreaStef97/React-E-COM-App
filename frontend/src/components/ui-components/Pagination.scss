@@ -9,6 +9,10 @@
     background-color: $color-primary-light-1;
     height: 4.5rem;
 
+    @include respond(mobile-small) {
+        height: 5rem;
+    }
+
     &-btn {
         z-index: inherit;
         position: inherit;
@@ -30,6 +34,21 @@
                 span {
                     color: $color-primary-light-1;
                 }
+            }
+        }
+
+        @include respond(mobile-small) {
+            width: 4rem;
+            height: 4rem;
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+    
+            span {
+                color: $color-primary-dark-3;
+                font-size: 1.8rem;
+                font-weight: 500;
             }
         }
     }

@@ -4,7 +4,7 @@ import Offer from '../promoting/Offer';
 import './ProductsSideBar.scss';
 import useWindow from '../../hooks/use-window';
 import TransitionSlider from '../ui-components/TransitionSlider';
-import { DeviceMobile, DeviceTablet, Laptop, ShoppingBagOpen } from 'phosphor-react';
+import { DeviceMobile, DeviceTablet, Laptop, ShoppingBag } from 'phosphor-react';
 
 const ProductsSideBar = (props: { className?: string }) => {
     const { pathname } = useLocation();
@@ -50,7 +50,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                     </Button>
                 </li>
                 <li className="products__side-bar__list--item">
-                    <Button to={'/products'} light link icon={<ShoppingBagOpen />}>
+                    <Button to={'/products'} light link icon={<ShoppingBag />}>
                         Others...
                     </Button>
                 </li>
