@@ -9,10 +9,13 @@ const Notification: FC<{
     message?: string;
     className?: string;
     error?: boolean;
+    warn?: boolean;
+    info?: boolean;
+    timeOnScreen?: number;
     style?: { [k: string]: string };
     onCancel?: () => void;
 }> = props => {
-    const { onCancel, show } = props;
+    const { onCancel, show, timeOnScreen } = props;
     const navigate = useNavigate();
 
     const showHandler = () => {
@@ -25,9 +28,9 @@ const Notification: FC<{
         }
         const timeout = setTimeout(() => {
             onCancel && onCancel();
-        }, 3000);
+        }, timeOnScreen || 3000);
         return () => clearTimeout(timeout);
-    }, [show, onCancel, navigate]);
+    }, [show, onCancel, navigate, timeOnScreen]);
 
     return (
         <CSSTransition
@@ -39,8 +42,8 @@ const Notification: FC<{
         >
             <div
                 className={`notification ${props.error ? 'notification-err' : ''} ${
-                    props.className
-                }`}
+                    props.warn ? 'notification-warn' : ''
+                } ${props.info ? 'notification-info' : ''} ${props.className}`}
                 style={{ ...props.style }}
             >
                 <p className="notification-msg">{props.message}</p>

@@ -80,6 +80,7 @@ const Favorites: FC<{ onClick?: () => void }> = props => {
                     if (!auth.isLoggedIn) {
                         dispatch(
                             uiActions.showNotification({
+                                status: 'warn',
                                 message: 'Please authenticate to see your favorites',
                             })
                         );

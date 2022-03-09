@@ -97,7 +97,7 @@
         border-radius: 1rem;
         background-color: $color-fourth-light-1;
         overflow: hidden;
-        
+
         width: auto;
         img {
             cursor: pointer;
@@ -105,7 +105,7 @@
             height: 14rem;
             width: 14rem;
         }
-        
+
         @include respond(mobile-medium) {
             gap: 2rem;
             flex-wrap: wrap;
@@ -119,15 +119,22 @@
         flex-direction: column;
         gap: 2rem;
         text-align: center;
-        
+
         h4 {
             font-size: 1.5rem;
             font-weight: 500;
         }
-        
+
         span {
             font-size: 1.4rem;
             font-weight: 400;
+        }
+
+        @include respond(mobile-small) {
+            h4 {
+                align-self: center;
+                max-width: 20rem;
+            }
         }
     }
 

@@ -17,7 +17,9 @@ export default function useIntersect<T>(ref?: RefObject<T> | null) {
                 rootMargin: '0px',
             }
         );
-        obs.observe(ref.current as unknown as Element);
+        if (ref.current) {
+            obs.observe(ref.current as unknown as Element);
+        }
         return () => obs.disconnect();
     }, [ref]);
 

@@ -88,13 +88,19 @@ const Products: FC<{ category?: string }> = props => {
     });
 
     const showSwipeHandler = useSwipeable({
-        onSwipedLeft: () => {
-            setShow(true);
-            setShow(false);
+        onSwipedLeft: e => {
+            const { target } = e.event;
+            if (!(target instanceof HTMLSpanElement) && !(target instanceof HTMLLIElement)) {
+                setShow(true);
+                setShow(false);
+            }
         },
-        onSwipedRight: () => {
-            setShow(true);
-            setShow(false);
+        onSwipedRight: e => {
+            const { target } = e.event;
+            if (!(target instanceof HTMLSpanElement) && !(target instanceof HTMLLIElement)) {
+                setShow(true);
+                setShow(false);
+            }
         },
     });
 

@@ -33,15 +33,20 @@ const MenuSelect: FC<{
         setShow(prev => !prev);
     }
 
+    function deleteHandler(id?: string) {
+        onDelete && onDelete(id);
+        setShow(false);
+    }
+
     useEffect(() => {
         onClick && onClick(show);
     }, [onClick, show]);
 
     useEffect(() => {
-        if(props.show) {
-            setShow(false)
+        if (props.show) {
+            setShow(false);
         }
-    },[props.show])
+    }, [props.show]);
 
     useEffect(() => {
         if (clicked) {
@@ -72,7 +77,7 @@ const MenuSelect: FC<{
                 <div className={`menu-select__select ${props.error ? 'error' : ''}`}>
                     {!props.onlySelect && (
                         <button
-                            onClick={onDelete && onDelete.bind(null, id)}
+                            onClick={deleteHandler.bind(null, id)}
                             style={{
                                 display: `${
                                     placeholder === 'Select Item' ||

@@ -20,4 +20,8 @@
     &::-webkit-scrollbar {
         display: none;
     }
+
+    // & > * {
+    //     scroll-snap-align: center !important;
+    // }
 }

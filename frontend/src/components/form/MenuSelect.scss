@@ -14,7 +14,7 @@
     margin-left: 1rem;
 
     @include respond(mobile-small) {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
 }
 
@@ -108,24 +108,6 @@
         &-button:hover &-icon {
             color: $color-tertiary-dark-3;
         }
-
-        @include respond(mobile-small) {
-            min-width: 22rem;
-            height: 4rem;
-
-            &-open {
-                width: 3.5rem;
-            }
-            &-icon {
-                height: 2.6rem;
-                width: 2.6rem;
-            }
-            &-placeholder {
-                p {
-                    font-size: 1.8rem;
-                }
-            }
-        }
     }
 
     &__dropdown {
@@ -205,6 +187,34 @@
             }
         }
     }
+
+    @include respond(mobile-small) {
+        &__select {
+            min-width: 30rem;
+            height: 5rem;
+
+            &-open {
+                width: 4.5rem;
+            }
+            &-icon {
+                height: 2.6rem;
+                width: 2.6rem;
+            }
+            &-placeholder {
+                p {
+                    font-size: 2rem;
+                }
+            }
+        }
+
+        &__dropdown-list--item {
+            min-height: 5rem;
+            span {
+                color: $color-tertiary-dark-3;
+                font-size: 2rem;
+            }
+        }
+    }
 }
 
 .active {
@@ -225,6 +235,12 @@
             animation: hide-scroll 0.3s;
             &--item {
                 opacity: 1;
+            }
+        }
+
+        @include respond(mobile-small) {
+            .menu-select__dropdown-list {
+                max-height: 30rem;
             }
         }
     }

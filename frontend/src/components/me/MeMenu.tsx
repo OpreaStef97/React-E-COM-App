@@ -8,8 +8,8 @@ export default function MeMenu({ pathname }: { pathname: string }) {
             <ul className="me-menu-list">
                 <li className={`me-menu-item ${pathname === '/me' && 'me-menu-item--active'}`}>
                     <Link className={`me-menu-item__link link--info`} to="/me">
-                        <span>Info</span>
                         <Info />
+                        <span>Info</span>
                     </Link>
                 </li>
                 <li
@@ -18,8 +18,8 @@ export default function MeMenu({ pathname }: { pathname: string }) {
                     }`}
                 >
                     <Link className={`me-menu-item__link link--favorites`} to="/me/favorites">
-                        <span>Favorites</span>
                         <Heart />
+                        <span>Favorites</span>
                     </Link>
                 </li>
                 <li
@@ -28,8 +28,8 @@ export default function MeMenu({ pathname }: { pathname: string }) {
                     }`}
                 >
                     <Link className={`me-menu-item__link link--reviews`} to="/me/reviews">
-                        <span>Reviews</span>
                         <Article />
+                        <span>Reviews</span>
                     </Link>
                 </li>
                 <li
@@ -38,8 +38,8 @@ export default function MeMenu({ pathname }: { pathname: string }) {
                     }`}
                 >
                     <Link className={`me-menu-item__link link--purchases`} to="/me/purchases">
-                        <span>Purchases</span>
                         <ShoppingBag />
+                        <span>Purchases</span>
                     </Link>
                 </li>
             </ul>

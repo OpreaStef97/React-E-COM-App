@@ -2,6 +2,7 @@
 @import '../../sass/utilities.scss';
 
 .notification {
+    padding: 1rem 0;
     position: absolute;
     z-index: 1200;
     top: -4rem;
@@ -21,15 +22,31 @@
 
     &-err {
         background-color: $color-tertiary-dark-1;
-        color: $color-tertiary-light-3;
+        .notification-msg {
+            color: $color-tertiary-light-3;
+        }
+    }
+
+    &-warn {
+        background-color: #cd9b1e;
+        .notification-msg {
+            color: #fff;
+        }
+    }
+
+    &-info {
+        background-color: $color-fourth-dark-1;
+        .notification-msg {
+            color: $color-primary-light-1;
+        }
     }
 
     &-close {
         right: 1%;
         cursor: pointer;
         position: absolute;
-        height: 2.5rem;
-        width: 2.5rem;
+        height: 3rem;
+        width: 3rem;
         color: $color-secondary-light-2;
     }
 

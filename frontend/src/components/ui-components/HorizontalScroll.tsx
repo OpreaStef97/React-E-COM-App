@@ -10,8 +10,9 @@ const HorizontalScroll: FC<{ handlers?: SwipeableHandlers; overflow?: boolean }>
                 style={
                     props.overflow
                         ? {
-                              paddingBottom: '25rem',
-                              marginBottom: '-25rem',
+                              paddingBottom: '30rem',
+                              marginBottom: '-30rem',
+                            //   overflowX: 'hidden',
                           }
                         : {}
                 }

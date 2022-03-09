@@ -6,6 +6,7 @@ type UINotification = {
     notification: {
         status: string | null;
         message: string | null;
+        timeOnScreen?: number;
     };
     reset: number;
     compReset: number;
@@ -16,6 +17,7 @@ type Action = {
     delay?: number;
     message: string | null;
     status: string | null;
+    timeOnScreen?: number;
 };
 
 export const delayedNotification = createAsyncThunk('sleep', async (action: Action) => {
@@ -57,14 +59,15 @@ const uiSlice = createSlice({
             state.notification = {
                 status: action.payload.status,
                 message: action.payload.message,
+                timeOnScreen: action.payload.timeOnScreen,
             };
         },
         setSaveState(state, action) {
             state.savedState = action.payload;
         },
         deleteSavedState(state) {
-            state.savedState = undefined
-        }
+            state.savedState = undefined;
+        },
     },
     extraReducers: builder => {
         builder.addCase(delayedNotification.fulfilled, (state, action) => {

@@ -89,7 +89,7 @@ const Reviews: FC<{
                 delayedNotification({
                     delay: 300,
                     message: 'Please authenticate before adding a review',
-                    status: 'error',
+                    status: 'warn',
                 })
             );
         }

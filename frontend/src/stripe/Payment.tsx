@@ -10,6 +10,7 @@ import Button from '../components/ui-components/Button';
 import ErrorModal from '../components/ui-components/ErrorModal';
 import { cartActions } from '../store/cart-slice';
 import { useTitle } from '../hooks/use-title';
+import { uiActions } from '../store/ui-slice';
 
 const stripePromise = loadStripe(
     'pk_test_51KUDgVGg7aAflOuXCkyFuW66rAxxdfe339dVnAOimJ2JYjr7E7LQkA1omy1edRYzbXoJE342Fv76OKXifDm91yeR00C99LGi7b'
@@ -25,6 +26,17 @@ const Payment: FC = () => {
     const dispatch = useDispatch();
 
     const { error, clearError, sendRequest } = useFetch();
+
+    useEffect(() => {
+        dispatch(
+            uiActions.showNotification({
+                status: 'info',
+                message:
+                    'Please use the following card number: 4242 4242 4242 4242 to test payments functionality',
+                timeOnScreen: 10000,
+            })
+        );
+    }, [dispatch]);
 
     useEffect(() => {
         if (!csrfToken) {

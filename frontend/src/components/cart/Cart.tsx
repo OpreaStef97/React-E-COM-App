@@ -1,10 +1,10 @@
 import { MinusCircle, PlusCircle, ShoppingCart, SignIn, XCircle } from 'phosphor-react';
-import React from 'react';
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTitle } from '../../hooks/use-title';
 import { cartActions } from '../../store/cart-slice';
+import { uiActions } from '../../store/ui-slice';
 import Button from '../ui-components/Button';
 import './Cart.scss';
 
@@ -26,6 +26,19 @@ const Cart: FC = () => {
 
     const deleteItemHandler = (id: string) => {
         dispatch(cartActions.deleteItemFromCart(id));
+    };
+
+    const navHandler = () => {
+        if (!auth.isLoggedIn) {
+            dispatch(
+                uiActions.showNotification({
+                    status: 'warn',
+                    message: 'Please authenticate to continue',
+                })
+            );
+            return navigate('/auth', { state: { from: pathname } });
+        }
+        return navigate('/payment');
     };
 
     return (
@@ -87,10 +100,8 @@ const Cart: FC = () => {
                             <p>Total amount: {`$${(totalAmount / 100).toFixed(2)}`}</p>
                             <Button
                                 icon={<SignIn className="cart__footer-icon" />}
-                                link
-                                to={auth.isLoggedIn ? '/payment' : '/auth'}
                                 inverse
-                                state={{ from: pathname }}
+                                onClick={navHandler}
                             >
                                 Checkout
                             </Button>
