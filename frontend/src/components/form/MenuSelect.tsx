@@ -1,5 +1,5 @@
 import { CaretDown, XCircle } from 'phosphor-react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
 import useClickOutside from '../../hooks/use-clicks-outside';
 import './MenuSelect.scss';
@@ -28,12 +28,13 @@ const MenuSelect: FC<{
     const { clicked, clearClick } = useClickOutside(ref);
     const { options, onSelect, onDelete, id, uniqueSelect, onClick } = props;
 
-    function showHandler(e?: React.MouseEvent) {
+    function showHandler(e: React.MouseEvent | undefined) {
         e?.preventDefault();
         setShow(prev => !prev);
     }
 
-    function deleteHandler(id?: string) {
+    function deleteHandler(this: React.MouseEvent | undefined, id?: string) {
+        this?.preventDefault();
         onDelete && onDelete(id);
         setShow(false);
     }
@@ -56,14 +57,20 @@ const MenuSelect: FC<{
         clearClick();
     }, [clicked, clearClick, onClick]);
 
-    const placeholder =
-        options.options
-            .filter((_, idx: number) => options.selected[idx] === true)
-            .toString()
-            .split(',')
-            .join(', ') ||
-        props.placeholder ||
-        'Select Item';
+    const placeholder = useCallback(() => {
+        if (!options) {
+            return 'Select Item';
+        }
+        return (
+            options.options
+                .filter((_, idx: number) => options.selected[idx] === true)
+                .toString()
+                .split(',')
+                .join(', ') ||
+            props.placeholder ||
+            'Select Item'
+        );
+    }, [options, props.placeholder])();
 
     return (
         <div className="menu-select-wrapper">
@@ -86,7 +93,7 @@ const MenuSelect: FC<{
                 >
                     {!props.onlySelect && (
                         <button
-                            onClick={deleteHandler.bind(null, id)}
+                            onClick={deleteHandler.bind(this, id)}
                             style={{
                                 display: `${
                                     placeholder === 'Select Item' ||

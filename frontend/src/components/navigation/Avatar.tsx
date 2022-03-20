@@ -35,7 +35,7 @@ const Avatar: FC<{
                 <span>{props.name?.toUpperCase()}</span>
                 {loadedSrc && <img src={loadedSrc} alt={props.name} />}
             </Link>
-            <div style={{ position: 'absolute', height: '2rem', width: '100%' }}></div>
+            <div style={{ position: 'absolute', height: '0.5rem', width: '100%' }}></div>
             <Dropdown
                 allFalse={showDropdown}
                 show={width > 1100 && showDropdown}

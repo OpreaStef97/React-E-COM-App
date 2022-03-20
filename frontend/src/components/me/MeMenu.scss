@@ -52,7 +52,7 @@
 
             @include respond(mobile-medium) {
                 &:link,
-                &:active {
+                &:visited {
                     gap: 0rem;
                     flex-direction: column;
                     span {
@@ -109,13 +109,27 @@
                 border-top-left-radius: 1rem;
                 border-top-right-radius: 1rem;
                 z-index: 30;
-                font-size: 2.2rem;
+                span {
+                    font-size: 2.4rem;
+                }
                 svg {
-                    font-size: 3rem;
+                    font-size: 3.5rem;
                 }
                 height: 7rem;
                 box-shadow: 0rem 0rem 1rem rgba($color-primary-dark-3, 0.3);
-                // transform: scale(1.1);
+            }
+            @include respond(mobile-medium) {
+                &:link,
+                &:visited {
+                    gap: 0rem;
+                    flex-direction: column;
+                    span {
+                        font-size: 1.8rem;
+                    }
+                    svg {
+                        font-size: 3rem;
+                    }
+                }
             }
         }
 

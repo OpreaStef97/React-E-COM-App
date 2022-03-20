@@ -13,7 +13,7 @@ const purchaseSchema = new mongoose.Schema({
                 quantity: {
                     type: Number,
                     min: [1, "Can't process a quantity smaller than 1"],
-                    max: [10, "You exceed the maximum quantity for this product!"],
+                    max: [10, 'You exceed the maximum quantity for this product!'],
                     required: true,
                 },
             },
@@ -54,7 +54,7 @@ purchaseSchema.pre(/^find/, function (next) {
         select: 'name _id email',
     }).populate({
         path: 'products.product',
-        select: 'name price _id images',
+        select: 'name price _id images slug',
     });
     next();
 });

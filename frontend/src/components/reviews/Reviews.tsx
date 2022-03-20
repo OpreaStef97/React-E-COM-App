@@ -44,7 +44,7 @@ const Reviews: FC<{
     }, [setHandler]);
 
     useEffect(() => {
-        if (!productId || !auth.user.id) {
+        if (!productId) {
             return;
         }
         sendRequest({
@@ -58,7 +58,7 @@ const Reviews: FC<{
                 setHasMore(data.docs.length === 4);
             })
             .catch(setHasMore.bind(null, false));
-    }, [sendRequest, productId, auth.user.id, page, props.sorting]);
+    }, [sendRequest, productId, page, props.sorting]);
 
     useEffect(() => {
         if (!selectState || !selectState.rating) {
@@ -115,15 +115,13 @@ const Reviews: FC<{
                 <div className="reviews-content">
                     <div className="reviews-content-header">
                         <h3>Reviews</h3>
-                        {(reviews.length >= 4 || isLoading) && props.selectMenu}
-                        {(reviews.length > 0 || isLoading) && (
-                            <Button
-                                onClick={addReviewHandler}
-                                className="reviews-content-header--button"
-                            >
-                                {userReview ? 'Modify review' : 'Add a review'}
-                            </Button>
-                        )}
+                        {props.selectMenu}
+                        <Button
+                            onClick={addReviewHandler}
+                            className="reviews-content-header--button"
+                        >
+                            {userReview ? 'Modify review' : 'Add a review'}
+                        </Button>
                     </div>
                     <ReviewStats length={length || 0} rating={props.rating} />
                     <ul
@@ -167,16 +165,6 @@ const Reviews: FC<{
                                     </li>
                                 );
                             })}
-                        {/* {hasMore && (
-                            <li className="reviews-content-empty">
-                                <Button
-                                    onClick={() => hasMore && setPage(prev => ++prev)}
-                                    className="reviews-content-header--button"
-                                >
-                                    Load More
-                                </Button>
-                            </li>
-                        )} */}
                         {isLoading && (
                             <li className="reviews-content-empty">
                                 <LoadingSpinner />

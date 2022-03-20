@@ -26,17 +26,17 @@ const SlideShowMenu = React.forwardRef((props, ref) => {
             </div>
             <div className="slideshow-menu__container">
                 <TransitionSlider autoFlow dots flowTo="right" delay={5000} transitionMs={300}>
-                    <SlideImage onClick={() => navigate('/products/laptops')} src={promoImages[0]}>
+                    <SlideImage hover  onClick={() => navigate('/products/laptops')} src={promoImages[0]}>
                         <div className="slideshow-menu-overlay">
-                            <p>See our latest offers for laptops</p>
+                            <p>See our latest offer for laptops</p>
                         </div>
                     </SlideImage>
-                    <SlideImage onClick={() => navigate('/products/tablets')} src={promoImages[1]}>
+                    <SlideImage hover onClick={() => navigate('/products/tablets')} src={promoImages[1]}>
                         <div className="slideshow-menu-overlay">
                             <p>Choose a tablet from our wide range</p>
                         </div>
                     </SlideImage>
-                    <SlideImage onClick={() => navigate('/products/phones')} src={promoImages[2]}>
+                    <SlideImage hover onClick={() => navigate('/products/phones')} src={promoImages[2]}>
                         <div className="slideshow-menu-overlay">
                             <p>Get the latest phones</p>
                         </div>

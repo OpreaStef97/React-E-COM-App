@@ -69,7 +69,6 @@ const CartButton: FC<{ className?: string }> = props => {
     const { items } = cart;
     const [width] = useWindow();
     const [showDropdown, setShowDropdown] = useState(false);
-    const navigate = useNavigate();
 
     const closeHandler = useCallback(() => {
         setShowDropdown(false);
@@ -94,14 +93,13 @@ const CartButton: FC<{ className?: string }> = props => {
             </Button>
             {cart.totalQuantity > 0 && (
                 <span
-                    onClick={() => navigate('/cart')}
                     key={cart.totalQuantity}
                     className="cart-counter"
                 >
                     {cart.totalQuantity}
                 </span>
             )}
-            <div style={{ position: 'absolute', height: '2rem', width: '100%' }}></div>
+            <div style={{ position: 'absolute', height: '0.5rem', width: '100%' }}></div>
             {width > 1100 && (
                 <Dropdown
                     allFalse={showDropdown}

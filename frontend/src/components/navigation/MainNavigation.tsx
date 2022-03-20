@@ -23,7 +23,7 @@ const MainNav = React.forwardRef((props, ref) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { ui } = useSelector((state: any) => state);
+    const { ui, auth } = useSelector((state: any) => state);
 
     const [width] = useWindow();
     const intersecting = useIntersect(ref as RefObject<unknown>);
@@ -56,7 +56,7 @@ const MainNav = React.forwardRef((props, ref) => {
                 <nav className="main-navigation__drawer-nav">
                     <Search className="main-navigation__search-bar" />
                     <NavLinks drawer onClick={showDrawerHandler} />
-                    <LogoutButton onClick={showDrawerHandler} />
+                    {auth.isLoggedIn && <LogoutButton onClick={showDrawerHandler} />}
                 </nav>
             </SideDrawer>
 

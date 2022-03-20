@@ -74,18 +74,14 @@ const ProductPage: FC = props => {
                 userReview={userReview}
                 sorting={sorting}
                 selectMenu={
-                    Object.keys(selectState).length > 0 ? (
-                        <MenuSelect
-                            id={'sort'}
-                            placeholder={'Sort..'}
-                            options={selectState.sort}
-                            uniqueSelect
-                            onSelect={selectHandler}
-                            onDelete={deleteHandler}
-                        />
-                    ) : (
-                        <></>
-                    )
+                    <MenuSelect
+                        id={'sort'}
+                        placeholder={'Sort..'}
+                        options={selectState && selectState.sort}
+                        uniqueSelect
+                        onSelect={selectHandler}
+                        onDelete={deleteHandler}
+                    />
                 }
             />
             <SectionTitle>Other similar items:</SectionTitle>

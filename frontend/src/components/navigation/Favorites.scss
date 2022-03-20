@@ -82,6 +82,7 @@
     &__counter {
         position: absolute;
         cursor: pointer;
+        pointer-events: none;
         display: inline-flex;
         justify-content: center;
         align-items: center;
@@ -143,7 +144,7 @@
 
         @supports (scrollbar-color: red blue) {
             & {
-                scrollbar-color: $color-tertiary-dark-1 $color-tertiary-light-3;
+                scrollbar-color: $color-tertiary $color-tertiary-light-3;
                 scrollbar-width: auto;
             }
         }

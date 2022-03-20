@@ -181,7 +181,7 @@
             }
 
             @supports (scrollbar-color: red blue) {
-                * {
+                & {
                     scrollbar-color: $color-primary-dark-1 $color-primary-light-3;
                     scrollbar-width: auto;
                 }

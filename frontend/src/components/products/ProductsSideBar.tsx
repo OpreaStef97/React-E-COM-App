@@ -92,7 +92,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                                 `/product/samsung-galaxy-s21-ultra-5g-12gb-ram/620a659fb40c21b6c1ec071a`
                             )
                         }
-                        style={{ width: '60rem' }}
+                        style={{ width: 'clamp(40rem, 50vw, 60rem)' }}
                         src={'../../images/S21-Ultra-promo-image.jpeg'}
                         content={'S21 Ultra for just:'}
                         price={899}
@@ -104,7 +104,7 @@ const ProductsSideBar = (props: { className?: string }) => {
                                 `/product/iphone-13-pro-max-5g-6gb-ram/620a659fb40c21b6c1ec0721`
                             )
                         }
-                        style={{ width: '60rem' }}
+                        style={{ width: 'clamp(40rem, 50vw, 60rem)' }}
                         src={'../../images/iphone13Pro-promo-image.jpeg'}
                         content={'iPhone 13 Pro for just:'}
                         price={1099}

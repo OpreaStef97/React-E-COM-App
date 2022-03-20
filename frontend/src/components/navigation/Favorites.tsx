@@ -47,7 +47,6 @@ const FavoritesItem = (props: { favorite: any; onClick?: () => void; onClose?: (
 
 const Favorites: FC<{ onClick?: () => void }> = props => {
     const [showDropdown, setShowDropdown] = useState(false);
-    const navigate = useNavigate();
     const { favorites, auth } = useSelector((state: any) => state);
 
     const { items } = favorites;
@@ -90,10 +89,9 @@ const Favorites: FC<{ onClick?: () => void }> = props => {
                 <span>FAVORITES</span>
                 <Heart />
             </Link>
-            <div style={{ position: 'absolute', height: '2rem', width: '100%' }}></div>
+            <div style={{ position: 'absolute', height: '0.5rem', width: '100%' }}></div>
             {items.length > 0 && (
                 <span
-                    onClick={() => navigate('/')}
                     key={items.length}
                     className="favorites__counter"
                 >

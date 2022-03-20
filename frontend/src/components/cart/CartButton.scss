@@ -8,6 +8,7 @@
 .cart-counter {
     position: absolute;
     cursor: pointer;
+    pointer-events: none;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -103,7 +104,7 @@
             background: $color-primary-dark-2;
         }
         @supports (scrollbar-color: red blue) {
-            * {
+            & {
                 scrollbar-color: $color-primary-dark-1 $color-primary-light-3;
                 scrollbar-width: auto;
             }

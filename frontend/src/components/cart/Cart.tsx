@@ -49,7 +49,11 @@ const Cart: FC = () => {
                         <h2>Your CART</h2>
                         <ShoppingCart />
                     </div>
-                    {totalQuantity > 0 && <p>{totalQuantity} Items</p>}
+                    {totalQuantity > 0 && (
+                        <p>
+                            {totalQuantity} {totalQuantity === 1 ? 'Item' : 'Items'}
+                        </p>
+                    )}
                 </header>
                 <ul className="cart__content">
                     {items.length > 0 &&
