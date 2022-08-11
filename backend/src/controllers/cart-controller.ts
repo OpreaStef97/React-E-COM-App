@@ -15,13 +15,11 @@ export const cartProcessing = (products: any) => {
         mapProducts.set(item.product, mapProducts.get(item.product) + item.quantity);
     }
 
-    return Array.from(mapProducts).map(([product, quantity]) => {
-        return {
-            product,
-            quantity,
-        };
-    })
-}
+    return Array.from(mapProducts).map(([product, quantity]) => ({
+        product,
+        quantity,
+    }));
+};
 
 export const putCart = catchAsync(async function (req, res) {
     let cart = await Cart.findOne({ user: req.user.id });

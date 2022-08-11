@@ -8,7 +8,6 @@ import createCookieToken from '../utils/create-cookie-token';
 export const signUp = catchAsync(async (req, res) => {
     const { name, email, password, passwordConfirm } = req.body;
 
-    console.log(req.body);
     const newUser = new User({
         name,
         email,

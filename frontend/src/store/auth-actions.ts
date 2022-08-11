@@ -1,5 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
 import { authActions } from './auth-slice';
+import { uiActions } from './ui-slice';
 
 export const setCSRFToken = () => {
     return async (dispatch: Dispatch) => {
@@ -16,7 +17,12 @@ export const setCSRFToken = () => {
 
             dispatch(authActions.setCSRF(data.csrfToken));
         } catch (err) {
-            console.error(err);
+            dispatch(
+                uiActions.showNotification({
+                    status: 'error',
+                    message: 'Something went wrong please try again later',
+                })
+            );
         }
     };
 };
@@ -34,7 +40,12 @@ export const logout = () => {
 
             dispatch(authActions.loggedOut());
         } catch (err) {
-            console.error(err);
+            dispatch(
+                uiActions.showNotification({
+                    status: 'error',
+                    message: 'Something went wrong please try again later',
+                })
+            );
         }
     };
 };

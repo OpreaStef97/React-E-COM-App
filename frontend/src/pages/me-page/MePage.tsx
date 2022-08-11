@@ -161,7 +161,6 @@ const MePage: FC = props => {
             <section className="me">
                 <div className="me-container">
                     <header className="me-header">
-                        <h1>Manage Account</h1>
                         {srcLoaded && (
                             <img
                                 onClick={showModalHandler}
@@ -170,6 +169,7 @@ const MePage: FC = props => {
                                 alt={`${user.name}' pic`}
                             />
                         )}
+                        <h1>Manage Account</h1>
                     </header>
                     <MeMenu pathname={pathname} />
                     <div className="me-content" {...handlers}>
