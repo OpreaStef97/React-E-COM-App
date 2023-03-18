@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { SelectState } from './use-select';
-import useFetch from './use-fetch';
+import { useEffect, useState } from "react";
+import { useFetch } from "./use-fetch";
+import { SelectState } from "./use-select";
 
-const useSetOptions = (category: string) => {
+export const useSetOptions = (category: string) => {
     const { sendRequest } = useFetch();
     const [values, setValues] = useState<any>([]);
     const [options, setOptions] = useState<SelectState>({});
@@ -11,11 +11,11 @@ const useSetOptions = (category: string) => {
         sendRequest({
             url: `${
                 process.env.REACT_APP_API_URL
-            }/products/values?fields=${'brand,default.RAM,default.storage,type'}${
-                category === 'All' ? '' : `&category=${category}`
+            }/products/values?fields=${"brand,default.RAM,default.storage,type"}${
+                category === "All" ? "" : `&category=${category}`
             }`,
         })
-            .then(data => {
+            .then((data) => {
                 setValues(data[category]);
             })
             .catch(console.error);
@@ -25,18 +25,18 @@ const useSetOptions = (category: string) => {
         if (values.length > 0) {
             const options = {
                 sort: {
-                    options: ['Price: Low', 'Price: High', 'No. of Reviews', 'Best Rating'],
+                    options: ["Price: Low", "Price: High", "No. of Reviews", "Best Rating"],
                     selected: [false, false, false, false],
                 },
                 show: {
-                    options: ['5/page', '10/page', '20/page', '30/page'],
+                    options: ["5/page", "10/page", "20/page", "30/page"],
                     selected: [false, true, false, false],
                 },
                 ...Object.fromEntries(
-                    values.flatMap((val: any) => {
-                        return Object.keys(val).map(key => {
+                    values.flatMap((val: any) =>
+                        Object.keys(val).map((key) => {
                             let options = [...val[key]];
-                            if (key === 'RAM') {
+                            if (key === "RAM") {
                                 options.sort((a: string, b: string) => {
                                     const n1 = +a.slice(0, -2);
                                     const n2 = +b.slice(0, -2);
@@ -44,9 +44,9 @@ const useSetOptions = (category: string) => {
                                 });
                             }
 
-                            if (key === 'storage') {
-                                const GB = options.filter(option => option.slice(-2) === 'GB');
-                                const TB = options.filter(option => option.slice(-2) === 'TB');
+                            if (key === "storage") {
+                                const GB = options.filter((option) => option.slice(-2) === "GB");
+                                const TB = options.filter((option) => option.slice(-2) === "TB");
 
                                 GB.sort((a: string, b: string) => {
                                     const n1 = +a.slice(0, -2);
@@ -68,8 +68,8 @@ const useSetOptions = (category: string) => {
                                     selected: val[key].map(() => false),
                                 },
                             ];
-                        });
-                    })
+                        })
+                    )
                 ),
             };
             setOptions(options);

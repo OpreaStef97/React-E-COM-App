@@ -1,0 +1,78 @@
+@import '../../../sass/utilities.scss';
+
+.auth {
+    height: clamp(65rem, 70vh, 80vh);
+    margin-bottom: 10rem;
+    transition: height 0.3s;
+
+    &-container {
+        margin: 0 auto;
+        margin-top: 10rem;
+        width: clamp(35rem, 30vw, 50vw);
+        height: auto;
+        background-color: $color-primary-light-1;
+        box-shadow: 0 0 1rem rgba($color-primary-dark-3, 0.2);
+
+        border-radius: 1rem;
+        display: flex;
+        padding: 2rem;
+        gap: 2rem;
+        flex-direction: column;
+        align-items: center;
+
+        h2 {
+            font-size: 3rem;
+            color: $color-primary-dark-1;
+        }
+    }
+    &-paragraph {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: $color-secondary-dark;
+    }
+
+    &-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+
+        &--load {
+            width: 3rem;
+            height: 3rem;
+            color: $color-primary-light-1;
+            animation: lds-dual-ring 0.4s infinite;
+        }
+    }
+
+    &-form &-btn {
+        height: 10rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @include hover-supported() {
+            button:hover {
+                .auth-form--load {
+                    color: $color-primary-dark-3;
+                }
+            }
+        }
+        button:active {
+            .auth-form--load {
+                color: $color-primary-dark-3;
+            }
+        }
+    }
+
+    &-modal-header {
+        background-color: $color-secondary-dark;
+    }
+
+    &-modal-msg {
+        font-size: 2rem;
+        color: $color-secondary-dark;
+    }
+}

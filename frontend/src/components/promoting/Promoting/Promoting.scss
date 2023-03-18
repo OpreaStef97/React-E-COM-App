@@ -1,0 +1,76 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.promoting {
+    height: 80vh;
+    background-color: $color-primary-light-1;
+    margin-bottom: 15rem;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
+
+    @media (max-width: 52.5em) {
+        height: 50vh;
+    }
+
+    &-description {
+        color: $color-primary-light-2;
+
+        &__over {
+            top: 0;
+            left: 0;
+            padding-right: 25rem;
+            padding-left: 6rem;
+            position: absolute;
+
+            display: flex;
+            background-image: linear-gradient(
+                to right,
+                rgba($color-primary-dark-2, 0.9) 0%,
+                rgba($color-primary-dark-2, 0.8) 30%,
+                rgba($color-primary-dark-2, 0.4) 100%
+            );
+            justify-content: center;
+            gap: 2rem;
+            align-items: center;
+            flex-direction: column;
+
+            z-index: 1000;
+            height: 100%;
+            width: 60%;
+            clip-path: polygon(0 0, 100% 0, 60% 100%, 0% 100%);
+
+            h2 {
+                display: inline-block;
+                font-weight: 400;
+                display: inline-block;
+                font-size: 3rem;
+            }
+
+            @include respond(mobile-medium) {
+                padding: 1rem;
+                gap: 1rem;
+                justify-content: start;
+                height: 50%;
+                width: 100%;
+
+                clip-path: polygon(0 0, 100% 0%, 100% 68%, 0 90%);
+                h2 {
+                    font-size: 2.5rem;
+                }
+            }
+        }
+    }
+
+    &-image__container {
+        flex-basis: 100%;
+        flex-shrink: 0;
+        display: flex;
+        height: 100%;
+
+        & > * {
+            width: 100%;
+        }
+    }
+}

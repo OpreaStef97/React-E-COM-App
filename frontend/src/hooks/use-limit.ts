@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
-import { SelectState } from './use-select';
+import { useEffect, useState } from "react";
+import { SelectState } from "./use-select";
 
-export default function useLimit(selectState: SelectState) {
-    const [limit, setLimit] = useState('');
+export const useLimit = (selectState: SelectState) => {
+    const [limit, setLimit] = useState("");
 
     useEffect(() => {
-        if (!selectState || !selectState['show']) {
+        if (!selectState || !selectState["show"]) {
             return;
         }
-        const { selected, options } = selectState['show'];
+        const { selected, options } = selectState["show"];
         const idx = selected.findIndex((val: boolean) => val === true);
         if (idx !== -1) {
-            setLimit(`${options[idx].split('/')[0]}`);
+            setLimit(`${options[idx].split("/")[0]}`);
         }
 
-        return () => setLimit('');
+        return () => setLimit("");
     }, [selectState]);
 
     return limit;
-}
+};

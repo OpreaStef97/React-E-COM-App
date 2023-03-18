@@ -1,4 +1,4 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer } from "react";
 
 export type SelectState = {
     [key: string]: {
@@ -7,29 +7,32 @@ export type SelectState = {
     };
 };
 
-const selectReducer = (
-    state: SelectState,
-    action: {
-        type: string;
-        [key: string]: any;
-    }
-): SelectState => {
+type SelectAction = {
+    type: string;
+    id?: string;
+    value?: string;
+    uniqueSelect?: boolean;
+    onlySelect?: boolean;
+    payload?: SelectState;
+};
+
+const selectReducer = (state: SelectState, action: SelectAction): SelectState => {
     switch (action.type) {
-        case 'SET_DATA': {
+        case "SET_DATA": {
             return {
                 ...action.payload,
             };
         }
-        case 'SELECT': {
+        case "SELECT": {
             // find to which menu belongs the select event
-            const idx = state[action.id].options.findIndex((value: any) => action.value === value);
+            const idx = state[action.id!].options.findIndex((value: any) => action.value === value);
 
             // if the select-menu has the onlySelect prop toggle between selected items
             if (action.onlySelect) {
-                state[action.id].selected[idx] = true;
+                state[action.id!].selected[idx] = true;
 
-                for (let i = 0; i < state[action.id].selected.length; ++i) {
-                    if (idx !== i) state[action.id].selected[i] = false;
+                for (let i = 0; i < state[action.id!].selected.length; ++i) {
+                    if (idx !== i) state[action.id!].selected[i] = false;
                 }
                 return {
                     ...state,
@@ -37,43 +40,43 @@ const selectReducer = (
             }
 
             // update the state array for the given id
-            state[action.id].selected[idx] = !state[action.id].selected[idx];
+            state[action.id!].selected[idx] = !state[action.id!].selected[idx];
 
             // if the select-menu has the uniqueSelect prop cancel other selected items
             if (action.uniqueSelect) {
-                const deleteSelected = state[action.id].selected;
+                const deleteSelected = state[action.id!].selected;
                 for (let i = 0; i < deleteSelected.length; ++i) {
                     if (idx !== i) deleteSelected[i] = false;
                 }
-                state[action.id].selected = deleteSelected;
+                state[action.id!].selected = deleteSelected;
             }
             return { ...state };
         }
-        case 'DELETE': {
-            const deleteSelected = state[action.id].selected;
+        case "DELETE": {
+            const deleteSelected = state[action.id!].selected;
             for (let i = 0; i < deleteSelected.length; ++i) {
                 deleteSelected[i] = false;
             }
             return {
                 ...state,
-                [action.id]: {
-                    ...state[action.id],
+                [action.id!]: {
+                    ...state[action.id!],
                     selected: deleteSelected,
                 },
             };
         }
         default:
-            return {};
+            return state;
     }
 };
 
-export default function useSelect(initialState?: SelectState) {
+export const useSelect = (initialState?: SelectState) => {
     const [selectState, dispatch] = useReducer(selectReducer, initialState || {});
 
     const setHandler = useCallback(
         (options: any) =>
             dispatch({
-                type: 'SET_DATA',
+                type: "SET_DATA",
                 payload: options,
             }),
         []
@@ -82,7 +85,7 @@ export default function useSelect(initialState?: SelectState) {
     const selectHandler = useCallback(
         (id: string, value: string, uniqueSelect: boolean, onlySelect: boolean) => {
             dispatch({
-                type: 'SELECT',
+                type: "SELECT",
                 uniqueSelect,
                 onlySelect,
                 value,
@@ -93,7 +96,7 @@ export default function useSelect(initialState?: SelectState) {
     );
     const deleteHandler = useCallback((id?: string) => {
         dispatch({
-            type: 'DELETE',
+            type: "DELETE",
             id,
         });
     }, []);
@@ -104,4 +107,4 @@ export default function useSelect(initialState?: SelectState) {
         selectHandler,
         deleteHandler,
     };
-}
+};

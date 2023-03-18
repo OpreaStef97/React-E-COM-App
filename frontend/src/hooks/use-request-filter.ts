@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
-import { SelectState } from './use-select';
+import { useEffect, useState } from "react";
+import { SelectState } from "./use-select";
 
-export default function useRequestFilter(selectState: SelectState) {
-    const [filter, setFilter] = useState('');
+export const useRequestFilter = (selectState: SelectState) => {
+    const [filter, setFilter] = useState("");
 
     useEffect(() => {
         if (!selectState) {
             return;
         }
-        let filterString = '';
+        let filterString = "";
         let selectObj: SelectState = { ...selectState };
-        delete selectObj['sort'];
-        delete selectObj['show'];
-        Object.keys(selectObj).forEach(key => {
+        delete selectObj["sort"];
+        delete selectObj["show"];
+        Object.keys(selectObj).forEach((key) => {
             const { selected, options } = selectObj[key];
             selected.forEach((val, i) => {
                 if (val === true) {
                     filterString += `&${
-                        key === 'RAM' || key === 'storage' ? `default[${key}]` : `${key}`
+                        key === "RAM" || key === "storage" ? `default[${key}]` : `${key}`
                     }=${options[i]}`;
                 }
             });
@@ -26,4 +26,4 @@ export default function useRequestFilter(selectState: SelectState) {
     }, [selectState]);
 
     return filter;
-}
+};

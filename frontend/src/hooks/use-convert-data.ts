@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-export default function useConvertData() {
+export const useConvertData = () => {
     const convertData = useCallback(
         (products: any) =>
             products.map((product: any) => {
@@ -22,4 +22,4 @@ export default function useConvertData() {
     );
 
     return convertData;
-}
+};

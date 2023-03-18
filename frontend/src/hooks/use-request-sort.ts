@@ -1,31 +1,31 @@
-import { useEffect, useState } from 'react';
-import { SelectState } from './use-select';
+import { useEffect, useState } from "react";
+import { SelectState } from "./use-select";
 
-export default function useRequestSort(selectState: SelectState) {
+export const useRequestSort = (selectState: SelectState) => {
     const [sorting, setSorting] = useState<string>();
     useEffect(() => {
-        if (!selectState || !selectState['sort']) {
+        if (!selectState || !selectState["sort"]) {
             return;
         }
-        const { selected, options } = selectState['sort'];
+        const { selected, options } = selectState["sort"];
         const idx = selected.findIndex((val: boolean) => val === true);
         if (idx !== -1) {
             switch (options[idx]) {
-                case 'Price: Low':
-                    setSorting('price');
+                case "Price: Low":
+                    setSorting("price");
                     break;
-                case 'Price: High':
-                    setSorting('-price');
+                case "Price: High":
+                    setSorting("-price");
                     break;
-                case 'No. of Reviews':
-                    setSorting('-ratingsQuantity');
+                case "No. of Reviews":
+                    setSorting("-ratingsQuantity");
                     break;
-                case 'Best Rating':
-                    setSorting('-ratingsAverage');
+                case "Best Rating":
+                    setSorting("-ratingsAverage");
                     break;
             }
-        } else setSorting('');
+        } else setSorting("");
     }, [selectState]);
 
     return sorting;
-}
+};

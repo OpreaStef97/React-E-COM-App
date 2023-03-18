@@ -1,0 +1,47 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.dropdown {
+    &__container {
+        top: 100%;
+        position: absolute;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        left: 0%;
+        text-align: start;
+        background-color: #fff;
+        width: 100%;
+        z-index: 1500;
+        overflow: hidden;
+        box-shadow: 0 1rem 2rem rgba($color-primary-dark-3, 0.15);
+
+        @include respond(mobile-medium) {
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        &-item {
+            opacity: 0;
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            transition: opacity 0.4s ease-in;
+
+            & > * {
+                width: 80%;
+            }
+
+            @include respond(mobile-medium) {
+                align-self: center;
+                width: 100%;
+            }
+        }
+    }
+}
+.dropdown__container-active {
+    .dropdown__container-item {
+        opacity: 1;
+    }
+}

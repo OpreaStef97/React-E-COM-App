@@ -1,0 +1,71 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.pagination {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: $color-primary-light-1;
+    height: 4.5rem;
+
+    @include respond(mobile-small) {
+        height: 5rem;
+    }
+
+    &-btn {
+        z-index: inherit;
+        position: inherit;
+        width: 3rem;
+        height: 3rem;
+        svg {
+            width: 1.6rem;
+            height: 1.6rem;
+        }
+
+        span {
+            color: $color-primary-dark-3;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        @include hover-supported() {
+            &:hover {
+                span {
+                    color: $color-primary-light-1;
+                }
+            }
+        }
+
+        @include respond(mobile-small) {
+            width: 4rem;
+            height: 4rem;
+            svg {
+                width: 2rem;
+                height: 2rem;
+            }
+    
+            span {
+                color: $color-primary-dark-3;
+                font-size: 1.8rem;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .active {
+        box-shadow: 0 0rem 1.5rem rgba($color-tertiary-dark-1, 30%);
+        background-color: $color-tertiary;
+        box-shadow: 0 0 1rem rgba($color-tertiary-dark-1, 30%);
+
+        span {
+            color: $color-primary-light-1;
+        }
+    }
+
+    .dots:hover {
+        box-shadow: 0 0rem 1rem rgba($color-primary-dark-3, 20%);
+        background-color: transparent;
+        cursor: default;
+    }
+}

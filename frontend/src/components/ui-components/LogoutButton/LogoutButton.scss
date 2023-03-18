@@ -1,0 +1,23 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.load {
+    width: 3rem;
+    height: 3rem;
+    color: $color-primary-light-1;
+    animation: lds-dual-ring 0.4s infinite;
+}
+.logout-btn {
+    @include hover-supported() {
+        &:hover {
+            .load {
+                color: $color-primary-dark-3;
+            }
+        }
+    }
+    &:active {
+        .load {
+            color: $color-primary-dark-3;
+        }
+    }
+}

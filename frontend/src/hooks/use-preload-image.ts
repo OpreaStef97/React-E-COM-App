@@ -12,10 +12,8 @@ async function preloadImage(src: string) {
         return console.error(message);
     }
 }
-const usePreloadImage = (images: string[]) => {
+export const usePreloadImage = (images: string[]) => {
     useEffect(() => {
         images.forEach(preloadImage);
     }, [images]);
 };
-
-export default usePreloadImage;

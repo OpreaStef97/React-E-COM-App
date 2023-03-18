@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export default function useAutoFlow({
+export const useAutoFlow = ({
     autoFlow = false,
     clicked,
     flowTo = 'right',
@@ -16,7 +16,7 @@ export default function useAutoFlow({
     nextHandler: () => void;
     prevHandler: () => void;
     clickHandler: (clicked: boolean) => void;
-}) {
+}) => {
     useEffect(() => {
         if (!autoFlow) {
             return;

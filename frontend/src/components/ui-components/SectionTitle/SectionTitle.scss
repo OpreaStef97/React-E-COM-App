@@ -1,0 +1,39 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.section-title {
+    margin: 0 auto;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    width: 80%;
+
+    &__content {
+        display: flex;
+        align-items: center;
+        margin-left: 10%;
+        height: 100%;
+        font-weight: 400;
+        font-size: 4.4rem;
+
+        background-image: linear-gradient(
+            to left,
+            $color-tertiary-dark-1 0%,
+            $color-tertiary-dark-1 20%,
+            $color-primary-dark-3 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+    }
+
+    @include respond(mobile-medium) {
+        justify-content: center;
+        text-align: center;
+        &__content {
+            margin-left: 0;
+            font-size: 3rem;
+        }
+    }
+}

@@ -1,0 +1,95 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.slideshow-menu {
+    border-radius: 1rem;
+    box-shadow: 0 0.1rem 0.5rem rgba($color-primary-dark-3, 0.25);
+    margin: 0 auto;
+    width: 90vw;
+    overflow: hidden;
+    position: relative;
+
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+
+    @include respond(mobile-medium) {
+        height: 50vh;
+    }
+
+    @include respond(mobile-small) {
+        width: 95%;
+    }
+
+    &__container {
+        height: clamp(50rem, 70vh, 70rem);
+        @include respond(mobile-medium) {
+            height: calc(50vh - 8rem);
+        }
+    }
+
+    &-header {
+        background-color: $color-primary-light-1;
+        height: 8rem;
+        display: flex;
+        align-items: center;
+    }
+
+    &-overlay {
+        position: absolute;
+        top: 5%;
+        left: 5%;
+        font-weight: 300;
+        text-align: start;
+
+        z-index: 40;
+        width: 75rem;
+        height: 25rem;
+        font-size: 7rem;
+
+        background-image: linear-gradient(
+            to right bottom,
+            $color-tertiary-light-3,
+            $color-primary-light-3
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: 2px;
+
+        transition: all 0.3s;
+
+        @include respond(mobile-medium) {
+            font-size: 4.5rem;
+            width: 40rem;
+        }
+    }
+
+    &-button {
+        position: absolute;
+        bottom: 5%;
+        right: 3%;
+        font-weight: 300;
+        text-align: start;
+        z-index: 1400;
+        a {
+            &:link,
+            &:visited {
+                z-index: inherit;
+                
+                width: 18rem;
+                height: 4.5rem;
+                span {
+                    font-size: 1.8rem;
+                }
+
+                svg {
+                    font-size: 2.7rem;
+                }
+            }
+        }
+
+        svg {
+            font-size: 2rem;
+        }
+    }
+}

@@ -1,20 +1,20 @@
-import { RefObject, useEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from "react";
 
-export default function useIntersect<T>(ref?: RefObject<T> | null) {
+export const useIntersect = <T>(ref?: RefObject<T> | null) => {
     const [intersecting, setIntersecting] = useState(true);
     useEffect(() => {
         if (!ref) {
             return;
         }
         const obs = new IntersectionObserver(
-            entries => {
+            (entries) => {
                 const ent = entries[0];
                 setIntersecting(ent.isIntersecting === true);
             },
             {
                 root: null,
                 threshold: 0,
-                rootMargin: '0px',
+                rootMargin: "0px",
             }
         );
         if (ref.current) {
@@ -24,4 +24,4 @@ export default function useIntersect<T>(ref?: RefObject<T> | null) {
     }, [ref]);
 
     return intersecting;
-}
+};

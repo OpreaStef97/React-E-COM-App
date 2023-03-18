@@ -1,0 +1,51 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.home {
+    margin: 0 auto;
+    text-align: center;
+
+    &__product {
+        &-lists {
+            height: auto;
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+            gap: 10rem;
+            background-image: linear-gradient(
+                100deg,
+                $color-tertiary 0%,
+                $color-tertiary 50%,
+                $color-primary-dark-1 50%,
+                $color-primary-dark-3 100%
+            );
+            margin-bottom: 15rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        &-link {
+            display: flex;
+            justify-content: flex-start;
+            margin-left: 6rem;
+            a {
+                &:link,
+                &:visited {
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-decoration: none;
+                    font-size: 3.5rem;
+                    font-weight: 400;
+                    margin-bottom: 1rem;
+                    align-self: flex-start;
+                    color: $color-tertiary-light-3;
+                }
+            }
+
+            svg {
+                font-size: 4.5rem;
+                color: $color-tertiary-light-3;
+            }
+        }
+    }
+}

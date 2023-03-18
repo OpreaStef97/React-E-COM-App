@@ -1,0 +1,88 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.notification {
+    padding: 1rem 0;
+    position: absolute;
+    z-index: 1200;
+    top: -4rem;
+    width: 100%;
+    min-height: 6rem;
+    background-color: $color-secondary-dark;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-msg {
+        font-size: 2.6rem;
+        font-weight: 500;
+        color: $color-secondary-light-2;
+        text-align: center;
+    }
+
+    &-err {
+        background-color: $color-tertiary-dark-1;
+        .notification-msg {
+            color: $color-tertiary-light-3;
+        }
+    }
+
+    &-warn {
+        background-color: #cd9b1e;
+        .notification-msg {
+            color: #fff;
+        }
+    }
+
+    &-info {
+        background-color: $color-fourth-dark-1;
+        .notification-msg {
+            color: $color-primary-light-1;
+        }
+    }
+
+    &-close {
+        right: 1%;
+        cursor: pointer;
+        position: absolute;
+        height: 4rem;
+        width: 4rem;
+        color: $color-secondary-light-1;
+    }
+
+    @include respond(mobile-medium) {
+        &-msg {
+            width: 70%;
+        }
+    }
+}
+
+.notification-enter {
+    transform: translateY(-100%);
+}
+
+.notification-enter-active {
+    transform: translateY(0%);
+    transition: all 0.3s;
+}
+
+.notification-exit {
+    transform: translateY(0%);
+}
+
+.notification-exit-active {
+    transform: translateY(-100%);
+    transition: all 0.3s;
+}
+
+.sticky {
+    z-index: 1200;
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    width: 100%;
+    @include respond(mobile-medium) {
+        animation: none;
+    }
+    animation: moveDown 0.5s ease-in-out;
+}

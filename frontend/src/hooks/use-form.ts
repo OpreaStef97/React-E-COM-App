@@ -1,4 +1,4 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useReducer } from "react";
 
 export type InputType<T> = {
     [key: string]:
@@ -19,14 +19,14 @@ type Action = {
     [key: string]: any;
 };
 
-const initialState: State<{}> = {
+const initialState = {
     isValid: false,
-    inputs: {},
+    inputs: null,
 };
 
 const formReducer = <T>(state: State<T>, action: Action) => {
     switch (action.type) {
-        case 'INPUT_CHANGE':
+        case "INPUT_CHANGE":
             let formIsValid = true;
             // console.log(action);
             for (const inputId in state.inputs) {
@@ -52,7 +52,7 @@ const formReducer = <T>(state: State<T>, action: Action) => {
                 },
                 isValid: formIsValid,
             };
-        case 'SET_DATA':
+        case "SET_DATA":
             return {
                 inputs: action.inputs,
                 isValid: action.formIsValid,
@@ -62,24 +62,24 @@ const formReducer = <T>(state: State<T>, action: Action) => {
     }
 };
 
-type ReturnType<T> = [
+type FormReturnType<T> = [
     State<T>,
-    (id: any, value: any, isValid: any) => void,
+    (id: string, value: T, isValid: boolean) => void,
     (inputData: InputType<T>, formValidity: boolean) => void
 ];
 
 export const useForm = <T>(
     initialInputs: InputType<T>,
     initialFormValidity: boolean
-): ReturnType<T> => {
+): FormReturnType<T> => {
     const [formState, dispatch] = useReducer(formReducer, {
         inputs: initialInputs,
         isValid: initialFormValidity,
     });
 
-    const inputHandler = useCallback((id, value, isValid) => {
+    const inputHandler = useCallback((id: string, value: T, isValid: boolean) => {
         dispatch({
-            type: 'INPUT_CHANGE',
+            type: "INPUT_CHANGE",
             value,
             isValid,
             inputId: id,
@@ -88,7 +88,7 @@ export const useForm = <T>(
 
     const setFormData = useCallback((inputData: InputType<T>, formValidity: boolean) => {
         dispatch({
-            type: 'SET_DATA',
+            type: "SET_DATA",
             inputs: inputData,
             formIsValid: formValidity,
         });

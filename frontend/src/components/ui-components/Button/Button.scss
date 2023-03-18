@@ -1,0 +1,263 @@
+@import "../../../sass/variables.scss";
+@import "../../../sass/utilities.scss";
+
+.btn {
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s;
+    font-size: 1.4rem;
+    font-weight: 500;
+    text-transform: uppercase;
+
+    gap: 0.5rem;
+    border-radius: 100px;
+    width: 15rem;
+    height: 4rem;
+    color: $color-tertiary-light-3;
+
+    background-image: linear-gradient(
+        130deg,
+        $color-tertiary-dark-1 0%,
+        $color-tertiary-dark-1 50%,
+        $color-primary-light-1 0%
+    );
+    background-size: 250%;
+    box-shadow: 0 0rem 0.5rem rgba($color-tertiary-dark-3, 0.15);
+    transition: none !important;
+
+    &-load {
+        width: 3rem;
+        height: 3rem;
+        color: $color-tertiary-light-3;
+        animation: lds-dual-ring 0.4s infinite;
+    }
+
+    @include hover-supported() {
+        transition: all 0.3s !important;
+        &:hover {
+            background-position: 100%;
+            color: $color-primary-dark-3;
+            .btn-load {
+                color: $color-primary-dark-3;
+            }
+        }
+    }
+
+    &:active {
+        background-position: 100%;
+        color: $color-primary-dark-3;
+        .btn-load {
+            color: $color-primary-dark-3;
+        }
+    }
+
+    &-inverse {
+        background-image: linear-gradient(
+            70deg,
+            $color-primary-light-1 0%,
+            $color-primary-light-1 50%,
+            $color-tertiary-dark-1 0%
+        );
+        color: $color-primary-dark-3;
+        box-shadow: 0 0rem 0.5rem rgba($color-primary-dark-3, 0.15);
+
+        .btn-load {
+            color: $color-primary-dark-3;
+        }
+
+        @include hover-supported() {
+            &:hover {
+                color: $color-tertiary-light-3;
+
+                .btn-load {
+                    color: $color-tertiary-light-3;
+                }
+            }
+        }
+        &:active {
+            color: $color-tertiary-light-3;
+
+            .btn-load {
+                color: $color-tertiary-light-3;
+            }
+        }
+    }
+}
+
+.disabled {
+    cursor: not-allowed !important;
+    transition: none !important;
+    background-image: none !important;
+    background: #ccc !important;
+    color: #979797 !important;
+    &:hover,
+    &:active {
+        color: #979797 !important;
+    }
+}
+
+.link {
+    &:link,
+    &:visited {
+        text-decoration: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.4s;
+        font-size: 1.4rem;
+        font-weight: 500;
+        text-transform: uppercase;
+
+        gap: 0.5rem;
+        border-radius: 100px;
+        width: 15rem;
+        height: 4rem;
+        color: $color-tertiary-light-3;
+
+        background-image: linear-gradient(
+            130deg,
+            $color-tertiary-dark-1 0%,
+            $color-tertiary-dark-1 50%,
+            $color-primary-light-1 0%
+        );
+        background-size: 250%;
+        box-shadow: 0 0rem 0.5rem rgba($color-tertiary-dark-3, 0.15);
+    }
+    transition: none !important;
+
+    @include hover-supported() {
+        transition: all 0.3s !important;
+        &:hover {
+            color: $color-primary-dark-3;
+            background-position: 100%;
+        }
+    }
+
+    &:active {
+        color: $color-primary-dark-3;
+        background-position: 100%;
+    }
+
+    &-inverse {
+        &:link,
+        &:visited {
+            color: $color-primary-dark-3;
+
+            background-image: linear-gradient(
+                70deg,
+                $color-primary-light-1 0%,
+                $color-primary-light-1 50%,
+                $color-tertiary-dark-1 0%
+            );
+            box-shadow: 0 0rem 0.5rem rgba($color-primary-dark-3, 0.15);
+        }
+        @include hover-supported() {
+            &:hover {
+                color: $color-tertiary-light-3;
+            }
+        }
+        &:active {
+            color: $color-tertiary-light-3;
+        }
+    }
+}
+
+.btn-light {
+    cursor: pointer;
+    color: inherit;
+    border: none;
+    background-color: inherit;
+    width: 100%;
+    height: 4rem;
+    font-size: 2rem;
+    position: relative;
+
+    &::after {
+        content: "";
+        left: 0%;
+        position: absolute;
+        bottom: -20%;
+        width: 100%;
+        height: 1.5px;
+        background-color: transparent;
+        transform: scale(0);
+        transition: all 0.4s ease;
+    }
+    @include hover-supported() {
+        &:hover {
+            color: $color-tertiary;
+        }
+
+        &:hover::after {
+            transform: scale(1);
+            background-color: $color-tertiary;
+        }
+    }
+
+    &-active {
+        color: $color-tertiary;
+    }
+
+    &-active::after {
+        transform: scale(1);
+        background-color: $color-tertiary;
+    }
+}
+
+.link-light {
+    &:link,
+    &:visited {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+        color: $color-primary-dark-3;
+        border: none;
+        background-color: inherit;
+        width: 100%;
+        height: auto;
+        font-size: 2rem;
+        position: relative;
+    }
+    &::after {
+        content: "";
+        left: 0%;
+        position: absolute;
+        bottom: -20%;
+        width: 100%;
+        height: 1.5px;
+        background-color: transparent;
+        transform: scale(0);
+        transition: all 0.4s ease;
+    }
+    @include hover-supported() {
+        &:hover,
+        &:active {
+            color: $color-tertiary;
+        }
+
+        &:hover::after {
+            transform: scale(1);
+            background-color: $color-tertiary;
+        }
+    }
+
+    &-active {
+        pointer-events: none;
+        cursor: none;
+        &:link,
+        &:visited {
+            color: $color-tertiary;
+        }
+    }
+
+    &-active::after {
+        transform: scale(1);
+        background-color: $color-tertiary;
+    }
+}

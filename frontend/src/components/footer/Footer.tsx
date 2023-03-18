@@ -1,11 +1,14 @@
-import { FC } from 'react';
-import { Link } from 'react-router-dom';
-import Logo from '../ui-components/Logo';
-import './Footer.scss';
+import { FC } from "react";
+import { Link } from "react-router-dom";
+import { useFetch } from "../../hooks";
+import { Logo } from "../ui-components";
+import "./Footer.scss";
 
-const Footer: FC<{ isLoading: boolean }> = props => {
+const Footer: FC = (props) => {
+    const { isLoading } = useFetch();
+
     return (
-        <footer className="footer" style={props.isLoading ? { marginTop: '100vh' } : {}}>
+        <footer className="footer" style={isLoading ? { marginTop: "100vh" } : {}}>
             <Logo big light />
             <ul className="footer-list">
                 <li className="footer-item">
@@ -35,15 +38,15 @@ const Footer: FC<{ isLoading: boolean }> = props => {
                 </li>
             </ul>
             <p className="footer__copyright">
-                Built by{' '}
+                Built by{" "}
                 <a
                     target="_blank"
                     rel="noopener noreferrer"
                     className="footer-item__link--me"
-                    href="https://github.com/OpreaStf"
+                    href="https://github.com/OpreaStef97"
                 >
                     Stefan Oprea
-                </a>{' '}
+                </a>{" "}
                 for his personal portfolio. Copyright &copy; by Stefan Oprea.
             </p>
         </footer>

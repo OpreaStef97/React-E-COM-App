@@ -1,0 +1,90 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.products__side-bar {
+    height: auto;
+    width: 100%;
+    border-radius: 1rem;
+    background-color: $color-primary-light-4;
+    box-shadow: 0 0 0.5rem rgba($color-primary-dark-3, 0.25);
+    gap: 2rem;
+    padding: 3rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    &__title {
+        height: 3rem;
+        font-size: 2rem;
+        color: $color-primary-dark-2;
+        position: relative;
+
+        &:after {
+            position: absolute;
+            display: block;
+            content: '';
+            top: 100%;
+            height: 2px;
+            width: 100%;
+            background-color: $color-primary-dark-2;
+        }
+    }
+
+    &__list {
+        flex-basis: auto;
+        gap: 0.5rem;
+        list-style: none;
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+
+        &--item {
+            a {
+                &:link,
+                &:visited {
+                    font-size: 2rem;
+                    gap: 0.5rem;
+                }
+            }
+        }
+        @include respond(mobile-big) {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+    @include respond(mobile-small) {
+        &__list {
+            gap: 3rem;
+            flex-direction: column;
+            &--item {
+                a {
+                    &:link,
+                    &:visited {
+                        font-size: 2.5rem;
+                        gap: 0.5rem;
+                    }
+                }
+            }
+        }
+        &__title {
+            font-size: 2.8rem;
+            &:after {
+                position: absolute;
+                display: block;
+                content: '';
+                top: 130%;
+                height: 2px;
+                width: 100%;
+                background-color: $color-primary-dark-2;
+            }
+        }
+    }
+
+    .separator {
+        background-color: $color-primary-dark-1;
+    }
+}

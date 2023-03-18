@@ -1,17 +1,14 @@
-import { FC, Fragment, useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import useFetch from '../../hooks/use-fetch';
-
-import useSelect from '../../hooks/use-select';
-import { delayedNotification } from '../../store/ui-slice';
-import Button from '../ui-components/Button';
-import ReviewStats from './ReviewStats';
-import './Reviews.scss';
-import ReviewModal from './ReviewModal';
-import useInfiniteScroll from '../../hooks/use-infinite-scroll';
-import UserCard from '../promoting/UserCard';
-import LoadingSpinner from '../ui-components/LoadingSpinner';
+import { FC, useState, useEffect, useCallback, Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useFetch, useSelect, useInfiniteScroll } from "../../hooks";
+import { AuthType } from "../../store/auth";
+import { delayedNotification } from "../../store/ui";
+import UserCard from "../promoting/UserCard";
+import { Button, LoadingSpinner } from "../ui-components";
+import ReviewModal from "./ReviewModal";
+import ReviewStats from "./ReviewStats";
+import "./Reviews.scss";
 
 const Reviews: FC<{
     rating?: number;
@@ -19,38 +16,38 @@ const Reviews: FC<{
     selectMenu?: JSX.Element;
     sorting?: string;
     userReview?: any;
-}> = props => {
+}> = (props) => {
     const { productId } = props;
     const [reviews, setReviews] = useState<any[]>([]);
     const [addReview, setAddReview] = useState(false);
     const [selectTouched, setSelectTouched] = useState(false);
-    const { auth } = useSelector((state: any) => state);
+    const { auth } = useSelector((state: { auth: AuthType }) => state);
     const { sendRequest, isLoading } = useFetch();
     const [length, setLength] = useState<number>();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const location = useLocation();
-    const [ratingValue, setRatingValue] = useState<string>('');
-    const [hasMore, setHasMore] = useState(false);
+    const [ratingValue, setRatingValue] = useState<string>("");
+    const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
 
     const { selectState, selectHandler, deleteHandler, setHandler } = useSelect();
 
     useEffect(() => {
-        const ratingOptions = ['5⭐', '4⭐', '3⭐', '2⭐', '1⭐'];
+        const ratingOptions = ["5⭐", "4⭐", "3⭐", "2⭐", "1⭐"];
         setHandler({
             rating: { options: ratingOptions, selected: ratingOptions.map(() => false) },
         });
     }, [setHandler]);
 
     useEffect(() => {
-        if (!productId) {
+        if (!productId || !hasMore) {
             return;
         }
         sendRequest({
             url: `${process.env.REACT_APP_API_URL}/products/${productId}/reviews?page=${page}&limit=4&sort=${props.sorting}`,
         })
-            .then(data => {
+            .then((data) => {
                 setReviews((prev: any) => {
                     return [...prev, ...data.docs];
                 });
@@ -58,7 +55,7 @@ const Reviews: FC<{
                 setHasMore(data.docs.length === 4);
             })
             .catch(setHasMore.bind(null, false));
-    }, [sendRequest, productId, page, props.sorting]);
+    }, [sendRequest, productId, page, props.sorting, hasMore]);
 
     useEffect(() => {
         if (!selectState || !selectState.rating) {
@@ -73,23 +70,23 @@ const Reviews: FC<{
 
     useEffect(() => {
         if (userReview) {
-            selectHandler('rating', `${userReview.rating}⭐`, false, false);
+            selectHandler("rating", `${userReview.rating}⭐`, false, false);
         }
     }, [userReview, selectHandler]);
 
     const addReviewHandler = useCallback(() => {
         if (auth.isLoggedIn) {
-            setAddReview(prev => !prev);
+            setAddReview((prev) => !prev);
             setSelectTouched(false);
         } else {
-            navigate('/auth', {
+            navigate("/auth", {
                 state: { from: location.pathname },
             });
             dispatch(
                 delayedNotification({
                     delay: 300,
-                    message: 'Please authenticate before adding a review',
-                    status: 'warn',
+                    message: "Please authenticate before adding a review",
+                    status: "warn",
                 })
             );
         }
@@ -103,7 +100,7 @@ const Reviews: FC<{
                 value={ratingValue}
                 selectState={selectState}
                 checkReview={userReview}
-                productId={productId || ''}
+                productId={productId || ""}
                 addReview={addReview}
                 selectTouched={selectTouched}
                 onReview={addReviewHandler}
@@ -120,14 +117,14 @@ const Reviews: FC<{
                             onClick={addReviewHandler}
                             className="reviews-content-header--button"
                         >
-                            {userReview ? 'Modify review' : 'Add a review'}
+                            {userReview ? "Modify review" : "Add a review"}
                         </Button>
                     </div>
                     <ReviewStats length={length || 0} rating={props.rating} />
                     <ul
                         className="reviews-content-list"
                         key={props.sorting}
-                        style={{ animation: 'fade .8s' }}
+                        style={{ animation: "fade .8s" }}
                     >
                         {reviews.length > 0 &&
                             reviews.map((review: any, i: number) => {

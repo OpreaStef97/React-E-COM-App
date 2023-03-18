@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useWindow = (): [number, number] => {
+export const useWindow = (): [number, number] => {
     const [width, setWidth] = useState(window.innerWidth);
     const [height, setHeight] = useState(window.innerHeight);
 
@@ -19,5 +19,3 @@ const useWindow = (): [number, number] => {
 
     return [width, height];
 };
-
-export default useWindow;

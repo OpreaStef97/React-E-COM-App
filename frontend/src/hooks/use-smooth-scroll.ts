@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
-import useWindow from './use-window';
+import { useCallback } from "react";
+import { useWindow } from "./use-window";
 
-export default function useSmoothScroll() {
+
+export const useSmoothScroll = () => {
     const [width] = useWindow();
 
     const smoothScroll = useCallback(() => {
@@ -10,7 +11,7 @@ export default function useSmoothScroll() {
         }
         window.scrollTo({
             top: 0,
-            behavior: 'smooth',
+            behavior: "smooth",
         });
         return new Promise<void>((resolve, reject) => {
             const failed = setTimeout(() => {
@@ -19,7 +20,7 @@ export default function useSmoothScroll() {
 
             const scrollHandler = () => {
                 if (window.scrollY === 0) {
-                    window.removeEventListener('scroll', scrollHandler);
+                    window.removeEventListener("scroll", scrollHandler);
                     clearTimeout(failed);
                     resolve();
                 }
@@ -28,10 +29,10 @@ export default function useSmoothScroll() {
                 clearTimeout(failed);
                 resolve();
             } else {
-                window.addEventListener('scroll', scrollHandler);
+                window.addEventListener("scroll", scrollHandler);
             }
         });
     }, [width]);
 
     return smoothScroll;
-}
+};

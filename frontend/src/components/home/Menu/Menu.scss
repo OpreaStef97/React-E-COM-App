@@ -1,0 +1,170 @@
+@import '../../../sass/variables.scss';
+@import '../../../sass/utilities.scss';
+
+.menu {
+    background-color: $color-primary-light-1;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    &__container {
+        display: flex;
+        width: 100%;
+    }
+
+    &__button {
+        font-family: inherit;
+        color: inherit;
+        cursor: pointer;
+        color: inherit;
+        border: none;
+        background-color: inherit;
+        width: auto;
+        height: 4rem;
+        font-size: 2rem;
+        position: relative;
+
+        &::after {
+            content: '';
+            left: 0%;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            transform: scale(0);
+            height: 1.5px;
+            background-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        &-triangle {
+            z-index: 400;
+            position: absolute;
+            color: #fff;
+            border-bottom: none;
+            font-size: 2.5rem;
+            left: 40%;
+            top: 90%;
+            text-shadow: 0px -1rem 2rem rgba($color-primary-dark-3, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s;
+        }
+
+        @include hover-supported() {
+            &:hover {
+                color: $color-tertiary;
+            }
+
+            &:hover::after {
+                transform: scale(1);
+                background-color: $color-tertiary;
+            }
+        }
+
+        &-active {
+            color: $color-tertiary;
+        }
+
+        &-active &-triangle {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        &-active::after {
+            transform: scale(1);
+            background-color: $color-tertiary;
+        }
+    }
+}
+
+.menu-dropdown {
+    display: flex;
+    flex: 0 1 100%;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    &-container {
+        padding: 2rem 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        overflow: hidden;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    &-links {
+        opacity: 1;
+        display: flex;
+        height: auto;
+        width: 100%;
+        list-style: none;
+        justify-content: space-around;
+        align-items: center;
+        // flex-wrap: wrap;
+        overflow: hidden;
+        gap: 1rem;
+
+        transition: opacity 0.3s ease-in;
+        &--item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            svg {
+                font-size: 3rem;
+                color: $color-fourth;
+            }
+        }
+
+        @include respond(mobile-medium) {
+            gap: 3rem;
+            margin-left: 3rem;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+
+    &-link {
+        &:link,
+        &:visited {
+            display: inline-flex;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            color: $color-fourth;
+            background-color: inherit;
+            width: 100%;
+            height: 3.5rem;
+            font-size: 2.5rem;
+            position: relative;
+        }
+
+        &::after {
+            z-index: inherit;
+            content: '';
+            left: 0%;
+            position: absolute;
+            bottom: 0;
+            width: 0%;
+            height: 2px;
+            transition: all 0.2s ease;
+        }
+
+        @include hover-supported() {
+            &:hover,
+            &:active {
+                &::after {
+                    font-size: 2.5rem;
+                    width: 100%;
+                    background-color: $color-fourth;
+                }
+            }
+        }
+    }
+}

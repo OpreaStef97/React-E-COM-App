@@ -9,7 +9,7 @@ type HttpFetch = {
     credentials?: RequestCredentials;
 };
 
-const useFetch = () => {
+export const useFetch = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>();
 
@@ -89,5 +89,3 @@ const useFetch = () => {
 
     return { isLoading, error, sendRequest, clearError };
 };
-
-export default useFetch;
